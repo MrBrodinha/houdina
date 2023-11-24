@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "122134764302",
+    "firebase_url": "https://houdina-2194-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "houdina-2194",
+    "storage_bucket": "houdina-2194.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122134764302:android:09034bb64cfc9f5fe5d55f",
+        "android_client_info": {
+          "package_name": "com.example.houdina"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTmJLBFlHfmGCCUMMjoqXKO8n5NNCv_wY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
