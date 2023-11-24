@@ -30,10 +30,6 @@ class Main extends StatelessWidget{
             viewportFraction: 1.0,
             //Não permitir dar mais dq um Slide
             enableInfiniteScroll: false,
-            //Animação Automática de Slide
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 10),
-            autoPlayAnimationDuration: Duration(seconds: 4),
           ),
           items: [
             //Widget que permite vários widgets -> Dar overlay do nome da aplicação sobre o wallpaper
