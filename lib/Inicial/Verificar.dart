@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Dar import a files externos
 import '../Main.dart';
+import '../Notificacoes.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -21,29 +22,35 @@ void CriarConta(BuildContext context, String username, String email, String pass
     'Password': password,
     });
 
-    Navigator.push(context,
-			MaterialPageRoute(builder: (context) => Main()),
-		);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Main()),);
 
 	} else { //-----ERROS-----
-		//NOTIFICAÇÃO DE ERRO DE USERNAME ou (Verificar se ele já existe na DB)
+		//NOTIFICAÇÃO DE ERRO DE USERNAME (Verificar se ele já existe na DB)
     if(verificador == 1){
-      print("Erro -> Nome em uso...");
+      //Para fechar o Teclado smp q dá erro
+      FocusScope.of(context).requestFocus(FocusNode());
+      SENome(context);
     }
+    //NOTIFICAÇÃO DE ERRO FORMATO DE EMAIL ou (Verificar se ele já existe na DB)
     if(verificador == 2){
-      print("Erro -> Email em uso...");
+      //Para fechar o Teclado smp q dá erro
+      FocusScope.of(context).requestFocus(FocusNode());
+      SEEmail(context);
     }
 		//NOTIFICAÇÃO DE ERRO DE PASS
-		if(password != confirmPassword ){
-			print('Erro -> Palavras Passes Não Correspondentes...');
+		if(password != confirmPassword){
+      //Para fechar o Teclado smp q dá erro
+      FocusScope.of(context).requestFocus(FocusNode());
+      SEPNCorrespondente(context);
 		}
 		//NOTIFICAÇÃO DE ERRO DE EMAIL (Formato do Email)
 		if(!EmailValidator.validate(email)){
-			print('Erro -> Formato de Email Incorreto...');
+      //Para fechar o Teclado smp q dá erro
+      FocusScope.of(context).requestFocus(FocusNode());
+      SEFEmail(context);
 		}
 	}
 }
-
 void EntrarConta(BuildContext context, String username, String password) async{
   
   //Se for 0 -> Td bem / 1 -> Erro
@@ -51,11 +58,11 @@ void EntrarConta(BuildContext context, String username, String password) async{
 
   //Verificar se há esse username e se a password corresponde aos valores da DB
   if(verificador == 0){
-    Navigator.push(context,
-			MaterialPageRoute(builder: (context) => Main()),
-		);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Main()),);
   }else{
-    print("Username ou Password Errados");
+    //Para fechar o Teclado smp q dá erro
+    FocusScope.of(context).requestFocus(FocusNode());
+    LoginErros(context);
   }
 
 }

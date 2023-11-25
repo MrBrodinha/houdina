@@ -40,7 +40,7 @@ class Main extends StatelessWidget{
                 Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('resources/Background.jpg'),
+                      image: NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),

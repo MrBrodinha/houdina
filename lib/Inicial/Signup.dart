@@ -21,7 +21,7 @@ class Signup extends StatelessWidget{
 					alignment: Alignment.center,
 					decoration: BoxDecoration(
 						image: DecorationImage(
-							image: AssetImage('resources/Background.jpg'),
+							image: NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
 							//Para preencher a tela toda
 							fit: BoxFit.cover,
 						),
