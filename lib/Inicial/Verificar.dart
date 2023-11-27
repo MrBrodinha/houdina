@@ -3,8 +3,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Dar import a files externos
-import '../Main.dart';
 import '../Notificacoes.dart';
+import '../Aplicacao/Default.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -22,7 +22,7 @@ void criarConta(BuildContext context, String username, String email, String pass
     'Password': password,
     });
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Main()),);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Default()),);
 
 	} else { //-----ERROS-----
 		//NOTIFICAÇÃO DE ERRO DE USERNAME (Verificar se ele já existe na DB)
@@ -58,7 +58,7 @@ void entrarConta(BuildContext context, String username, String password) async{
 
   //Verificar se há esse username e se a password corresponde aos valores da DB
   if(verificador == 0){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Main()),);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Default()),);
   }else{
     //Para fechar o Teclado smp q dá erro
     FocusScope.of(context).requestFocus(FocusNode());
