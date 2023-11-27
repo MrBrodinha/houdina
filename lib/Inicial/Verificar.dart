@@ -3,8 +3,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Dar import a files externos
-import '../main.dart';
-import '../notificacoes.dart';
+import '../Main.dart';
+import '../Notificacoes.dart';
 
 final db = FirebaseFirestore.instance;
 

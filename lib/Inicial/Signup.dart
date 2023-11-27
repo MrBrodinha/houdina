@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 //Dar import a files externos
-import 'login.dart';
-import 'verificar.dart';
+import 'Login.dart';
+import 'Verificar.dart';
 
 //ACREDITO QUE TODAS AS NOSSAS ABAS CONVEM ESTAREM EM STATEFUL PQ MUDAM DE PARAMETROS CONSTANTEMENTE
 
