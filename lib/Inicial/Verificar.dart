@@ -3,15 +3,15 @@ import 'package:email_validator/email_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Dar import a files externos
-import '../Main.dart';
-import '../Notificacoes.dart';
+import '../main.dart';
+import '../notificacoes.dart';
 
 final db = FirebaseFirestore.instance;
 
-void CriarConta(BuildContext context, String username, String email, String password, String confirmPassword) async{
+void criarConta(BuildContext context, String username, String email, String password, String confirmPassword) async{
 
   // 0 -> Td bem / 1 -> User usado / 2 -> Email Usado
-	int verificador = await VerificarRegisto(username, email);
+	int verificador = await verificarRegisto(username, email);
 
 	//VER SE OS DADOS DA PASSWORD CORRESPONDEM
 	if (password == confirmPassword && EmailValidator.validate(email) && verificador == 0) {
@@ -29,32 +29,32 @@ void CriarConta(BuildContext context, String username, String email, String pass
     if(verificador == 1){
       //Para fechar o Teclado smp q dá erro
       FocusScope.of(context).requestFocus(FocusNode());
-      SENome(context);
+      seNome(context);
     }
     //NOTIFICAÇÃO DE ERRO FORMATO DE EMAIL ou (Verificar se ele já existe na DB)
     if(verificador == 2){
       //Para fechar o Teclado smp q dá erro
       FocusScope.of(context).requestFocus(FocusNode());
-      SEEmail(context);
+      seEmail(context);
     }
 		//NOTIFICAÇÃO DE ERRO DE PASS
 		if(password != confirmPassword){
       //Para fechar o Teclado smp q dá erro
       FocusScope.of(context).requestFocus(FocusNode());
-      SEPNCorrespondente(context);
+      sePNCorrespondente(context);
 		}
 		//NOTIFICAÇÃO DE ERRO DE EMAIL (Formato do Email)
 		if(!EmailValidator.validate(email)){
       //Para fechar o Teclado smp q dá erro
       FocusScope.of(context).requestFocus(FocusNode());
-      SEFEmail(context);
+      seFEmail(context);
 		}
 	}
 }
-void EntrarConta(BuildContext context, String username, String password) async{
+void entrarConta(BuildContext context, String username, String password) async{
   
   //Se for 0 -> Td bem / 1 -> Erro
-  int verificador = await VerificarEntrada(username, password);
+  int verificador = await verificarEntrada(username, password);
 
   //Verificar se há esse username e se a password corresponde aos valores da DB
   if(verificador == 0){
@@ -62,14 +62,14 @@ void EntrarConta(BuildContext context, String username, String password) async{
   }else{
     //Para fechar o Teclado smp q dá erro
     FocusScope.of(context).requestFocus(FocusNode());
-    LoginErros(context);
+    loginErros(context);
   }
 
 }
 
 
 //----------VERIFICADORES FUNÇÕES----------
-Future<int> VerificarRegisto(String username, String email) async{
+Future<int> verificarRegisto(String username, String email) async{
 
   final QuerySnapshot verNome = await FirebaseFirestore.instance.collection('Users').where('Nome', isEqualTo: username).get();
   final QuerySnapshot verEmail = await FirebaseFirestore.instance.collection('Users').where('Email', isEqualTo: email).get();
@@ -85,7 +85,7 @@ Future<int> VerificarRegisto(String username, String email) async{
   }
 
 }
-Future<int> VerificarEntrada(String username, String password) async{
+Future<int> verificarEntrada(String username, String password) async{
 
   final QuerySnapshot verNome = await FirebaseFirestore.instance.collection('Users').where('Nome', isEqualTo: username).get();
   final QuerySnapshot verPassword = await FirebaseFirestore.instance.collection('Users').where('Password', isEqualTo: password).get();

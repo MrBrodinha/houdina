@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-void SENome(BuildContext context) {
+void seNome(BuildContext context) {
   final snackBar = SnackBar(
-    content:Text('Nome em uso...', textAlign: TextAlign.center),
-    duration: Duration(seconds: 4),
-    backgroundColor: Color.fromRGBO(25, 95, 255, 1.0),
+    content: const Text('Nome em uso...', textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
@@ -20,11 +20,11 @@ void SENome(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-void SEEmail(BuildContext context) {
+void seEmail(BuildContext context) {
   final snackBar = SnackBar(
-    content:Text('Email em uso...', textAlign: TextAlign.center),
-    duration: Duration(seconds: 4),
-    backgroundColor: Color.fromRGBO(25, 95, 255, 1.0),
+    content: const Text('Email em uso...', textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
@@ -40,11 +40,11 @@ void SEEmail(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
     
-void SEPNCorrespondente(BuildContext context) {
+void sePNCorrespondente(BuildContext context) {
   final snackBar = SnackBar(
-    content:Text('Palavras Passes Não Correspondentes...', textAlign: TextAlign.center),
-    duration: Duration(seconds: 4),
-    backgroundColor: Color.fromRGBO(25, 95, 255, 1.0),
+    content: const Text('Palavras Passes Não Correspondentes...', textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
@@ -60,11 +60,11 @@ void SEPNCorrespondente(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-void SEFEmail(BuildContext context){
+void seFEmail(BuildContext context){
   final snackBar = SnackBar(
-    content:Text('Formato de Email Incorreto...', textAlign: TextAlign.center),
-    duration: Duration(seconds: 4),
-    backgroundColor: Color.fromRGBO(25, 95, 255, 1.0),
+    content: const Text('Formato de Email Incorreto...', textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
@@ -80,13 +80,13 @@ void SEFEmail(BuildContext context){
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-void LoginErros(BuildContext context) {
+void loginErros(BuildContext context) {
   final snackBar = SnackBar(
-    content: Text('Username ou Password Errados...', textAlign: TextAlign.center),
-    duration: Duration(seconds: 4),
-    backgroundColor: Color.fromRGBO(25, 95, 255, 1.0),
+    content: const Text('Username ou Password Errados...', textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder(
+    shape: RoundedRectangleBorder( 
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,

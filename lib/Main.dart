@@ -11,10 +11,19 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
   );
-  runApp(MaterialApp(home: Main())); 
+  runApp(const MaterialApp(home: Main())); 
 }
 
-class Main extends StatelessWidget{
+//CONVEM ESTAR EM STATEFUL POR CAUSA DO WALLPAPER E AFINS (ACHO EU)
+
+class Main extends StatefulWidget{
+  const Main({super.key});
+  @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
@@ -35,7 +44,7 @@ class Main extends StatelessWidget{
               children: [
                 //Wallpaper
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
                       fit: BoxFit.cover,
@@ -50,12 +59,12 @@ class Main extends StatelessWidget{
                     height: MediaQuery.of(context).size.height * 0.15, 
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
                         width: 3.0,
                       ),
                       borderRadius: BorderRadius.circular(35.0),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text('Houdina',
                         style: TextStyle(
                           fontSize: 80,
@@ -68,10 +77,8 @@ class Main extends StatelessWidget{
                 
               ],
             ),
-            //Prox Página -> Login Page
-            Container(
-              child: Login(),
-            ),
+            //Prox Página -> Login Pag
+            Login(),
           ],
         ),
       ),
