@@ -6,15 +6,12 @@ import 'package:houdina/firebase_options.dart';
 import 'Inicial/Login.dart';
 
 void main() async{
-
 	WidgetsFlutterBinding.ensureInitialized();
-
   //Inicializar o Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
   );
   runApp(MaterialApp(home: Main())); 
-
 }
 
 class Main extends StatelessWidget{
@@ -47,10 +44,10 @@ class Main extends StatelessWidget{
                 ),
                 //Nome da Aplicação
                 Positioned(
-                  top: 150,
+                  top: MediaQuery.of(context).size.height * 0.20,
                   child: Container(
-                    width: 350,
-                    height: 120, 
+                    width: MediaQuery.of(context).size.width * 0.90,
+                    height: MediaQuery.of(context).size.height * 0.15, 
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Color.fromRGBO(25, 95, 255, 1.0),
