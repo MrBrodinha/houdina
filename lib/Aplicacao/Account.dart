@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'Account.dart';
+import 'Default.dart';
+import '../Main.dart';
 
-class Default extends StatefulWidget{
-  const Default({super.key});
+class Account extends StatefulWidget{
+  const Account({super.key});
   @override
-  State<Default> createState() => _DefaultState();
+  State<Account> createState() => _AccountState();
 }
 
-class _DefaultState extends State<Default> {
+class _AccountState extends State<Account> {
 
   @override
   void initState(){
@@ -110,12 +111,12 @@ class _DefaultState extends State<Default> {
                   ),
                   child: Center(
                     child: IconButton(
-                      icon: Icon(Icons.person,
+                      icon: Icon(Icons.exit_to_app,
                         size: MediaQuery.of(context).size.height * 0.05,
                         color: Colors.white
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Account()),);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Main()),);
                       },
                     ),
                   ),
