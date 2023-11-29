@@ -57,7 +57,7 @@ class _AccountState extends State<Account> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: const Color.fromRGBO(25, 95, 255, 1.0),
                   ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 void seNome(BuildContext context) {
+
+  ScaffoldMessenger.of(context).clearSnackBars();
+
   final snackBar = SnackBar(
     content: const Text('Nome em uso...', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
@@ -21,6 +24,9 @@ void seNome(BuildContext context) {
 }
 
 void seEmail(BuildContext context) {
+  
+  ScaffoldMessenger.of(context).clearSnackBars();
+
   final snackBar = SnackBar(
     content: const Text('Email em uso...', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
@@ -41,6 +47,9 @@ void seEmail(BuildContext context) {
 }
     
 void sePNCorrespondente(BuildContext context) {
+  
+  ScaffoldMessenger.of(context).clearSnackBars();
+
   final snackBar = SnackBar(
     content: const Text('Palavras Passes Não Correspondentes...', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
@@ -61,6 +70,9 @@ void sePNCorrespondente(BuildContext context) {
 }
 
 void seFEmail(BuildContext context){
+
+  ScaffoldMessenger.of(context).clearSnackBars();
+
   final snackBar = SnackBar(
     content: const Text('Formato de Email Incorreto...', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
@@ -81,6 +93,9 @@ void seFEmail(BuildContext context){
 }
 
 void loginErros(BuildContext context) {
+
+  ScaffoldMessenger.of(context).clearSnackBars();
+
   final snackBar = SnackBar(
     content: const Text('Username ou Password Errados...', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
