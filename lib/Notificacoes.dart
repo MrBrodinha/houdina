@@ -15,7 +15,7 @@ void seNome(BuildContext context) {
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - 500,
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.15),
       left: 10,
       right: 10,
     ),
@@ -38,7 +38,7 @@ void seEmail(BuildContext context) {
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - 500,
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.15),
       left: 10,
       right: 10,
     ),
@@ -61,7 +61,7 @@ void sePNCorrespondente(BuildContext context) {
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - 500,
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.15),
       left: 10,
       right: 10,
     ),
@@ -84,7 +84,7 @@ void seFEmail(BuildContext context){
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - 500,
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.15),
       left: 10,
       right: 10,
     ),
@@ -107,7 +107,7 @@ void loginErros(BuildContext context) {
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - 100,
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.15),
       left: 10,
       right: 10,
     ),
