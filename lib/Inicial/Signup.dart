@@ -53,7 +53,7 @@ class _SignupState extends State<Signup> {
                     decoration: InputDecoration(
                       hintText: 'Username',
                       hintStyle: const TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
+                        color: Color.fromRGBO(25, 95, 255, 0.7),
                       ),
                       //FILL AO TEXTFIELD
                       filled: true,
