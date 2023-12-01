@@ -7,16 +7,18 @@ import '../Main.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
+  
   @override
   State<Account> createState() => _AccountState();
 }
 
 class _AccountState extends State<Account> {
+  
   @override
   void initState() {
     super.initState();
   }
-
+  
   //para dar sign out
   Future<void> signOut() async {
     try {
@@ -26,9 +28,10 @@ class _AccountState extends State<Account> {
       print("Error signing out: $e");
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -42,6 +45,35 @@ class _AccountState extends State<Account> {
             ),
           ),
         ),
+        
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.20,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            height: MediaQuery.of(context).size.height * 0.10,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                "Username",
+                style: TextStyle(
+                  color: Color.fromRGBO(25, 95, 255, 1.0),
+                  decoration: TextDecoration.none,
+                ),
+                ),
+              ), 
+            ),
+          ),
+        ),
+
         Positioned(
           bottom: MediaQuery.of(context).size.height * 0.01,
           child: Row(
@@ -143,8 +175,7 @@ class _AccountState extends State<Account> {
 }
 
 //Envia sempre os três dados, caso n mude algum envia os já existentes
-Future<void> updateProfile(
-    String newEmail, String newPassword, String newUsername) async {
+Future<void> updateProfile(String newEmail, String newPassword, String newUsername) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -176,4 +207,3 @@ Future<void> resetPassword(String email) async {
     // Handle the error accordingly
   }
 }
-

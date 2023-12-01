@@ -23,6 +23,8 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
+  
+  @override
   void initState() {
     super.initState();
   }
@@ -68,14 +70,17 @@ class _MainState extends State<Main> {
                       ),
                       borderRadius: BorderRadius.circular(35.0),
                     ),
-                    child: const Center(
-                      child: Text(
-                        'Houdina',
+                    child: const Padding(
+                      padding: EdgeInsets.all(0.0),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text("Houdina",
                         style: TextStyle(
-                          fontSize: 80,
                           color: Color.fromRGBO(25, 95, 255, 1.0),
+                          decoration: TextDecoration.none,
                         ),
-                      ),
+                        ),
+                      ), 
                     ),
                   ),
                 )

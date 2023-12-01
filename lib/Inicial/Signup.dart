@@ -83,7 +83,7 @@ class _SignupState extends State<Signup> {
                     decoration: InputDecoration(
                       hintText: 'Email',
                       hintStyle: const TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
+                        color: Color.fromRGBO(25, 95, 255, 0.70),
                       ),
                       //FILL AO TEXTFIELD
                       filled: true,
@@ -114,7 +114,7 @@ class _SignupState extends State<Signup> {
                     decoration: InputDecoration(
                       hintText: 'Password',
                       hintStyle: const TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
+                        color: Color.fromRGBO(25, 95, 255, 0.70),
                       ),
                       //FILL AO TEXTFIELD
                       filled: true,
@@ -145,7 +145,7 @@ class _SignupState extends State<Signup> {
                     decoration: InputDecoration(
                       hintText: 'Confirm Password',
                       hintStyle: const TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
+                        color: Color.fromRGBO(25, 95, 255, 0.70),
                       ),
                       //FILL AO TEXTFIELD
                       filled: true,
