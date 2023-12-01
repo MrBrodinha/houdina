@@ -5,28 +5,31 @@ import 'package:houdina/firebase_options.dart';
 
 import 'Inicial/Login.dart';
 
-void main() async{
-	WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   //Inicializar o Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
   );
-  runApp(const MaterialApp(home: Main())); 
+  runApp(const MaterialApp(home: Main()));
 }
 
 //CONVEM ESTAR EM STATEFUL POR CAUSA DO WALLPAPER E AFINS (ACHO EU)
 
-class Main extends StatefulWidget{
+class Main extends StatefulWidget {
   const Main({super.key});
   @override
   State<Main> createState() => _MainState();
 }
 
 class _MainState extends State<Main> {
+  void initState() {
+    super.initState();
+  }
 
-	@override
-	Widget build(BuildContext context) {
-		return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Center(
         child: CarouselSlider(
           options: CarouselOptions(
@@ -46,7 +49,8 @@ class _MainState extends State<Main> {
                 Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
+                      image: NetworkImage(
+                          'https://wallpapercave.com/wp/wp10671634.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -56,7 +60,7 @@ class _MainState extends State<Main> {
                   top: MediaQuery.of(context).size.height * 0.20,
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.90,
-                    height: MediaQuery.of(context).size.height * 0.15, 
+                    height: MediaQuery.of(context).size.height * 0.15,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: const Color.fromRGBO(25, 95, 255, 1.0),
@@ -65,7 +69,8 @@ class _MainState extends State<Main> {
                       borderRadius: BorderRadius.circular(35.0),
                     ),
                     child: const Center(
-                      child: Text('Houdina',
+                      child: Text(
+                        'Houdina',
                         style: TextStyle(
                           fontSize: 80,
                           color: Color.fromRGBO(25, 95, 255, 1.0),
@@ -74,7 +79,6 @@ class _MainState extends State<Main> {
                     ),
                   ),
                 )
-                
               ],
             ),
             //Prox Página -> Login Pag
@@ -82,6 +86,6 @@ class _MainState extends State<Main> {
           ],
         ),
       ),
-		);
-	}
+    );
+  }
 }

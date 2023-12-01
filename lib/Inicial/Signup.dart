@@ -5,6 +5,8 @@ import 'Verificar.dart';
 
 //ACREDITO QUE TODAS AS NOSSAS ABAS CONVEM ESTAREM EM STATEFUL PQ MUDAM DE PARAMETROS CONSTANTEMENTE
 
+//É MESMOOOOOO
+
 class Signup extends StatefulWidget{
   const Signup({super.key});
   @override
