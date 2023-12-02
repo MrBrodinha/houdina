@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'Account.dart';
+import 'Carros.dart';
 
 class Default extends StatefulWidget{
   const Default({super.key});
@@ -48,6 +49,7 @@ class _DefaultState extends State<Default> {
                         color: Colors.white
                       ),
                       onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()),);
                       },
                     ),
                   ),
