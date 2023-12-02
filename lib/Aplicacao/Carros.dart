@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'Account.dart';
 import 'Default.dart';
@@ -11,9 +15,35 @@ class Carros extends StatefulWidget{
 
 class _CarrosState extends State<Carros> {
 
-  @override
-  void initState(){
-    super.initState();
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if(result == null) return;
+
+    setState((){
+      pickedFile = result.files.first;
+    });
+  }
+
+  Future uploadFile() async{
+    final path = 'carros/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    
+    setState((){
+      uploadTask = ref.putFile(file);
+    });
+    
+    final snapshot = await uploadTask!.whenComplete((){});
+    final urDownload = await snapshot.ref.getDownloadURL();
+    print("Download Link: $urDownload");
+
+    setState((){
+      uploadTask == null;
+    });
   }
 
 	@override
@@ -84,12 +114,55 @@ class _CarrosState extends State<Carros> {
                                 ),
                               ),
                             actions: [
-                              ElevatedButton(
-                                child: const Text("submit"),
-                                onPressed: () {
-                                  //MANDAR PARA A DATABASE
-                                },
-                              ),
+                              Center(child: 
+                                Column(children: [
+                                  //SE A FOTO JÁ TIVER SIDO SELECIONADA
+                                  if (pickedFile != null)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: const Color.fromRGBO(25, 95, 255, 1.0),
+                                            width: 3.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(35.0),
+                                        ),
+                                        width: MediaQuery.of(context).size.width * 0.50,
+                                        height: MediaQuery.of(context).size.height * 0.06,
+                                        child: ElevatedButton(
+                                          child: FittedBox(
+                                            fit: BoxFit.contain,
+                                            child: Text(
+                                              pickedFile!.name,
+                                              style: const TextStyle(
+                                                color: Color.fromRGBO(25, 95, 255, 1.0),
+                                                decoration: TextDecoration.none,
+                                              ),
+                                            ),
+                                          ),
+                                          onPressed: (){
+                                            selectFile();
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  if (pickedFile == null)
+                                    ElevatedButton(
+                                      child: const Text("Attach Files"),
+                                      onPressed: () {
+                                        selectFile();
+                                      },
+                                    ),
+                                  ElevatedButton(
+                                    child: const Text("Submit"),
+                                    onPressed: () {
+                                      uploadFile();
+                                    },
+                                  ),
+                                  buildProgress(),
+                                ],)
+                              )
                             ],
                           );
                           },
@@ -246,4 +319,38 @@ class _CarrosState extends State<Carros> {
       ],
     );
   }
+
+  Widget buildProgress() => StreamBuilder<TaskSnapshot>(
+    stream: uploadTask?.snapshotEvents,
+    builder: (context, snapshot){
+      if(snapshot.hasData){
+        final data = snapshot.data!;
+        double progresso = data.bytesTransferred / data.totalBytes;
+
+        return SizedBox(
+          height: 50,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              LinearProgressIndicator(
+                value: progresso,
+                backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
+                color: Colors.white,
+              ),
+              Center(
+                child: Text(
+                  '${(100*progresso).roundToDouble()}%',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              )
+            ],
+          ),
+        );
+      }else{
+        return const SizedBox(height: 50);
+      }
+    },
+  
+  );
+
 }
