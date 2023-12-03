@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'Account.dart';
 import 'Default.dart';
+import 'FuncCarros.dart';
 
 class Carros extends StatefulWidget{
   const Carros({super.key});
@@ -17,6 +19,7 @@ class _CarrosState extends State<Carros> {
 
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
+  String? urDownload;
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles();
@@ -38,13 +41,16 @@ class _CarrosState extends State<Carros> {
     });
     
     final snapshot = await uploadTask!.whenComplete((){});
-    final urDownload = await snapshot.ref.getDownloadURL();
-    print("Download Link: $urDownload");
+    urDownload = await snapshot.ref.getDownloadURL();
 
     setState((){
       uploadTask == null;
     });
   }
+
+  final TextEditingController marcamodeloController = TextEditingController();
+  final TextEditingController anoController = TextEditingController();
+  final TextEditingController kilometragemController = TextEditingController();
 
 	@override
 	Widget build(BuildContext context) {
@@ -84,89 +90,6 @@ class _CarrosState extends State<Carros> {
                         color: const Color.fromRGBO(25, 95, 255, 1.0),
                       ),
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              scrollable: true,
-                              content: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Form(
-                                  child: Column(
-                                    children: [
-                                      TextFormField(
-                                        decoration: const InputDecoration(
-                                          labelText: "Brand name of Model:",
-                                        ),
-                                      ),
-                                      TextFormField(
-                                        decoration: const InputDecoration(
-                                          labelText: "Year of the Car:",
-                                        ),
-                                      ),
-                                      TextFormField(
-                                        decoration: const InputDecoration(
-                                          labelText: "Mileage:",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            actions: [
-                              Center(child: 
-                                Column(children: [
-                                  //SE A FOTO JÁ TIVER SIDO SELECIONADA
-                                  if (pickedFile != null)
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: const Color.fromRGBO(25, 95, 255, 1.0),
-                                            width: 3.0,
-                                          ),
-                                          borderRadius: BorderRadius.circular(35.0),
-                                        ),
-                                        width: MediaQuery.of(context).size.width * 0.50,
-                                        height: MediaQuery.of(context).size.height * 0.06,
-                                        child: ElevatedButton(
-                                          child: FittedBox(
-                                            fit: BoxFit.contain,
-                                            child: Text(
-                                              pickedFile!.name,
-                                              style: const TextStyle(
-                                                color: Color.fromRGBO(25, 95, 255, 1.0),
-                                                decoration: TextDecoration.none,
-                                              ),
-                                            ),
-                                          ),
-                                          onPressed: (){
-                                            selectFile();
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  if (pickedFile == null)
-                                    ElevatedButton(
-                                      child: const Text("Attach Files"),
-                                      onPressed: () {
-                                        selectFile();
-                                      },
-                                    ),
-                                  ElevatedButton(
-                                    child: const Text("Submit"),
-                                    onPressed: () {
-                                      uploadFile();
-                                    },
-                                  ),
-                                  buildProgress(),
-                                ],)
-                              )
-                            ],
-                          );
-                          },
-                        );
                       },
                     ),
                   ),
@@ -211,7 +134,113 @@ class _CarrosState extends State<Carros> {
                         color: const Color.fromRGBO(25, 95, 255, 1.0)
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()),);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                              scrollable: true,
+                              content: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Form(
+                                  child: Column(
+                                    children: [
+                                      TextFormField(
+                                        decoration: const InputDecoration(
+                                          labelStyle: TextStyle(color: Colors.white),
+                                          labelText: "Brand Name &/or Model:",
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.white),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        controller: marcamodeloController,
+                                      ),
+                                      TextFormField(
+                                        decoration: const InputDecoration(
+                                          labelStyle: TextStyle(color: Colors.white),
+                                          labelText: "Year of the Car:",
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.white),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        controller: anoController,
+                                      ),
+                                      TextFormField(
+                                        decoration: const InputDecoration(
+                                          labelStyle: TextStyle(color: Colors.white),
+                                          labelText: "Mileage:",
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.white),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        controller: kilometragemController,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            actions: [
+                              Center(child: 
+                                Column(children: [
+                                  const Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                    child: Text(
+                                      "Car Registration Documents: ",
+                                      style: TextStyle(fontSize: 15, color: Colors.white)
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    child: const Text(
+                                      "Attach Files",
+                                      style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+                                    ),
+                                    onPressed: () {
+                                      selectFile();
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: const Text(
+                                      "Submit",
+                                      style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                                    ),
+                                    onPressed: () {
+
+                                      String marcamodelo = marcamodeloController.text;
+                                      String ano = anoController.text;
+                                      String kilometragem = kilometragemController.text;
+                                      String? userID = FirebaseAuth.instance.currentUser?.uid;
+
+                                      uploadFile();
+                                      adicionarCarro(context, marcamodelo, ano, kilometragem, userID!);
+
+                                      marcamodeloController.text = "";
+                                      anoController.text = "";
+                                      kilometragemController.text = "";
+
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],)
+                              )
+                            ],
+                          );
+                          },
+                        );
                       },
                     ),
                   ),
@@ -319,38 +348,4 @@ class _CarrosState extends State<Carros> {
       ],
     );
   }
-
-  Widget buildProgress() => StreamBuilder<TaskSnapshot>(
-    stream: uploadTask?.snapshotEvents,
-    builder: (context, snapshot){
-      if(snapshot.hasData){
-        final data = snapshot.data!;
-        double progresso = data.bytesTransferred / data.totalBytes;
-
-        return SizedBox(
-          height: 50,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              LinearProgressIndicator(
-                value: progresso,
-                backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
-                color: Colors.white,
-              ),
-              Center(
-                child: Text(
-                  '${(100*progresso).roundToDouble()}%',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              )
-            ],
-          ),
-        );
-      }else{
-        return const SizedBox(height: 50);
-      }
-    },
-  
-  );
-
 }
