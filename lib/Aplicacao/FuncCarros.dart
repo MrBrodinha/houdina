@@ -5,15 +5,20 @@ import '../Notificacoes.dart';
 
 final db = FirebaseFirestore.instance;
 
-void adicionarCarro(BuildContext context, String marcamodelo, String ano, String kilometros, String user){
-  if(marcamodelo != "" && ano != "" && kilometros != "" && user != ""){
+void adicionarCarro(BuildContext context, String marcamodelo, String ano, String kilometros, String user, String filename){
+  if(marcamodelo != "" && ano != "" && kilometros != "" && user != "" && filename != ""){
     db.collection("Carros").add({
     'Ano': ano,
     'Kilometragem': kilometros,
     'Modelo/Marca': marcamodelo,
     'UserID': user,
-  });
+    });
+    adicionarCarroSucesso(context);
   }else{
-    adicionarCErro(context);
+    if(marcamodelo == "" || ano == "" || kilometros == "" || user == ""){
+      adicionarCErro(context);
+    }else{
+      adicionarCDRFalta(context);
+    }
   } 
 }
