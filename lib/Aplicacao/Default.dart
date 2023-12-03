@@ -39,14 +39,17 @@ class _DefaultState extends State<Default> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.car_crash,
                         size: MediaQuery.of(context).size.height * 0.05,
-                        color: Colors.white
+                        color: const Color.fromRGBO(25, 95, 255, 1.0)
                       ),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()),);
@@ -59,14 +62,17 @@ class _DefaultState extends State<Default> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.punch_clock,
                         size: MediaQuery.of(context).size.height * 0.05,
-                        color: Colors.white
+                        color: const Color.fromRGBO(25, 95, 255, 1.0)
                       ),
                       onPressed: () {
                       },
@@ -88,14 +94,17 @@ class _DefaultState extends State<Default> {
                 padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.gps_fixed,
                         size: MediaQuery.of(context).size.height * 0.05,
-                        color: Colors.white
+                        color: const Color.fromRGBO(25, 95, 255, 1.0)
                       ),
                       onPressed: () {
                       },
@@ -107,14 +116,17 @@ class _DefaultState extends State<Default> {
                 padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.person,
                         size: MediaQuery.of(context).size.height * 0.05,
-                        color: Colors.white
+                        color: const Color.fromRGBO(25, 95, 255, 1.0)
                       ),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => Account()),);

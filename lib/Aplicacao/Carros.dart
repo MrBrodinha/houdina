@@ -265,7 +265,7 @@ class _CarrosState extends State<Carros> {
                     )
                   ),
 
-                  
+
 
                   //--------------------PARTE DE BAIXO (ICON ICON LOGO ICON ICON)--------------------
                   Positioned(
@@ -275,15 +275,18 @@ class _CarrosState extends State<Carros> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                           child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromRGBO(25, 95, 255, 1.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(35.0),
                             ),
                             child: Center(
                               child: IconButton(
                                 icon: Icon(Icons.car_crash,
                                   size: MediaQuery.of(context).size.height * 0.05,
-                                  color: Colors.white
+                                  color: const Color.fromRGBO(25, 95, 255, 1.0),
                                 ),
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()),);
@@ -295,15 +298,18 @@ class _CarrosState extends State<Carros> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromRGBO(25, 95, 255, 1.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(35.0),
                             ),
                             child: Center(
                               child: IconButton(
                                 icon: Icon(Icons.punch_clock,
                                   size: MediaQuery.of(context).size.height * 0.05,
-                                  color: Colors.white
+                                  color: const Color.fromRGBO(25, 95, 255, 1.0),
                                 ),
                                 onPressed: () {
                                 },
@@ -324,15 +330,18 @@ class _CarrosState extends State<Carros> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Container(
-                            decoration: const BoxDecoration(
-                              shape:  BoxShape.circle,
-                              color: Color.fromRGBO(25, 95, 255, 1.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(35.0),
                             ),
                             child: Center(
                               child: IconButton(
                                 icon: Icon(Icons.gps_fixed,
                                   size: MediaQuery.of(context).size.height * 0.05,
-                                  color: Colors.white
+                                  color: const Color.fromRGBO(25, 95, 255, 1.0)
                                 ),
                                 onPressed: () {
                                 },
@@ -343,15 +352,18 @@ class _CarrosState extends State<Carros> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                           child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromRGBO(25, 95, 255, 1.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                                width: 3.0,
+                              ),
+                              borderRadius: BorderRadius.circular(35.0),
                             ),
                             child: Center(
                               child: IconButton(
                                 icon: Icon(Icons.person,
                                   size: MediaQuery.of(context).size.height * 0.05,
-                                  color: Colors.white
+                                  color: const Color.fromRGBO(25, 95, 255, 1.0)
                                 ),
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => Account()),);
