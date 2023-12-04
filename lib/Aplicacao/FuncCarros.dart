@@ -12,6 +12,7 @@ void adicionarCarro(BuildContext context, String marcamodelo, String ano, String
     'Kilometragem': kilometros,
     'Modelo/Marca': marcamodelo,
     'UserID': user,
+    'Imagem': filename,
     });
     adicionarCarroSucesso(context);
   }else{

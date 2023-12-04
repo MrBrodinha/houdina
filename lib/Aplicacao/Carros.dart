@@ -246,6 +246,7 @@ class _CarrosState extends State<Carros> {
                                                 marcamodeloController.text = "";
                                                 anoController.text = "";
                                                 kilometragemController.text = "";
+                                                pickedFile = null;
 
                                                 Navigator.pop(context);
                                               },
