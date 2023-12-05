@@ -6,7 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'Account.dart';
-import 'Default.dart';
 import 'FuncCarros.dart';
 
 class Carros extends StatefulWidget{
@@ -331,9 +330,7 @@ class _CarrosState extends State<Carros> {
                             width: MediaQuery.of(context).size.height * 0.1,
                             height: MediaQuery.of(context).size.height * 0.1,
                           ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Default()),);
-                          },
+                          onPressed: null
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),

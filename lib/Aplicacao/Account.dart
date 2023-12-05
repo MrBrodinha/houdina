@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'Default.dart';
 import '../Main.dart';
+import 'Carros.dart';
+
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -47,7 +48,7 @@ class _AccountState extends State<Account> {
         ),
         
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.20,
+          top: MediaQuery.of(context).size.height * 0.10,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
             height: MediaQuery.of(context).size.height * 0.10,
@@ -63,7 +64,7 @@ class _AccountState extends State<Account> {
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
-                "Username",
+                "Account",
                 style: TextStyle(
                   color: Color.fromRGBO(25, 95, 255, 1.0),
                   decoration: TextDecoration.none,
@@ -75,39 +76,182 @@ class _AccountState extends State<Account> {
         ),
 
         Positioned(
+          top: MediaQuery.of(context).size.height * 0.30,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            height: MediaQuery.of(context).size.height * 0.10,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                "nome user",
+                style: TextStyle(
+                  color: Color.fromRGBO(25, 95, 255, 1.0),
+                  decoration: TextDecoration.none,
+                ),
+                ),
+              ), 
+            ),
+          ),
+        ),
+
+      
+      Positioned(
+          top: MediaQuery.of(context).size.height * 0.50,
+            child: TextButton(
+              child: Text("Apoio tecnico",
+              style: TextStyle(fontSize: 30, color: Colors.white),),
+              onPressed: () {
+                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                                        scrollable: true,
+                                        content: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Form(
+                                            child: Column(
+                                              children: [
+                                                TextFormField(
+                                                  style: const TextStyle(color: Colors.white),
+                                                  decoration: const InputDecoration(
+                                                    labelStyle: TextStyle(color: Colors.white),
+                                                    labelText: "Brand Name &/or Model:",
+                                                    focusedBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.white),
+                                                    ),
+                                                    enabledBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextFormField(
+                                                  style: const TextStyle(color: Colors.white),
+                                                  decoration: const InputDecoration(
+                                                    labelStyle: TextStyle(color: Colors.white),
+                                                    labelText: "Year of the Car:",
+                                                    focusedBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.white),
+                                                    ),
+                                                    enabledBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextFormField(
+                                                  style: const TextStyle(color: Colors.white),
+                                                  decoration: const InputDecoration(
+                                                    labelStyle: TextStyle(color: Colors.white),
+                                                    labelText: "Mileage:",
+                                                    focusedBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.white),
+                                                    ),
+                                                    enabledBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      actions: [
+                                        Center(child: 
+                                          Column(children: [
+                                            const Padding(
+                                              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                              child: Text(
+                                                "Car Registration Documents: ",
+                                                style: TextStyle(fontSize: 15, color: Colors.white)
+                                              ),
+                                            ),
+
+                                            ElevatedButton(
+                                              child: const Text(
+                                                "Submit",
+                                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                                              ),
+                                              onPressed: () {
+
+                                            
+                                               
+
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],)
+                                        )
+                                      ],
+                                    );
+                                    },
+                                  );
+              },
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
+            ),
+          ),
+      
+        
+
+        Positioned(
           bottom: MediaQuery.of(context).size.height * 0.01,
           child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+               Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.car_crash,
-                          size: MediaQuery.of(context).size.height * 0.05,
-                          color: Colors.white),
-                      onPressed: () {},
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      ),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()));
+                      },
                     ),
                   ),
                 ),
               ),
-              Padding(
+               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.punch_clock,
-                          size: MediaQuery.of(context).size.height * 0.05,
-                          color: Colors.white),
-                      onPressed: () {},
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      ),
+                      onPressed: () {
+                      },
                     ),
                   ),
                 ),
@@ -119,48 +263,48 @@ class _AccountState extends State<Account> {
                   width: MediaQuery.of(context).size.height * 0.1,
                   height: MediaQuery.of(context).size.height * 0.1,
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Default()),
-                  );
-                },
+                onPressed: null
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+               Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.gps_fixed,
-                          size: MediaQuery.of(context).size.height * 0.05,
-                          color: Colors.white),
-                      onPressed: () {},
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      ),
+                      onPressed: () {
+                      },
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+               Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
                   child: Center(
                     child: IconButton(
                       icon: Icon(Icons.exit_to_app,
-                          size: MediaQuery.of(context).size.height * 0.05,
-                          color: Colors.white),
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      ),
                       onPressed: () {
-                        signOut();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Main()),
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Main()));
                       },
                     ),
                   ),
