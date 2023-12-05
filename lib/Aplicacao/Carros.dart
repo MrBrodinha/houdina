@@ -232,10 +232,11 @@ class _CarrosState extends State<Carros> {
                                                 String kilometragem = kilometragemController.text;
                                                 String? userID = FirebaseAuth.instance.currentUser?.uid;
 
+                                                //Vai buscar o ID do geral
                                                 int identificador = await obterImagem();
-
+                                                //Nome da Imagem será o ID
                                                 uploadFile(identificador);
-
+                                                //Caso ver seja -1 -> ERRO
                                                 int ver;
                                                 if (pickedFile != null) {
                                                   ver = identificador;
