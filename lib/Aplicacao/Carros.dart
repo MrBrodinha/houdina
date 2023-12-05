@@ -30,8 +30,9 @@ class _CarrosState extends State<Carros> {
     });
   }
 
-  Future uploadFile() async{
-    final path = 'carros/${pickedFile!.name}';
+  Future uploadFile(int identificador) async{
+    final path = 'carros/$identificador';
+
     final file = File(pickedFile!.path!);
 
     final ref = FirebaseStorage.instance.ref().child(path);
@@ -225,23 +226,29 @@ class _CarrosState extends State<Carros> {
                                                 "Submit",
                                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                                               ),
-                                              onPressed: () {
+                                              onPressed: () async {
 
                                                 String marcamodelo = marcamodeloController.text;
                                                 String ano = anoController.text;
                                                 String kilometragem = kilometragemController.text;
                                                 String? userID = FirebaseAuth.instance.currentUser?.uid;
 
-                                                uploadFile();
+                                                int identificador = await obterImagem();
 
-                                                String imagem;
+                                                uploadFile(identificador);
+
+                                                int ver;
                                                 if (pickedFile != null) {
-                                                  imagem = pickedFile!.name;
-                                                }else{
-                                                  imagem = "";
+                                                  ver = identificador;
+                                                  //FOTO FICA COM IDENTIFICADOR E SOMA MAIS UM PARA USAR NA PROX
+                                                  identificador += 1;
+                                                  atualizarImagemID(identificador);
+                                                } else {
+                                                  //ERRO OU FILE VAZIO
+                                                  ver = -1;
                                                 }
 
-                                                adicionarCarro(context3, marcamodelo, ano, kilometragem, userID!, imagem);
+                                                adicionarCarro(context3, marcamodelo, ano, kilometragem, userID!, ver);
 
                                                 marcamodeloController.text = "";
                                                 anoController.text = "";

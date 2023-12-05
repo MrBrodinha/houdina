@@ -159,12 +159,12 @@ void adicionarCErro(BuildContext context) {
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-void adicionarCDRFalta(BuildContext context) {
+void adicionarImagemFalta(BuildContext context) {
 
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Documento de Prova em Falta...', textAlign: TextAlign.center),
+    content: const Text('Imagem do Veículo em Falta...', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
