@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'Account.dart';
 import 'FuncCarros.dart';
+import '../Classes/Carro.dart';
 
 class Carros extends StatefulWidget{
   const Carros({super.key});
@@ -23,17 +24,15 @@ class _CarrosState extends State<Carros> {
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles();
     if(result == null) return;
-
     setState((){
       pickedFile = result.files.first;
     });
   }
 
   Future uploadFile(int identificador) async{
+
     final path = 'carros/$identificador';
-
     final file = File(pickedFile!.path!);
-
     final ref = FirebaseStorage.instance.ref().child(path);
     
     setState((){
@@ -51,6 +50,7 @@ class _CarrosState extends State<Carros> {
   final TextEditingController marcamodeloController = TextEditingController();
   final TextEditingController anoController = TextEditingController();
   final TextEditingController kilometragemController = TextEditingController();
+  String? userID = FirebaseAuth.instance.currentUser?.uid;
 
 	@override
 	Widget build(BuildContext context) {
@@ -207,7 +207,7 @@ class _CarrosState extends State<Carros> {
                                             const Padding(
                                               padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                               child: Text(
-                                                "Car Registration Documents: ",
+                                                "Car Image: ",
                                                 style: TextStyle(fontSize: 15, color: Colors.white)
                                               ),
                                             ),
@@ -230,7 +230,6 @@ class _CarrosState extends State<Carros> {
                                                 String marcamodelo = marcamodeloController.text;
                                                 String ano = anoController.text;
                                                 String kilometragem = kilometragemController.text;
-                                                String? userID = FirebaseAuth.instance.currentUser?.uid;
 
                                                 //Vai buscar o ID do geral
                                                 int identificador = await obterImagem();
@@ -271,6 +270,39 @@ class _CarrosState extends State<Carros> {
                         ),
                       ],
                     )
+                  ),
+
+
+
+                  //--------------------MEIO--------------------
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * 0.25,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: FutureBuilder<List<Carro>>(
+                        future:  obterCarrosUser(userID!),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            List<Carro> carrosUser = snapshot.data!;
+                            return ListView.builder(
+                              itemCount: carrosUser.length,
+                              itemBuilder: (context, index) {
+                                return ElementoCarro(carro: carrosUser[index]);
+                              },
+                            );
+                          }
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.1,
+                              height: MediaQuery.of(context).size.height * 0.1,
+                              child: const CircularProgressIndicator(),
+                            );
+                          }
+                          return Container();
+                        },
+                      ),
+                    ),
                   ),
 
 
@@ -388,6 +420,23 @@ class _CarrosState extends State<Carros> {
           }
         )
       )
+    );
+  }
+}
+
+class ElementoCarro extends StatelessWidget {
+
+  final Carro carro;
+
+  ElementoCarro({required this.carro});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(carro.marcamodelo),
+        subtitle: Text("Year: ${carro.ano}, Kilometragem: ${carro.kilometragem}"),
+      ),
     );
   }
 }
