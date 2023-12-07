@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:houdina/Inicial/Verificar.dart';
 
 import '../Main.dart';
 import 'Carros.dart';
 
+String? userid = FirebaseAuth.instance.currentUser?.uid;
+String nome = nome_user().toString();
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -14,10 +17,16 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+
   
+  final TextEditingController mensagemController = TextEditingController();
+  String? selectedValue;
+  String opcao = "Select option";
+
   @override
   void initState() {
     super.initState();
+    nome_user();
   }
   
   //para dar sign out
@@ -48,17 +57,10 @@ class _AccountState extends State<Account> {
         ),
         
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.10,
+          top: MediaQuery.of(context).size.height * 0.05,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
             height: MediaQuery.of(context).size.height * 0.10,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                width: 3.0,
-              ),
-              borderRadius: BorderRadius.circular(35),
-            ),
             child: const Padding(
               padding: EdgeInsets.all(10.0),
               child: FittedBox(
@@ -76,10 +78,10 @@ class _AccountState extends State<Account> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.30,
+          top: MediaQuery.of(context).size.height * 0.20,
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.70,
-            height: MediaQuery.of(context).size.height * 0.10,
+            width: MediaQuery.of(context).size.width * 0.50,
+            height: MediaQuery.of(context).size.height * 0.25,
             decoration: BoxDecoration(
               border: Border.all(
                 color: const Color.fromRGBO(25, 95, 255, 1.0),
@@ -92,7 +94,35 @@ class _AccountState extends State<Account> {
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
-                "nome user",
+                "imagem",
+                style: TextStyle(
+                  color: Color.fromRGBO(25, 95, 255, 1.0),
+                  decoration: TextDecoration.none,
+                ),
+                ),
+              ), 
+            ),
+          ),
+        ),
+
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.50,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            height: MediaQuery.of(context).size.height * 0.10,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  nome,//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
                 style: TextStyle(
                   color: Color.fromRGBO(25, 95, 255, 1.0),
                   decoration: TextDecoration.none,
@@ -105,7 +135,7 @@ class _AccountState extends State<Account> {
 
       
       Positioned(
-          top: MediaQuery.of(context).size.height * 0.50,
+          top: MediaQuery.of(context).size.height * 0.70,
             child: TextButton(
               child: Text("Apoio tecnico",
               style: TextStyle(fontSize: 30, color: Colors.white),),
@@ -121,26 +151,38 @@ class _AccountState extends State<Account> {
                                           child: Form(
                                             child: Column(
                                               children: [
-                                                TextFormField(
-                                                  style: const TextStyle(color: Colors.white),
-                                                  decoration: const InputDecoration(
-                                                    labelStyle: TextStyle(color: Colors.white),
-                                                    labelText: "Brand Name &/or Model:",
-                                                    focusedBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.white),
-                                                    ),
-                                                    enabledBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: Colors.white,
+                                                DropdownButton(
+                                                    hint: Text(opcao),
+                                                    value: selectedValue,
+                                                    items: const [
+                                                      DropdownMenuItem(
+                                                        child: Text('Option 1'),
+                                                        value: '1',
                                                       ),
-                                                    ),
-                                                  ),
+                                                      DropdownMenuItem(
+                                                        child: Text('Option 2'),
+                                                        value: '2',
+                                                      ),
+                                                      DropdownMenuItem(
+                                                        child: Text('Option 3'),
+                                                        value: '3',
+                                                      ),
+                                                    ],
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        print(selectedValue);
+                                                        selectedValue = value as String?;
+                                                        print(selectedValue);
+                                                        opcao = selectedValue != null ? 'Option $selectedValue' : 'Select an option';
+                                                      });
+                                                    },
                                                 ),
                                                 TextFormField(
+                                                  maxLines: null,
                                                   style: const TextStyle(color: Colors.white),
                                                   decoration: const InputDecoration(
                                                     labelStyle: TextStyle(color: Colors.white),
-                                                    labelText: "Year of the Car:",
+                                                    labelText: "Message",
                                                     focusedBorder: UnderlineInputBorder(
                                                       borderSide: BorderSide(color: Colors.white),
                                                     ),
@@ -150,21 +192,7 @@ class _AccountState extends State<Account> {
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                TextFormField(
-                                                  style: const TextStyle(color: Colors.white),
-                                                  decoration: const InputDecoration(
-                                                    labelStyle: TextStyle(color: Colors.white),
-                                                    labelText: "Mileage:",
-                                                    focusedBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.white),
-                                                    ),
-                                                    enabledBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  controller: mensagemController,
                                                 ),
                                               ],
                                             ),
@@ -173,25 +201,19 @@ class _AccountState extends State<Account> {
                                       actions: [
                                         Center(child: 
                                           Column(children: [
-                                            const Padding(
-                                              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                              child: Text(
-                                                "Car Registration Documents: ",
-                                                style: TextStyle(fontSize: 15, color: Colors.white)
-                                              ),
-                                            ),
-
                                             ElevatedButton(
                                               child: const Text(
                                                 "Submit",
                                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                                               ),
                                               onPressed: () {
-
-                                            
-                                               
-
-                                                Navigator.pop(context);
+                                                String mensagem = mensagemController.text;
+                                                //print(mensagem);
+                                                //print(selectedValue);
+                                                enviarFeedback(mensagem, selectedValue.toString());
+                                                mensagemController.text = ''; 
+                                                selectedValue = null;
+                                                print(selectedValue);
                                               },
                                             ),
                                           ],)
@@ -318,6 +340,7 @@ class _AccountState extends State<Account> {
   }
 }
 
+
 //Envia sempre os três dados, caso n mude algum envia os já existentes
 Future<void> updateProfile(String newEmail, String newPassword, String newUsername) async {
   try {
@@ -350,4 +373,30 @@ Future<void> resetPassword(String email) async {
     print("Error sending password reset email: $e");
     // Handle the error accordingly
   }
+}
+
+Future<void> enviarFeedback(String mensagem, String categoria) async {
+  try{
+    await FirebaseFirestore.instance
+        .collection('feedback')
+        .doc()
+        .set({
+          'id_user': FirebaseAuth.instance.currentUser?.uid.toString(),
+          'mensagem': mensagem,
+          'categoria': categoria
+        // Add other user data as needed
+        });
+  }catch(e){
+    print("erro a enviar feedback");
+  }
+}
+
+Future<String> nome_user() async {
+  DocumentSnapshot verNome = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userid)
+          .get();
+
+      //print("OLAAA");
+      return verNome['Username'];
 }
