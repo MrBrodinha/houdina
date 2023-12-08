@@ -5,9 +5,28 @@ import 'package:houdina/Inicial/Verificar.dart';
 
 import '../Main.dart';
 import 'Carros.dart';
+import '../Notificacoes.dart';
+import 'opcoes.dart';
 
+
+
+
+var acs = ActionCodeSettings(
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be whitelisted in the Firebase Console.
+      url: 'https://houdina-2194.firebaseapp.com',
+      // This must be true
+      handleCodeInApp: true,
+      iOSBundleId: 'com.company.app',
+      // androidPackageName: 'com.example.android',
+      // installIfNotAvailable
+      // androidInstallApp: true,
+      // minimumVersion
+      // androidMinimumVersion: '12'
+    );
 String? userid = FirebaseAuth.instance.currentUser?.uid;
-String nome = nome_user().toString();
+String? email = FirebaseAuth.instance.currentUser?.email;
+String nome = '';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -21,12 +40,13 @@ class _AccountState extends State<Account> {
   
   final TextEditingController mensagemController = TextEditingController();
   String? selectedValue;
-  String opcao = "Select option";
+  String opcao = "Select subject";
+
 
   @override
   void initState() {
     super.initState();
-    nome_user();
+    nomeUser2();
   }
   
   //para dar sign out
@@ -78,7 +98,7 @@ class _AccountState extends State<Account> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.20,
+          top: MediaQuery.of(context).size.height * 0.15,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.50,
             height: MediaQuery.of(context).size.height * 0.25,
@@ -105,8 +125,8 @@ class _AccountState extends State<Account> {
           ),
         ),
 
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.50,
+        /*Positioned(
+          top: MediaQuery.of(context).size.height * 0.58,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
             height: MediaQuery.of(context).size.height * 0.10,
@@ -122,7 +142,7 @@ class _AccountState extends State<Account> {
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
-                  nome,//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
+                  "account options",//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
                 style: TextStyle(
                   color: Color.fromRGBO(25, 95, 255, 1.0),
                   decoration: TextDecoration.none,
@@ -131,15 +151,33 @@ class _AccountState extends State<Account> {
               ), 
             ),
           ),
-        ),
+        ),*/
+
+
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.62,
+            child: TextButton(
+              child: Text("Opcoes conta",
+              style: TextStyle(fontSize: 30, color: Colors.white),),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => opcoes()),);
+              },
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
+            ),
+          ),
+
+
 
       
       Positioned(
-          top: MediaQuery.of(context).size.height * 0.70,
+          top: MediaQuery.of(context).size.height * 0.73,
             child: TextButton(
               child: Text("Apoio tecnico",
               style: TextStyle(fontSize: 30, color: Colors.white),),
               onPressed: () {
+                print(selectedValue);
+                print(opcao);
+                print("nome user: $nome");
                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -152,19 +190,21 @@ class _AccountState extends State<Account> {
                                             child: Column(
                                               children: [
                                                 DropdownButton(
-                                                    hint: Text(opcao),
+                                                    hint: Text(
+                                                      selectedValue != null ? 'Subject $selectedValue' : 'Select subject2',
+                                                      ),
                                                     value: selectedValue,
                                                     items: const [
                                                       DropdownMenuItem(
-                                                        child: Text('Option 1'),
+                                                        child: Text('subject 1'),
                                                         value: '1',
                                                       ),
                                                       DropdownMenuItem(
-                                                        child: Text('Option 2'),
+                                                        child: Text('subject 2'),
                                                         value: '2',
                                                       ),
                                                       DropdownMenuItem(
-                                                        child: Text('Option 3'),
+                                                        child: Text('subject 3'),
                                                         value: '3',
                                                       ),
                                                     ],
@@ -173,7 +213,8 @@ class _AccountState extends State<Account> {
                                                         print(selectedValue);
                                                         selectedValue = value as String?;
                                                         print(selectedValue);
-                                                        opcao = selectedValue != null ? 'Option $selectedValue' : 'Select an option';
+                                                        opcao ='Subject $selectedValue';
+                                                        print(opcao);
                                                       });
                                                     },
                                                 ),
@@ -210,10 +251,22 @@ class _AccountState extends State<Account> {
                                                 String mensagem = mensagemController.text;
                                                 //print(mensagem);
                                                 //print(selectedValue);
-                                                enviarFeedback(mensagem, selectedValue.toString());
-                                                mensagemController.text = ''; 
-                                                selectedValue = null;
-                                                print(selectedValue);
+                                                if(mensagemController.text == ''){
+                                                  print("mensagem vaiza");
+                                                }else if (selectedValue == null){
+                                                  print("value vazio");
+                                                  FocusScope.of(context).requestFocus(FocusNode());
+                                                  sePNCorrespondente(context);
+                                                }else{
+                                                  enviarFeedback(mensagem, selectedValue.toString());
+                                                  mensagemController.text = ''; 
+                                                  print(selectedValue);
+                                                  setState(() {
+                                                    selectedValue = null;
+                                                    opcao = "Select subject";
+                                                  });
+                                                  Navigator.pop(context);
+                                                }
                                               },
                                             ),
                                           ],)
@@ -221,7 +274,7 @@ class _AccountState extends State<Account> {
                                       ],
                                     );
                                     },
-                                  );
+                                  );      
               },
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
             ),
@@ -391,12 +444,17 @@ Future<void> enviarFeedback(String mensagem, String categoria) async {
   }
 }
 
-Future<String> nome_user() async {
-  DocumentSnapshot verNome = await FirebaseFirestore.instance
+
+
+void nomeUser2() async {
+  DocumentSnapshot verNome2 = await FirebaseFirestore.instance
           .collection('users')
           .doc(userid)
           .get();
 
       //print("OLAAA");
-      return verNome['Username'];
+     // nome = verNome['Username']; 
+      print(verNome2['Username'].toString());
+      print("OLAAA");
+      nome = verNome2['Username'];
 }
