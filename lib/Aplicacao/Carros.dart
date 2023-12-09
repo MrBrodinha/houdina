@@ -232,7 +232,7 @@ class _CarrosState extends State<Carros> {
                                                 String kilometragem = kilometragemController.text;
 
                                                 //Vai buscar o ID do geral
-                                                int identificador = await obterImagem();
+                                                int identificador = await obterID_Imagem();
                                                 //Nome da Imagem será o ID
                                                 uploadFile(identificador);
                                                 //Caso ver seja -1 -> ERRO
@@ -241,7 +241,7 @@ class _CarrosState extends State<Carros> {
                                                   ver = identificador;
                                                   //FOTO FICA COM IDENTIFICADOR E SOMA MAIS UM PARA USAR NA PROX
                                                   identificador += 1;
-                                                  atualizarImagemID(identificador);
+                                                  atualizarID_Imagem(identificador);
                                                 } else {
                                                   //ERRO OU FILE VAZIO
                                                   ver = -1;
@@ -276,10 +276,10 @@ class _CarrosState extends State<Carros> {
 
                   //--------------------MEIO--------------------
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.25,
+                    top: MediaQuery.of(context).size.height * 0.24,
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      height: MediaQuery.of(context).size.height * 0.6,
                       child: FutureBuilder<List<Carro>>(
                         future:  obterCarrosUser(userID!),
                         builder: (context, snapshot) {
@@ -433,10 +433,44 @@ class ElementoCarro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        title: Text(carro.marcamodelo),
-        subtitle: Text("Year: ${carro.ano}, Kilometragem: ${carro.kilometragem}"),
-      ),
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:[
+          Container(
+            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+            child: Text(carro.marcamodelo,
+              style: const TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+            )
+          ),
+          FutureBuilder(
+            future: obterImagemCarro(context, "carros/${carro.imagemID}"),
+            builder: (context, snapshot){
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Container(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: snapshot.data,
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: const CircularProgressIndicator(),
+                );
+              }
+              return Container();
+            }
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+            child: Text(
+              "Year: ${carro.ano}, Kilometragem: ${carro.kilometragem}, ID: ${carro.imagemID}",
+              style: const TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+            )
+          ),
+        ]
+      )
     );
   }
 }

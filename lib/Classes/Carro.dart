@@ -25,9 +25,9 @@ Future<List<Carro>> obterCarrosUser(String userID) async {
     List<Carro> carrosUtilizador = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data();
       return Carro(
-        ano: data['Ano'] as String? ?? "",
-        kilometragem: data['Kilometragem'] as String? ?? "",
-        marcamodelo: data['Modelo/Marca'] as String? ?? "",
+        ano: data['Ano'] as String,
+        kilometragem: data['Kilometragem'] as String,
+        marcamodelo: data['Modelo/Marca'] as String,
         imagemID: data['idImagem'] as int,
       );
     }).toList();

@@ -25,11 +25,10 @@ void adicionarCarro(BuildContext context, String marcamodelo, String ano, String
   } 
 }
 
+
 //----------OBTER O ID DA IMAGEM----------
-Future<int> obterImagem() async {
-  DocumentSnapshot carro = await db.collection('Geral')
-    .doc('Carros')
-    .get();
+Future<int> obterID_Imagem() async {
+  DocumentSnapshot carro = await db.collection('Geral').doc('Carros').get();
 
   if(carro.exists){
     return carro['idImagem'];
@@ -38,25 +37,24 @@ Future<int> obterImagem() async {
   }
 }
 //----------ATUALIZAR O ID NO GERAL----------
-void atualizarImagemID(int novoID) async {
+void atualizarID_Imagem(int novoID) async {
     db.collection("Geral").doc("Carros").update({
       'idImagem': novoID,
     });
 }
 
+
 //----------OBTER IMAGENS DA FIRESTORAGE----------
 Future<Widget> obterImagemCarro(BuildContext context, String imageName) async {
   Image image = Image.asset('');
-  await FireStorageService.loadImage(context, imageName).then((value) {
-    image = Image.network(
-      value.toString(),
-    );
+  await FireStorageService.loadImage(context, imageName).then((value){
+    image = Image.network(value.toString());
   });
   return image;
 }
 class FireStorageService extends ChangeNotifier{
   FireStorageService();
-  static Future<dynamic> loadImage(BuildContext context, String Image) async{
-    return await FirebaseStorage.instance.ref().child(Image).getDownloadURL();
+  static Future<dynamic> loadImage(BuildContext context, String image) async{
+    return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
 }
