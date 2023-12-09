@@ -433,14 +433,14 @@ class ElementoCarro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: const Color.fromRGBO(25, 95, 255, 1.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
           Container(
             padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
             child: Text(carro.marcamodelo,
-              style: const TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+              style: const TextStyle(color: Colors.white),
             )
           ),
           FutureBuilder(
@@ -466,7 +466,7 @@ class ElementoCarro extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
             child: Text(
               "Year: ${carro.ano}, Kilometragem: ${carro.kilometragem}, ID: ${carro.imagemID}",
-              style: const TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+              style: const TextStyle(color: Colors.white),
             )
           ),
         ]
