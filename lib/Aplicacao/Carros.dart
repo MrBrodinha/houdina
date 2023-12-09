@@ -317,7 +317,7 @@ class _CarrosState extends State<Carros> {
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                                color: const Color.fromARGB(255, 65, 65, 65),
                                 width: 3.0,
                               ),
                               borderRadius: BorderRadius.circular(35.0),
@@ -326,11 +326,9 @@ class _CarrosState extends State<Carros> {
                               child: IconButton(
                                 icon: Icon(Icons.car_crash,
                                   size: MediaQuery.of(context).size.height * 0.05,
-                                  color: const Color.fromRGBO(25, 95, 255, 1.0),
+                                  color: const Color.fromARGB(255, 65, 65, 65),
                                 ),
-                                onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()),);
-                                },
+                                onPressed: null,
                               ),
                             ),
                           ),

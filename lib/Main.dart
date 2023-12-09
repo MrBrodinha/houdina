@@ -14,8 +14,6 @@ void main() async {
   runApp(const MaterialApp(home: Main()));
 }
 
-//CONVEM ESTAR EM STATEFUL POR CAUSA DO WALLPAPER E AFINS (ACHO EU)
-
 class Main extends StatefulWidget {
   const Main({super.key});
   @override

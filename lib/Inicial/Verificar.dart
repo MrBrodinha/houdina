@@ -30,13 +30,11 @@ void criarConta(BuildContext context, String username, String email,String passw
         email: email,
         password: password,
       );
-      // Add username to Firestore
       await FirebaseFirestore.instance
         .collection('users')
         .doc(userCredential.user!.uid)
         .set({
           'Username': username,
-        // Add other user data as needed
         });
       logIn(context, email, password);
 
@@ -72,7 +70,6 @@ Future<void> logIn(BuildContext context, String email, String password) async {
       email: email,
       password: password,
     );
-    //print("User logged in successfully: ${userCredential.user}");
     Navigator.push(context, MaterialPageRoute(builder: (context) => Account()),);
   } catch (e) {
     //Tirar o foco do teclado

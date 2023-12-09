@@ -4,12 +4,6 @@ import 'package:flutter/material.dart';
 import 'Signup.dart';
 import 'Verificar.dart';
 
-//ACREDITO QUE TODAS AS NOSSAS ABAS CONVEM ESTAREM EM STATEFUL PQ MUDAM DE PARAMETROS CONSTANTEMENTE
-
-//EU TB ACREDITO BORAAAA
-
-typedef LoginCallback = void Function(bool isLoggedIn);
-
 class Login extends StatefulWidget {
   const Login({super.key});
   @override
