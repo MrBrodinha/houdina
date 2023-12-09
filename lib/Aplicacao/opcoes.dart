@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +20,7 @@ class _opcoesState extends State<opcoes> {
 
   final TextEditingController novonomeController = TextEditingController();
   final TextEditingController novoemailController = TextEditingController();
+  final TextEditingController novapasseController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +112,7 @@ class _opcoesState extends State<opcoes> {
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
                               onPressed: () {
-                                mudarNome(novonomeController.text);
+                                mudar(novonomeController.text, 1);
                                 nomeUser2();
                                 setState(() {
                                   novonomeController.text = '';
@@ -146,7 +148,7 @@ class _opcoesState extends State<opcoes> {
                         child: Form(
                           child: Column(
                             children: [
-                              Text("email atual: $email"),
+                              Text("email atual: $email_user"),
                               TextFormField(
                                 style: const TextStyle(color: Colors.white),
                                 decoration: const InputDecoration(
@@ -176,7 +178,7 @@ class _opcoesState extends State<opcoes> {
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
                               onPressed: () {
-                                mudarEmail(novoemailController.text);
+                                mudar(novoemailController.text, 2);
                                 setState(() {
                                   novoemailController.text = '';
                                 });
@@ -200,7 +202,37 @@ class _opcoesState extends State<opcoes> {
               child: Text("mudar passe",
               style: TextStyle(fontSize: 30, color: Colors.white),),
               onPressed: () {
-
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                      scrollable: true,
+                      content: const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: Form(
+                          child: Text("clica pra mandar mail pra mudar passe"),
+                        ),
+                      ),
+                      actions: [
+                        Center(child: 
+                          Column(children: [
+                            ElevatedButton(
+                              child: const Text(
+                                "Send",
+                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                              ),
+                              onPressed: () {
+                                mudar("ok", 3);
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],)
+                        )
+                      ],
+                  );
+                  },
+                );
               },
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
             ),
@@ -279,34 +311,35 @@ showDialog(
 );  
 */
 
-Future<void> mudarNome(String novoNome) async{
+// Funcao para dar update aos dados da bd. 1 mudar nome, 2 mudar email, 3 mudar passe
+Future<void> mudar(String mudanca,int tipo) async{
+  if(tipo == 1){
     try {
-    User? user = FirebaseAuth.instance.currentUser;
+      User? user1 = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .update({'Username': novoNome});
+      if (user1 != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user1.uid)
+            .update({'Username': mudanca});
 
-      print("Profile updated successfully");
+        print("Name updated successfully");
+      }
+    } catch (e) {
+      print("Error updating name: $e");
     }
-  } catch (e) {
-    print("Error updating profile: $e");
-  }
-}
+  }else if(tipo ==2){
 
-Future<void> mudarEmail(String novoEmail) async {
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
+    //alterar email
 
-    if (user != null) {
-      await user.updateEmail(novoEmail);
-      await user.sendEmailVerification();
-
-      print("Profile updated successfully");
+  }else if(tipo == 3){
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email_user.toString());
+      print("Password reset email sent successfully");
+    } catch (e) {
+      print("Error sending password reset email: $e");
     }
-  } catch (e) {
-    print("Error updating profile: $e");
+  }else{
+    //alterar imagem se metermos imagem
   }
 }
