@@ -45,280 +45,280 @@ class _AccountState extends State<Account> {
       home: ScaffoldMessenger(
         child: Builder(builder: (contextAccount){
           return Scaffold(
-            body: Stack(
-            alignment: Alignment.center,
-            children: [
-              //Wallpaper
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image:
-                        NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+      body: Stack(
+      alignment: Alignment.center,
+      children: [
+        //Wallpaper
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image:
+                  NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.05,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.70,
-                  height: MediaQuery.of(context).size.height * 0.10,
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                      "Account",
-                      style: TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
-                        decoration: TextDecoration.none,
-                      ),
-                      ),
-                    ), 
-                  ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.05,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            height: MediaQuery.of(context).size.height * 0.10,
+            child: const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                "Account",
+                style: TextStyle(
+                  color: Color.fromRGBO(25, 95, 255, 1.0),
+                  decoration: TextDecoration.none,
                 ),
-              ),
+                ),
+              ), 
+            ),
+          ),
+        ),
 
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.15,
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.15,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.50,
+            height: MediaQuery.of(context).size.height * 0.25,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                "imagem",
+                style: TextStyle(
+                  color: Color.fromRGBO(25, 95, 255, 1.0),
+                  decoration: TextDecoration.none,
+                ),
+                ),
+              ), 
+            ),
+          ),
+        ),
+
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.50,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.55,
+            height: MediaQuery.of(context).size.height * 0.09,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: TextButton(
+                  child: const Text(
+                    "butao testes",
+                    style: TextStyle(
+                      color: Color.fromRGBO(25, 95, 255, 1.0),
+                      //decoration: TextDecoration.none,
+                    ),
+                  ),
+                  onPressed: (){
+                    print("ola");
+                      msgVazia(contextAccount);
+                  },
+                ),
+              ), 
+            ),
+          ),
+        ),
+
+        /*Positioned(
+          top: MediaQuery.of(context).size.height * 0.58,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            height: MediaQuery.of(context).size.height * 0.10,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  "account options",//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
+                style: TextStyle(
+                  color: Color.fromRGBO(25, 95, 255, 1.0),
+                  decoration: TextDecoration.none,
+                ),
+                ),
+              ), 
+            ),
+          ),
+        ),*/
+
+
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.62,
+            child: TextButton(
+              child: Text("Opcoes conta",
+              style: TextStyle(fontSize: 30, color: Colors.white),),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => opcoes()),);
+              },
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
+            ),
+          ),
+
+
+
+      
+      Positioned(
+          top: MediaQuery.of(context).size.height * 0.73,
+            child: TextButton(
+              child: Text("Apoio tecnico",
+              style: TextStyle(fontSize: 30, color: Colors.white),),
+              onPressed: () {
+                print("nome user: $nome -- email user: $email_user -- iduser: $userid");
+                showDialog(
+                   context: contextAccount,
+                   builder: (contextAccount) {
+                     return FeedbackDialog();
+                   },
+                );    
+              },
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
+            ),
+          ),
+      
+        
+
+        Positioned(
+          bottom: MediaQuery.of(context).size.height * 0.01,
+          child: Row(
+            children: [
+               Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.50,
-                  height: MediaQuery.of(context).size.height * 0.25,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: const Color.fromRGBO(25, 95, 255, 1.0),
                       width: 3.0,
                     ),
-                    borderRadius: BorderRadius.circular(35),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                      "imagem",
-                      style: TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
-                        decoration: TextDecoration.none,
+                  child: Center(
+                    child: IconButton(
+                      icon: Icon(Icons.car_crash,
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
                       ),
-                      ),
-                    ), 
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()));
+                      },
+                    ),
                   ),
                 ),
               ),
-
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.50,
+               Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.55,
-                  height: MediaQuery.of(context).size.height * 0.09,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: const Color.fromRGBO(25, 95, 255, 1.0),
                       width: 3.0,
                     ),
-                    borderRadius: BorderRadius.circular(35),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: TextButton(
-                        child: const Text(
-                          "butao testes",
-                          style: TextStyle(
-                            color: Color.fromRGBO(25, 95, 255, 1.0),
-                            //decoration: TextDecoration.none,
-                          ),
-                        ),
-                        onPressed: (){
-                          print("ola");
-                          msgVazia(contextAccount);
-                        },
+                  child: Center(
+                    child: IconButton(
+                      icon: Icon(Icons.punch_clock,
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
                       ),
-                    ), 
+                      onPressed: () {
+                      },
+                    ),
                   ),
                 ),
               ),
-
-              /*Positioned(
-                top: MediaQuery.of(context).size.height * 0.58,
+              //Botão Central -> LOGO
+              IconButton(
+                icon: Image.asset(
+                  'resources/Logo.png',
+                  width: MediaQuery.of(context).size.height * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                onPressed: null
+              ),
+               Padding(
+                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.70,
-                  height: MediaQuery.of(context).size.height * 0.10,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: const Color.fromRGBO(25, 95, 255, 1.0),
                       width: 3.0,
                     ),
-                    borderRadius: BorderRadius.circular(35),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                        "account options",//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
-                      style: TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
-                        decoration: TextDecoration.none,
+                  child: Center(
+                    child: IconButton(
+                      icon: Icon(Icons.gps_fixed,
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
                       ),
-                      ),
-                    ), 
+                      onPressed: () {
+                      },
+                    ),
                   ),
                 ),
-              ),*/
-
-
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.62,
-                  child: TextButton(
-                    child: Text("Opcoes conta",
-                    style: TextStyle(fontSize: 30, color: Colors.white),),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => opcoes()),);
-                    },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
+              ),
+               Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      width: 3.0,
+                    ),
+                    borderRadius: BorderRadius.circular(35.0),
                   ),
-                ),
-
-
-
-            
-            Positioned(
-                top: MediaQuery.of(context).size.height * 0.73,
-                  child: TextButton(
-                    child: Text("Apoio tecnico",
-                    style: TextStyle(fontSize: 30, color: Colors.white),),
-                    onPressed: () {
-                      print("nome user: $nome -- email user: $email_user -- iduser: $userid");
-                      showDialog(
-                        context: contextAccount,
-                        builder: (contextAccount) {
-                          return FeedbackDialog();
-                        },
-                      );    
-                    },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
+                  child: Center(
+                    child: IconButton(
+                      icon: Icon(Icons.exit_to_app,
+                        size: MediaQuery.of(context).size.height * 0.05,
+                        color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      ),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Main()));
+                      },
+                    ),
                   ),
-                ),
-            
-              
-
-              Positioned(
-                bottom: MediaQuery.of(context).size.height * 0.01,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            width: 3.0,
-                          ),
-                          borderRadius: BorderRadius.circular(35.0),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(Icons.car_crash,
-                              size: MediaQuery.of(context).size.height * 0.05,
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            ),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()));
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            width: 3.0,
-                          ),
-                          borderRadius: BorderRadius.circular(35.0),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(Icons.punch_clock,
-                              size: MediaQuery.of(context).size.height * 0.05,
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            ),
-                            onPressed: () {
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    //Botão Central -> LOGO
-                    IconButton(
-                      icon: Image.asset(
-                        'resources/Logo.png',
-                        width: MediaQuery.of(context).size.height * 0.1,
-                        height: MediaQuery.of(context).size.height * 0.1,
-                      ),
-                      onPressed: null
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            width: 3.0,
-                          ),
-                          borderRadius: BorderRadius.circular(35.0),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(Icons.gps_fixed,
-                              size: MediaQuery.of(context).size.height * 0.05,
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            ),
-                            onPressed: () {
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            width: 3.0,
-                          ),
-                          borderRadius: BorderRadius.circular(35.0),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(Icons.exit_to_app,
-                              size: MediaQuery.of(context).size.height * 0.05,
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                            ),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Main()));
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],
           ),
-        );
-      }
-    )
-    )
-    );
+        ),
+      ],
+    ),
+            );
+              }
+                )
+                )
+              );
   }
 }
 
@@ -390,7 +390,11 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
   final TextEditingController mensagemController = TextEditingController();
 
   @override
-  Widget build(BuildContext context){
+  Widget build(contextAccount) {
+        /*return MaterialApp(
+      home: ScaffoldMessenger(
+        child: Builder(builder: (context2){
+          return Scaffold(*/
     return AlertDialog(
       backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
       scrollable: true,
@@ -400,29 +404,29 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
           child: Column(
             children: [
               Theme(
-               data: Theme.of(context).copyWith(
-                canvasColor:const Color.fromRGBO(25, 95, 255, 1),
+               data: Theme.of(contextAccount).copyWith(
+                canvasColor: Color.fromRGBO(25, 95, 255, 1),
                ),
                child: DropdownButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_drop_down,
                     color: Colors.white,
                   ),
                   style: const TextStyle(color: Colors.green),
-                  hint: const Text("categoria", style: TextStyle(color: Colors.white, fontSize: 17)),
+                  hint: Text("categoria", style: TextStyle(color: Colors.white, fontSize: 17)),
                   value: selectedValue,
                   items: const [
                     DropdownMenuItem(
-                      value: '0',
                       child: Text("opcao 1", style: TextStyle(color: Colors.white, fontSize: 17)),
+                      value: '0',
                     ),
                     DropdownMenuItem(
-                      value: '1',
                       child: Text("opcao 2", style: TextStyle(color: Colors.white, fontSize: 17)),
+                      value: '1',
                     ),
                     DropdownMenuItem(
-                      value: '2',
                       child: Text("opcao 3", style: TextStyle(color: Colors.white, fontSize: 17)),
+                      value: '2',
                     ),
                   ],
                   onChanged: (value) {
@@ -466,17 +470,18 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                 onPressed: () {
                   String mensagem = mensagemController.text;
                   if (mensagemController.text == '') {
-                    print("mensagem vazia");
-                    msgVazia(context);
-                    Navigator.pop(context);
+                    print("mensagem vaiza");
+                    
+                    Navigator.pop(contextAccount);
+                    msgVazia(contextAccount);
                   } else if (selectedValue == null) {
                     print("value vazio");
-                    Navigator.pop(context);
-                    categoriaVazia(context);
+                    Navigator.pop(contextAccount);
+                    categoriaVazia(contextAccount);
                   } else {
                     enviarFeedback(mensagem, selectedValue.toString());
                     mensagemController.text = '';
-                    Navigator.pop(context);
+                    Navigator.pop(contextAccount);
                   }
                 },
               ),
@@ -485,5 +490,10 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
         )
       ],
     );
+            /*);
+         }
+         )
+         )
+           );*/
   }
 }
