@@ -9,23 +9,8 @@ import '../Notificacoes.dart';
 import 'opcoes.dart';
 
 
-
-
-var acs = ActionCodeSettings(
-      // URL you want to redirect back to. The domain (www.example.com) for this
-      // URL must be whitelisted in the Firebase Console.
-      url: 'https://houdina-2194.firebaseapp.com',
-      // This must be true
-      handleCodeInApp: true,
-      iOSBundleId: 'com.company.app',
-      // androidPackageName: 'com.example.android',
-      // installIfNotAvailable
-      // androidInstallApp: true,
-      // minimumVersion
-      // androidMinimumVersion: '12'
-    );
 String? userid = FirebaseAuth.instance.currentUser?.uid;
-String? email = FirebaseAuth.instance.currentUser?.email;
+String? email_user = FirebaseAuth.instance.currentUser?.email;
 String nome = '';
 
 class Account extends StatefulWidget {
@@ -36,11 +21,6 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
-
-  
-  final TextEditingController mensagemController = TextEditingController();
-  String? selectedValue;
-  String opcao = "Select subject";
 
 
   @override
@@ -61,8 +41,11 @@ class _AccountState extends State<Account> {
   
   @override
   Widget build(BuildContext context) {
-
-    return Stack(
+    return MaterialApp(
+      home: ScaffoldMessenger(
+        child: Builder(builder: (contextAccount){
+          return Scaffold(
+      body: Stack(
       alignment: Alignment.center,
       children: [
         //Wallpaper
@@ -125,6 +108,40 @@ class _AccountState extends State<Account> {
           ),
         ),
 
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.50,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.55,
+            height: MediaQuery.of(context).size.height * 0.09,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: TextButton(
+                  child: const Text(
+                    "butao testes",
+                    style: TextStyle(
+                      color: Color.fromRGBO(25, 95, 255, 1.0),
+                      //decoration: TextDecoration.none,
+                    ),
+                  ),
+                  onPressed: (){
+                    print("ola");
+                      msgVazia(contextAccount);
+                  },
+                ),
+              ), 
+            ),
+          ),
+        ),
+
         /*Positioned(
           top: MediaQuery.of(context).size.height * 0.58,
           child: Container(
@@ -175,106 +192,13 @@ class _AccountState extends State<Account> {
               child: Text("Apoio tecnico",
               style: TextStyle(fontSize: 30, color: Colors.white),),
               onPressed: () {
-                print(selectedValue);
-                print(opcao);
-                print("nome user: $nome");
+                print("nome user: $nome -- email user: $email_user -- iduser: $userid");
                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
-                                        scrollable: true,
-                                        content: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Form(
-                                            child: Column(
-                                              children: [
-                                                DropdownButton(
-                                                    hint: Text(
-                                                      selectedValue != null ? 'Subject $selectedValue' : 'Select subject2',
-                                                      ),
-                                                    value: selectedValue,
-                                                    items: const [
-                                                      DropdownMenuItem(
-                                                        child: Text('subject 1'),
-                                                        value: '1',
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        child: Text('subject 2'),
-                                                        value: '2',
-                                                      ),
-                                                      DropdownMenuItem(
-                                                        child: Text('subject 3'),
-                                                        value: '3',
-                                                      ),
-                                                    ],
-                                                    onChanged: (value) {
-                                                      setState(() {
-                                                        print(selectedValue);
-                                                        selectedValue = value as String?;
-                                                        print(selectedValue);
-                                                        opcao ='Subject $selectedValue';
-                                                        print(opcao);
-                                                      });
-                                                    },
-                                                ),
-                                                TextFormField(
-                                                  maxLines: null,
-                                                  style: const TextStyle(color: Colors.white),
-                                                  decoration: const InputDecoration(
-                                                    labelStyle: TextStyle(color: Colors.white),
-                                                    labelText: "Message",
-                                                    focusedBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.white),
-                                                    ),
-                                                    enabledBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  controller: mensagemController,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      actions: [
-                                        Center(child: 
-                                          Column(children: [
-                                            ElevatedButton(
-                                              child: const Text(
-                                                "Submit",
-                                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
-                                              ),
-                                              onPressed: () {
-                                                String mensagem = mensagemController.text;
-                                                //print(mensagem);
-                                                //print(selectedValue);
-                                                if(mensagemController.text == ''){
-                                                  print("mensagem vaiza");
-                                                }else if (selectedValue == null){
-                                                  print("value vazio");
-                                                  FocusScope.of(context).requestFocus(FocusNode());
-                                                  sePNCorrespondente(context);
-                                                }else{
-                                                  enviarFeedback(mensagem, selectedValue.toString());
-                                                  mensagemController.text = ''; 
-                                                  print(selectedValue);
-                                                  setState(() {
-                                                    selectedValue = null;
-                                                    opcao = "Select subject";
-                                                  });
-                                                  Navigator.pop(context);
-                                                }
-                                              },
-                                            ),
-                                          ],)
-                                        )
-                                      ],
-                                    );
-                                    },
-                                  );      
+                   context: contextAccount,
+                   builder: (contextAccount) {
+                     return FeedbackDialog();
+                   },
+                );    
               },
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
             ),
@@ -389,9 +313,15 @@ class _AccountState extends State<Account> {
           ),
         ),
       ],
-    );
+    ),
+            );
+              }
+                )
+                )
+              );
   }
 }
+
 
 
 //Envia sempre os três dados, caso n mude algum envia os já existentes
@@ -414,16 +344,6 @@ Future<void> updateProfile(String newEmail, String newPassword, String newUserna
     }
   } catch (e) {
     print("Error updating profile: $e");
-    // Handle the error accordingly
-  }
-}
-
-Future<void> resetPassword(String email) async {
-  try {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    print("Password reset email sent successfully");
-  } catch (e) {
-    print("Error sending password reset email: $e");
     // Handle the error accordingly
   }
 }
@@ -452,9 +372,128 @@ void nomeUser2() async {
           .doc(userid)
           .get();
 
-      //print("OLAAA");
-     // nome = verNome['Username']; 
       print(verNome2['Username'].toString());
       print("OLAAA");
       nome = verNome2['Username'];
+}
+
+
+
+
+class FeedbackDialog extends StatefulWidget {
+  @override
+  _FeedbackDialogState createState() => _FeedbackDialogState();
+}
+
+class _FeedbackDialogState extends State<FeedbackDialog> {
+  String? selectedValue;
+  final TextEditingController mensagemController = TextEditingController();
+
+  @override
+  Widget build(contextAccount) {
+        /*return MaterialApp(
+      home: ScaffoldMessenger(
+        child: Builder(builder: (context2){
+          return Scaffold(*/
+    return AlertDialog(
+      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+      scrollable: true,
+      content: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Form(
+          child: Column(
+            children: [
+              Theme(
+               data: Theme.of(contextAccount).copyWith(
+                canvasColor: Color.fromRGBO(25, 95, 255, 1),
+               ),
+               child: DropdownButton(
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
+                  ),
+                  style: const TextStyle(color: Colors.green),
+                  hint: Text("categoria", style: TextStyle(color: Colors.white, fontSize: 17)),
+                  value: selectedValue,
+                  items: const [
+                    DropdownMenuItem(
+                      child: Text("opcao 1", style: TextStyle(color: Colors.white, fontSize: 17)),
+                      value: '0',
+                    ),
+                    DropdownMenuItem(
+                      child: Text("opcao 2", style: TextStyle(color: Colors.white, fontSize: 17)),
+                      value: '1',
+                    ),
+                    DropdownMenuItem(
+                      child: Text("opcao 3", style: TextStyle(color: Colors.white, fontSize: 17)),
+                      value: '2',
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value;
+                    });
+                  },
+                  underline: Container(height: 1,color: Colors.white,),
+                ),
+              ),
+              TextFormField(
+                maxLines: null,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelStyle: TextStyle(color: Colors.white),
+                  labelText: "Message",
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                controller: mensagemController,
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        Center(
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+                ),
+                onPressed: () {
+                  String mensagem = mensagemController.text;
+                  if (mensagemController.text == '') {
+                    print("mensagem vaiza");
+                    
+                    Navigator.pop(contextAccount);
+                    msgVazia(contextAccount);
+                  } else if (selectedValue == null) {
+                    print("value vazio");
+                    Navigator.pop(contextAccount);
+                    categoriaVazia(contextAccount);
+                  } else {
+                    enviarFeedback(mensagem, selectedValue.toString());
+                    mensagemController.text = '';
+                    Navigator.pop(contextAccount);
+                  }
+                },
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+            /*);
+         }
+         )
+         )
+           );*/
+  }
 }

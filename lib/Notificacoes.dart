@@ -111,7 +111,7 @@ void sePLenght(BuildContext context){
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 void loginErros(BuildContext context) {
-
+  
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
@@ -133,7 +133,11 @@ void loginErros(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-
+/*
+//-------------------------------------------------------------------------------------------------------------------------------------------
+//                                                           NOTIFICACOES DOS CARROS
+//-------------------------------------------------------------------------------------------------------------------------------------------
+*/
 
 
 
@@ -202,4 +206,62 @@ void adicionarCarroSucesso(BuildContext context) {
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+
+
+/*
+//-------------------------------------------------------------------------------------------------------------------------------------------
+//                                                           NOTIFICACOES DA CONTA
+//-------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
+
+void msgVazia(BuildContext context){
+
+ScaffoldMessenger.of(context).clearSnackBars();
+
+  final snackBar = SnackBar(
+    content: const Text('Mensagem vazia', textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder( 
+      borderRadius: BorderRadius.circular(35),
+    ),
+    showCloseIcon: true,
+    dismissDirection: DismissDirection.down,
+    margin: EdgeInsets.only(
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.15),
+      left: 10,
+      right: 10,
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+}
+
+void categoriaVazia(BuildContext context){
+
+ScaffoldMessenger.of(context).clearSnackBars();
+
+  final snackBar = SnackBar(
+    content: const Text('Categoria vazia', textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder( 
+      borderRadius: BorderRadius.circular(35),
+    ),
+    showCloseIcon: true,
+    dismissDirection: DismissDirection.down,
+    margin: EdgeInsets.only(
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.15),
+      left: 10,
+      right: 10,
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
 }
