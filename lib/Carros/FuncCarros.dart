@@ -7,24 +7,26 @@ import '../Classes/Carro.dart';
 
 final db = FirebaseFirestore.instance;
 
-void adicionarCarro(BuildContext context, String marcamodelo, String ano, String kilometros, String user, int identificador){
-  if(marcamodelo != "" && ano != "" && kilometros != "" && user != "" && identificador != -1){
+//----------ADICIONAR CARRO A DB----------
+void adicionarCarro(BuildContext context, String matricula, String ano, String kilometros, String user, int identificador){
+  if(matricula != "" && ano != "" && kilometros != "" && user != "" && identificador != -1){
     db.collection("Carros").add({
       'Ano': ano,
       'Kilometragem': kilometros,
-      'Modelo/Marca': marcamodelo,
+      'Matricula': matricula,
       'UserID': user,
       'idImagem': identificador,
     });
     adicionarCarroSucesso(context);
   }else{
-    if(marcamodelo == "" || ano == "" || kilometros == "" || user == ""){
+    if(matricula == "" || ano == "" || kilometros == "" || user == ""){
       adicionarCErro(context);
     }else{
       adicionarImagemFalta(context);
     }
   } 
 }
+
 
 
 //----------OBTER O ID DA IMAGEM----------
@@ -56,6 +58,7 @@ Future<Widget> obterImagemCarro(BuildContext context, String imageName) async {
 class FireStorageService extends ChangeNotifier{
   FireStorageService();
   static Future<dynamic> loadImage(BuildContext context, String image) async{
+    //Obtém as Imagens apartir do link de Download
     return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
 }
@@ -77,7 +80,7 @@ class ElementoCarro extends StatelessWidget {
         children:[
           Container(
             padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: Text(carro.marcamodelo,
+            child: Text(carro.matricula,
               style: const TextStyle(color: Colors.white),
             )
           ),
@@ -86,16 +89,16 @@ class ElementoCarro extends StatelessWidget {
             builder: (context, snapshot){
               if (snapshot.connectionState == ConnectionState.done) {
                 return Container(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: snapshot.data,
-                );
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: snapshot.data,
+                  );
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: const CircularProgressIndicator(),
-                );
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: const CircularProgressIndicator(),
+                  );
               }
               return Container();
             }

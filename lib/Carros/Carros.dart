@@ -48,10 +48,13 @@ class _CarrosState extends State<Carros> {
 
 
 
-  final TextEditingController marcamodeloController = TextEditingController();
+  final TextEditingController matriculaController = TextEditingController();
   final TextEditingController anoController = TextEditingController();
   final TextEditingController kilometragemController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   String? userID = FirebaseAuth.instance.currentUser?.uid;
+
+  bool search = false;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +99,75 @@ class _CarrosState extends State<Carros> {
                                     color:
                                         const Color.fromRGBO(25, 95, 255, 1.0),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: const Color.fromRGBO(
+                                              25, 95, 255, 0.7),
+                                          scrollable: true,
+                                          content: Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: Form(
+                                              child: Column(
+                                                children: [
+                                                  TextFormField(
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      labelStyle: TextStyle(
+                                                          color: Colors.white),
+                                                      labelText: "Plate:",
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:Colors.white),
+                                                      ),
+                                                      enabledBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    controller: searchController,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          actions: [
+                                            Center(child:
+                                                ElevatedButton(
+                                                  child: const Text(
+                                                    "Submit",
+                                                    style: TextStyle(
+                                                      color: Color.fromRGBO(25, 95, 255, 1.0))),
+                                                  onPressed: () async {
+
+                                                    String matricula = searchController.text;
+                                                    
+                                                    List<Carro> listacarrosprocurados = await verCarro(matricula, userID!);
+                                                    
+                                                    if (listacarrosprocurados.isNotEmpty) {
+                                                      search = true;
+                                                      Carro carroprocurado = listacarrosprocurados.first;
+                                                      searchController.text = "";
+                                                      print("TRUE");
+                                                      Navigator.pop(context);
+                                                    }else{
+                                                      search = false;
+                                                      searchController.text = "";
+                                                      Navigator.pop(context);
+                                                    }
+                                                  },
+                                                ),
+                                            )
+                                          ],
+                                        );
+                                      }
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -161,7 +232,7 @@ class _CarrosState extends State<Carros> {
                                                       labelStyle: TextStyle(
                                                           color: Colors.white),
                                                       labelText:
-                                                          "Brand Name &/or Model:",
+                                                          "Plate:",
                                                       focusedBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
@@ -176,7 +247,7 @@ class _CarrosState extends State<Carros> {
                                                       ),
                                                     ),
                                                     controller:
-                                                        marcamodeloController,
+                                                        matriculaController,
                                                   ),
                                                   TextFormField(
                                                     style: const TextStyle(
@@ -262,8 +333,8 @@ class _CarrosState extends State<Carros> {
                                                               255,
                                                               1.0))),
                                                   onPressed: () async {
-                                                    String marcamodelo =
-                                                        marcamodeloController
+                                                    String matricula =
+                                                        matriculaController
                                                             .text;
                                                     String ano =
                                                         anoController.text;
@@ -272,8 +343,7 @@ class _CarrosState extends State<Carros> {
                                                             .text;
 
                                                     //Vai buscar o ID do geral
-                                                    int identificador =
-                                                        await obterID_Imagem();
+                                                    int identificador = await obterID_Imagem();
                                                     //Nome da Imagem será o ID
                                                     uploadFile(identificador);
                                                     //Caso ver seja -1 -> ERRO
@@ -282,22 +352,15 @@ class _CarrosState extends State<Carros> {
                                                       ver = identificador;
                                                       //FOTO FICA COM IDENTIFICADOR E SOMA MAIS UM PARA USAR NA PROX
                                                       identificador += 1;
-                                                      atualizarID_Imagem(
-                                                          identificador);
+                                                      atualizarID_Imagem(identificador);
                                                     } else {
                                                       //ERRO OU FILE VAZIO
                                                       ver = -1;
                                                     }
 
-                                                    adicionarCarro(
-                                                        context3,
-                                                        marcamodelo,
-                                                        ano,
-                                                        kilometragem,
-                                                        userID!,
-                                                        ver);
+                                                    adicionarCarro(context3, matricula, ano, kilometragem, userID!, ver);
 
-                                                    marcamodeloController.text =
+                                                    matriculaController.text =
                                                         "";
                                                     anoController.text = "";
                                                     kilometragemController
@@ -330,18 +393,26 @@ class _CarrosState extends State<Carros> {
                       child: FutureBuilder<List<Carro>>(
                         future: obterCarrosUser(userID!),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
+                          if (snapshot.connectionState == ConnectionState.done) {
                             List<Carro> carrosUser = snapshot.data!;
-                            return ListView.builder(
-                              itemCount: carrosUser.length,
-                              itemBuilder: (context, index) {
-                                return ElementoCarro(carro: carrosUser[index]);
-                              },
-                            );
+                            //APRESENTA TDS OS CARROS
+                            if(search == false){
+                              return ListView.builder(
+                                itemCount: carrosUser.length,
+                                itemBuilder: (context, index) {
+                                  return ElementoCarro(carro: carrosUser[index]);
+                                },
+                              );
+                            }else{
+                              return ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (context, index) {
+                                  return ElementoCarro(carro: carrosUser[index]);
+                                },
+                              );
+                            }
                           }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
                             return SizedBox(
                               width: MediaQuery.of(context).size.width * 0.1,
                               height: MediaQuery.of(context).size.height * 0.1,
@@ -475,49 +546,5 @@ class _CarrosState extends State<Carros> {
                 ],
               )));
     })));
-  }
-}
-
-class ElementoCarro extends StatelessWidget {
-  final Carro carro;
-
-  ElementoCarro({required this.carro});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-        color: const Color.fromRGBO(25, 95, 255, 1.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Container(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: Text(
-                carro.marcamodelo,
-                style: const TextStyle(color: Colors.white),
-              )),
-          FutureBuilder(
-              future: obterImagemCarro(context, "carros/${carro.imagemID}"),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Container(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: snapshot.data,
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    child: const CircularProgressIndicator(),
-                  );
-                }
-                return Container();
-              }),
-          Container(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: Text(
-                "Year: ${carro.ano}, Kilometragem: ${carro.kilometragem}, ID: ${carro.imagemID}",
-                style: const TextStyle(color: Colors.white),
-              )),
-        ]));
   }
 }

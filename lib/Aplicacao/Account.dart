@@ -199,9 +199,11 @@ class _AccountState extends State<Account> {
                   showDialog(
                     context: contextAccount,
                     builder: (contextAccount) {
-                      return FeedbackDialog();
+                        return FeedbackDialog();
                     },
+                  
                   );
+                  msgVazia(contextAccount);
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
@@ -481,7 +483,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     print("mensagem vaiza");
 
                     Navigator.pop(contextAccount);
-                    msgVazia(contextAccount);
+                    msgVazia(context);
                   } else if (selectedValue == null) {
                     print("value vazio");
                     Navigator.pop(contextAccount);
