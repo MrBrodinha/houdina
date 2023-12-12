@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:houdina/Inicial/Verificar.dart';
 
 import '../Main.dart';
-import 'Carros.dart';
+import '../Carros/Carros.dart';
 import '../Notificacoes.dart';
 import 'opcoes.dart';
 

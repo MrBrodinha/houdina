@@ -6,7 +6,7 @@ import 'package:houdina/Aplicacao/Account.dart';
 import 'package:houdina/Inicial/Verificar.dart';
 
 import '../Main.dart';
-import 'Carros.dart';
+import '../Carros/Carros.dart';
 import '../Notificacoes.dart';
 
 class opcoes extends StatefulWidget {

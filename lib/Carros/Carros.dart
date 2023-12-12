@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'Account.dart';
+import '../Aplicacao/Account.dart';
 import 'FuncCarros.dart';
 import '../Classes/Carro.dart';
 
@@ -46,6 +46,8 @@ class _CarrosState extends State<Carros> {
       uploadTask == null;
     });
   }
+
+
 
   final TextEditingController marcamodeloController = TextEditingController();
   final TextEditingController anoController = TextEditingController();
@@ -417,57 +419,6 @@ class _CarrosState extends State<Carros> {
           );
           }
         )
-      )
-    );
-  }
-}
-
-class ElementoCarro extends StatelessWidget {
-
-  final Carro carro;
-
-  ElementoCarro({required this.carro});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: const Color.fromRGBO(25, 95, 255, 1.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children:[
-          Container(
-            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: Text(carro.marcamodelo,
-              style: const TextStyle(color: Colors.white),
-            )
-          ),
-          FutureBuilder(
-            future: obterImagemCarro(context, "carros/${carro.imagemID}"),
-            builder: (context, snapshot){
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: snapshot.data,
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: const CircularProgressIndicator(),
-                );
-              }
-              return Container();
-            }
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: Text(
-              "Year: ${carro.ano}, Kilometragem: ${carro.kilometragem}, ID: ${carro.imagemID}",
-              style: const TextStyle(color: Colors.white),
-            )
-          ),
-        ]
       )
     );
   }

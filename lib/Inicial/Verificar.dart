@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 //Dar import a files externos
 import '../Notificacoes.dart';
-import '../Aplicacao/Account.dart';
+import '../Carros/Carros.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -70,7 +70,7 @@ Future<void> logIn(BuildContext context, String email, String password) async {
       email: email,
       password: password,
     );
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Account()),);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()),);
   } catch (e) {
     //Tirar o foco do teclado
     FocusScope.of(context).requestFocus(FocusNode());
