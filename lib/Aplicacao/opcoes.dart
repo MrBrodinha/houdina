@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:houdina/Aplicacao/Account.dart';
 import 'package:houdina/Inicial/Verificar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../Main.dart';
 import '../Carros/Carros.dart';
@@ -17,6 +21,39 @@ class opcoes extends StatefulWidget {
 }
 
 class _opcoesState extends State<opcoes> {
+
+
+  /*PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+  String? urDownload;
+
+  Future  selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+    setState(() {
+      pickedFile = result.files.first;
+    });
+  }
+
+  Future uploadFile(int identificador) async {
+    final path = 'carros/$identificador';
+    final file = File(pickedFile!.path!);
+    final ref = FirebaseStorage.instance.ref().child(path);
+
+    setState(() {
+      uploadTask = ref.putFile(file);
+    });
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+    urDownload = await snapshot.ref.getDownloadURL();
+
+    setState(() {
+      uploadTask == null;
+    });
+  }*/
+
+
+
 
   final TextEditingController novonomeController = TextEditingController();
   final TextEditingController novoemailController = TextEditingController();
@@ -244,7 +281,38 @@ class _opcoesState extends State<opcoes> {
               child: Text("mudar imagem",
               style: TextStyle(fontSize: 30, color: Colors.white),),
               onPressed: () {
-
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                      scrollable: true,
+                      content: const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: Form(
+                          child: Text("Escolhe a imagem pra trocar"),
+                        ),
+                      ),
+                      actions: [
+                        Center(child: 
+                          Column(children: [
+                            ElevatedButton(
+                              child: const Text(
+                                "Procurar",
+                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                              ),
+                              onPressed: () {
+                                mudar("ok", 4);
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                          )
+                        )
+                      ],
+                  );
+                  },
+                );
               },
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
             ),
@@ -329,8 +397,31 @@ Future<void> mudar(String mudanca,int tipo) async{
       print("Error updating name: $e");
     }
   }else if(tipo ==2){
+    
+    /*try {
+    User? user = FirebaseAuth.instance.currentUser;
 
-    //alterar email
+    if (user != null) {
+      // Get the current user's email before changing it
+      String oldEmail = user.email ?? '';
+
+      // Update the user's email in Firebase Authentication
+      await user.updateEmail(mudanca);
+
+      // Send a verification email to the old email
+      await user.sendEmailVerification();
+
+      // Update the email in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({'Email': mudanca});
+
+      print("Email updated successfully. Verification email sent to $oldEmail");
+    }
+  } catch (e) {
+    print("Error updating email: $e");
+  }*/
 
   }else if(tipo == 3){
     try {
@@ -339,7 +430,7 @@ Future<void> mudar(String mudanca,int tipo) async{
     } catch (e) {
       print("Error sending password reset email: $e");
     }
-  }else{
-    //alterar imagem se metermos imagem
+  }else if(tipo == 4){
+     print("imagem mudar");
   }
 }
