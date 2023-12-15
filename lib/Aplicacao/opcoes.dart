@@ -13,6 +13,8 @@ import '../Main.dart';
 import '../Carros/Carros.dart';
 import '../Notificacoes.dart';
 
+int tipo2 = 2;
+
 class opcoes extends StatefulWidget {
   const opcoes({super.key});
 
@@ -23,7 +25,7 @@ class opcoes extends StatefulWidget {
 class _opcoesState extends State<opcoes> {
 
 
-  /*PlatformFile? pickedFile;
+  PlatformFile? pickedFile;
   UploadTask? uploadTask;
   String? urDownload;
 
@@ -35,8 +37,8 @@ class _opcoesState extends State<opcoes> {
     });
   }
 
-  Future uploadFile(int identificador) async {
-    final path = 'carros/$identificador';
+  Future uploadFile() async {
+    final path = 'fotosPFP/$userid';
     final file = File(pickedFile!.path!);
     final ref = FirebaseStorage.instance.ref().child(path);
 
@@ -50,9 +52,7 @@ class _opcoesState extends State<opcoes> {
     setState(() {
       uploadTask == null;
     });
-  }*/
-
-
+  }
 
 
   final TextEditingController novonomeController = TextEditingController();
@@ -214,12 +214,18 @@ class _opcoesState extends State<opcoes> {
                                 "Submit",
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
-                              onPressed: () {
-                                mudar(novoemailController.text, 2);
+                              onPressed: () async{
+                                try{
+                                  await obterImagempfp(context);
+                                }catch(e){
+                                  print("erro na cena $e");
+                                }
+                                /*mudar(novoemailController.text, 2);
                                 setState(() {
                                   novoemailController.text = '';
                                 });
-                                Navigator.pop(context);
+                                tipo2 = 1;*/
+                                //Navigator.pop(context);
                               },
                             ),
                           ],)
@@ -298,11 +304,22 @@ class _opcoesState extends State<opcoes> {
                           Column(children: [
                             ElevatedButton(
                               child: const Text(
+                                "Attach Files",
+                                style: TextStyle(
+                                    color: Color.fromRGBO(
+                                        25, 95, 255, 1.0)),
+                              ),
+                              onPressed: () {
+                                selectFile();
+                              },
+                            ),
+                            ElevatedButton(
+                              child: const Text(
                                 "Procurar",
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
-                              onPressed: () {
-                                mudar("ok", 4);
+                              onPressed: () async {
+                                uploadFile();
                                 Navigator.pop(context);
                               },
                             ),
@@ -398,30 +415,28 @@ Future<void> mudar(String mudanca,int tipo) async{
     }
   }else if(tipo ==2){
     
-    /*try {
-    User? user = FirebaseAuth.instance.currentUser;
+    if(tipo2 == 1){
+    try {
+    User? user1 = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      // Get the current user's email before changing it
-      String oldEmail = user.email ?? '';
+    if (user1 != null) {
+      await user1.updateEmail(mudanca);
 
-      // Update the user's email in Firebase Authentication
-      await user.updateEmail(mudanca);
-
-      // Send a verification email to the old email
-      await user.sendEmailVerification();
-
-      // Update the email in Firestore
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(user.uid)
-          .update({'Email': mudanca});
+          .doc(user1.uid)
+          .update({'email': mudanca});
 
-      print("Email updated successfully. Verification email sent to $oldEmail");
+      print("Email updated successfully");
     }
   } catch (e) {
     print("Error updating email: $e");
-  }*/
+  }
+  }else{
+    User? user = FirebaseAuth.instance.currentUser;
+
+    user!.sendEmailVerification();
+  }
 
   }else if(tipo == 3){
     try {
@@ -432,5 +447,44 @@ Future<void> mudar(String mudanca,int tipo) async{
     }
   }else if(tipo == 4){
      print("imagem mudar");
+  }
+}
+
+Future<Widget> obterImagempfp(BuildContext context) async {
+  /*Image image = Image.asset('resources/default.png',
+                        width: MediaQuery.of(context).size.height * 0.4,
+                        height: MediaQuery.of(context).size.height * 0.4,);
+  await FireStorageService.loadImage(context,userid!).then((value){
+    image = Image.network(value.toString());
+  });
+  return image;*/
+    String defaultImagePath = 'resources/default.png';
+
+  // Default image widget
+  Image image = Image.asset(
+    defaultImagePath,
+  );
+
+  try {
+    String imageUrl = await FireStorageService.loadImage(context, userid!);
+
+    // If the image is successfully retrieved from Firebase Storage
+    if (imageUrl.isNotEmpty) {
+      image = Image.network(
+        imageUrl,
+      );
+    }
+  } catch (e) {
+    print('Error loading image: $e');
+  }
+
+  return image;
+}
+
+class FireStorageService extends ChangeNotifier{
+  FireStorageService();
+  static Future<dynamic> loadImage(BuildContext context, String image) async{
+    //Obtém as Imagens apartir do link de Download
+    return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
 }

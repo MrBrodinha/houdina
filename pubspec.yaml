@@ -28,3 +28,4 @@ flutter:
   assets:
     - resources/Background.jpg
     - resources/Logo.png
+    - resources/default.png
