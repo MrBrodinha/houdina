@@ -9,8 +9,8 @@ import '../Carros/Carros.dart';
 
 final db = FirebaseFirestore.instance;
 
-void criarConta(BuildContext context, String username, String email,String password, String confirmPassword) async {
-
+void criarConta(BuildContext context, String username, String email,
+    String password, String confirmPassword) async {
   // 0 -> Td bem / 1 -> User usado / 2 -> Email Usado
   int verificador = await verificarRegisto(username, email);
 
@@ -19,35 +19,35 @@ void criarConta(BuildContext context, String username, String email,String passw
     //Para fechar o Teclado smp q dá erro
     FocusScope.of(context).requestFocus(FocusNode());
     sePNCorrespondente(context);
-  } else if(verificador == 1){
+  } else if (verificador == 1) {
     //NOTIFICAÇÃO DE ERRO DE USERNAME (Verificar se ele já existe na DB)
     FocusScope.of(context).requestFocus(FocusNode());
     seNome(context);
-  } else if(verificador == 0){
+  } else if (verificador == 0) {
     try {
       UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userCredential.user!.uid)
-        .set({
-          'Username': username,
-        });
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'Username': username,
+      });
       logIn(context, email, password);
 
       //print("Account created successfully: ${userCredential.user}");
     } on FirebaseAuthException catch (e) {
       //PASSWORD TEM QUE TER 6 CARACTERES
-      if(e.code == 'weak-password'){
+      if (e.code == 'weak-password') {
         //Para fechar o Teclado smp q dá erro
         FocusScope.of(context).requestFocus(FocusNode());
         sePLenght(context);
       }
       //NOTIFICAÇÃO DE ERRO DE EMAIL (Formato do Email)
-      if (!EmailValidator.validate(email)){
+      if (!EmailValidator.validate(email)) {
         //Para fechar o Teclado smp q dá erro
         FocusScope.of(context).requestFocus(FocusNode());
         seFEmail(context);
@@ -70,7 +70,10 @@ Future<void> logIn(BuildContext context, String email, String password) async {
       email: email,
       password: password,
     );
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Carros()),);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Carros()),
+    );
   } catch (e) {
     //Tirar o foco do teclado
     FocusScope.of(context).requestFocus(FocusNode());
@@ -86,7 +89,7 @@ Future<int> verificarRegisto(String username, String email) async {
       .where('Username', isEqualTo: username)
       .get();
 
-  if (verNome.docs.isNotEmpty){
+  if (verNome.docs.isNotEmpty) {
     return 1;
   } else {
     return 0;

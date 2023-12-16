@@ -11,7 +11,6 @@ import 'FuncCarros.dart';
 import '../Classes/Carro.dart';
 import '../Aplicacao/Agendar.dart';
 
-
 class Carros extends StatefulWidget {
   const Carros({super.key});
   @override
@@ -23,7 +22,7 @@ class _CarrosState extends State<Carros> {
   UploadTask? uploadTask;
   String? urDownload;
 
-  Future  selectFile() async {
+  Future selectFile() async {
     final result = await FilePicker.platform.pickFiles();
     if (result == null) return;
     setState(() {
@@ -47,8 +46,6 @@ class _CarrosState extends State<Carros> {
       uploadTask == null;
     });
   }
-
-
 
   final TextEditingController matriculaController = TextEditingController();
   final TextEditingController anoController = TextEditingController();
@@ -103,72 +100,91 @@ class _CarrosState extends State<Carros> {
                                   ),
                                   onPressed: () {
                                     showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor: const Color.fromRGBO(
-                                              25, 95, 255, 0.7),
-                                          scrollable: true,
-                                          content: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Form(
-                                              child: Column(
-                                                children: [
-                                                  TextFormField(
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      labelStyle: TextStyle(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor:
+                                                const Color.fromRGBO(
+                                                    25, 95, 255, 0.7),
+                                            scrollable: true,
+                                            content: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: Form(
+                                                child: Column(
+                                                  children: [
+                                                    TextFormField(
+                                                      style: const TextStyle(
                                                           color: Colors.white),
-                                                      labelText: "Plate:",
-                                                      focusedBorder: UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:Colors.white),
-                                                      ),
-                                                      enabledBorder: UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Colors.white,
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                        labelText: "Plate:",
+                                                        focusedBorder:
+                                                            UnderlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .white),
+                                                        ),
+                                                        enabledBorder:
+                                                            UnderlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.white,
+                                                          ),
                                                         ),
                                                       ),
+                                                      controller:
+                                                          searchController,
                                                     ),
-                                                    controller: searchController,
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          actions: [
-                                            Center(child:
-                                                ElevatedButton(
-                                                  child: const Text(
-                                                    "Submit",
-                                                    style: TextStyle(
-                                                      color: Color.fromRGBO(25, 95, 255, 1.0))),
+                                            actions: [
+                                              Center(
+                                                child: ElevatedButton(
+                                                  child: const Text("Submit",
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              25,
+                                                              95,
+                                                              255,
+                                                              1.0))),
                                                   onPressed: () async {
+                                                    String matricula =
+                                                        searchController.text;
 
-                                                    String matricula = searchController.text;
-                                                    
-                                                    List<Carro> listacarrosprocurados = await verCarro(matricula, userID!);
-                                                    
-                                                    if (listacarrosprocurados.isNotEmpty) {
+                                                    List<Carro>
+                                                        listacarrosprocurados =
+                                                        await verCarro(
+                                                            matricula, userID!);
+
+                                                    if (listacarrosprocurados
+                                                        .isNotEmpty) {
                                                       search = true;
-                                                      Carro carroprocurado = listacarrosprocurados.first;
-                                                      searchController.text = "";
+                                                      Carro carroprocurado =
+                                                          listacarrosprocurados
+                                                              .first;
+                                                      searchController.text =
+                                                          "";
                                                       print("TRUE");
                                                       Navigator.pop(context);
-                                                    }else{
+                                                    } else {
                                                       search = false;
-                                                      searchController.text = "";
+                                                      searchController.text =
+                                                          "";
                                                       Navigator.pop(context);
                                                     }
                                                   },
                                                 ),
-                                            )
-                                          ],
-                                        );
-                                      }
-                                    );
+                                              )
+                                            ],
+                                          );
+                                        });
                                   },
                                 ),
                               ),
@@ -233,8 +249,7 @@ class _CarrosState extends State<Carros> {
                                                         const InputDecoration(
                                                       labelStyle: TextStyle(
                                                           color: Colors.white),
-                                                      labelText:
-                                                          "Plate:",
+                                                      labelText: "Plate:",
                                                       focusedBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
@@ -345,7 +360,8 @@ class _CarrosState extends State<Carros> {
                                                             .text;
 
                                                     //Vai buscar o ID do geral
-                                                    int identificador = await obterID_Imagem();
+                                                    int identificador =
+                                                        await obterID_Imagem();
                                                     //Nome da Imagem será o ID
                                                     uploadFile(identificador);
                                                     //Caso ver seja -1 -> ERRO
@@ -354,13 +370,20 @@ class _CarrosState extends State<Carros> {
                                                       ver = identificador;
                                                       //FOTO FICA COM IDENTIFICADOR E SOMA MAIS UM PARA USAR NA PROX
                                                       identificador += 1;
-                                                      atualizarID_Imagem(identificador);
+                                                      atualizarID_Imagem(
+                                                          identificador);
                                                     } else {
                                                       //ERRO OU FILE VAZIO
                                                       ver = -1;
                                                     }
 
-                                                    adicionarCarro(context3, matricula, ano, kilometragem, userID!, ver);
+                                                    adicionarCarro(
+                                                        context3,
+                                                        matricula,
+                                                        ano,
+                                                        kilometragem,
+                                                        userID!,
+                                                        ver);
 
                                                     matriculaController.text =
                                                         "";
@@ -395,26 +418,30 @@ class _CarrosState extends State<Carros> {
                       child: FutureBuilder<List<Carro>>(
                         future: obterCarrosUser(userID!),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
                             List<Carro> carrosUser = snapshot.data!;
                             //APRESENTA TDS OS CARROS
-                            if(search == false){
+                            if (search == false) {
                               return ListView.builder(
                                 itemCount: carrosUser.length,
                                 itemBuilder: (context, index) {
-                                  return ElementoCarro(carro: carrosUser[index]);
+                                  return ElementoCarro(
+                                      carro: carrosUser[index]);
                                 },
                               );
-                            }else{
+                            } else {
                               return ListView.builder(
                                 itemCount: 1,
                                 itemBuilder: (context, index) {
-                                  return ElementoCarro(carro: carrosUser[index]);
+                                  return ElementoCarro(
+                                      carro: carrosUser[index]);
                                 },
                               );
                             }
                           }
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return SizedBox(
                               width: MediaQuery.of(context).size.width * 0.1,
                               height: MediaQuery.of(context).size.height * 0.1,

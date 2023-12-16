@@ -7,35 +7,35 @@ import 'Verificar.dart';
 
 //É MESMOOOOOO
 
-class Signup extends StatefulWidget{
+class Signup extends StatefulWidget {
   const Signup({super.key});
   @override
   State<Signup> createState() => _SignupState();
 }
 
 class _SignupState extends State<Signup> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
-	final TextEditingController usernameController = TextEditingController();
-	final TextEditingController emailController = TextEditingController();
-	final TextEditingController passwordController = TextEditingController();
-	final TextEditingController confirmPasswordController = TextEditingController();
-
-	@override
-  void initState(){
+  @override
+  void initState() {
     super.initState();
   }
 
-	@override
-	Widget build(BuildContext context) {
-		return MaterialApp(
-      home: ScaffoldMessenger(
-        child: Builder(builder: (context2){
-          return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: ScaffoldMessenger(
+      child: Builder(builder: (context2) {
+        return Scaffold(
           body: Container(
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
+                image:
+                    NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
                 //Para preencher a tela toda
                 fit: BoxFit.cover,
               ),
@@ -43,10 +43,9 @@ class _SignupState extends State<Signup> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                
                 //----------USERNAME----------
                 Padding(
-                //Definir os Paddings laterais
+                  //Definir os Paddings laterais
                   padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
                   child: TextField(
                     textAlign: TextAlign.center,
@@ -60,12 +59,18 @@ class _SignupState extends State<Signup> {
                       fillColor: Colors.white,
                       //BORDA
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                       //Para não desformatar qnd está FOCUSED
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                     ),
@@ -75,7 +80,7 @@ class _SignupState extends State<Signup> {
 
                 //----------EMAIL----------
                 Padding(
-                //Definir os Paddings laterais
+                  //Definir os Paddings laterais
                   padding: const EdgeInsets.fromLTRB(35, 10, 35, 0),
                   child: TextField(
                     keyboardType: TextInputType.emailAddress,
@@ -90,12 +95,18 @@ class _SignupState extends State<Signup> {
                       fillColor: Colors.white,
                       //BORDA
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                       //Para não desformatar qnd está FOCUSED
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                     ),
@@ -105,7 +116,7 @@ class _SignupState extends State<Signup> {
 
                 //----------SENHA----------
                 Padding(
-                //Definir os Paddings laterais
+                  //Definir os Paddings laterais
                   padding: const EdgeInsets.fromLTRB(35, 10, 35, 0),
                   child: TextField(
                     textAlign: TextAlign.center,
@@ -121,12 +132,18 @@ class _SignupState extends State<Signup> {
                       fillColor: Colors.white,
                       //BORDA
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                       //Para não desformatar qnd está FOCUSED
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                     ),
@@ -136,7 +153,7 @@ class _SignupState extends State<Signup> {
 
                 //----------CONFIRMAR SENHA----------
                 Padding(
-                //Definir os Paddings laterais
+                  //Definir os Paddings laterais
                   padding: const EdgeInsets.fromLTRB(35, 10, 35, 0),
                   child: TextField(
                     textAlign: TextAlign.center,
@@ -152,12 +169,18 @@ class _SignupState extends State<Signup> {
                       fillColor: Colors.white,
                       //BORDA
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                       //Para não desformatar qnd está FOCUSED
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5,),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(35.0),
                       ),
                     ),
@@ -167,19 +190,24 @@ class _SignupState extends State<Signup> {
 
                 //----------REDIRECIONAMENTO LOGIN----------
                 Padding(
-                  // Definir os Paddings laterais 
+                  // Definir os Paddings laterais
                   padding: const EdgeInsets.fromLTRB(35, 20, 35, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("If you already have an account click", style: TextStyle(color: Colors.white),),
+                      const Text(
+                        "If you already have an account click",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       //TextButton tinha espaço dentro - InkWell não tem
                       InkWell(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Text(" here",
-                          style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+                        child: const Text(
+                          " here",
+                          style: TextStyle(
+                              color: Color.fromRGBO(25, 95, 255, 1.0)),
                         ),
                       )
                     ],
@@ -188,7 +216,7 @@ class _SignupState extends State<Signup> {
 
                 //----------BOTÃO DE CRIAR CONTA----------
                 Padding(
-                  // Definir os Paddings laterais 
+                  // Definir os Paddings laterais
                   padding: const EdgeInsets.fromLTRB(35, 15, 35, 0),
                   child: Column(
                     children: [
@@ -207,16 +235,22 @@ class _SignupState extends State<Signup> {
                           confirmPasswordController.text = '';
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(35.0),
-                              side: const BorderSide(color: Color.fromRGBO(25, 95, 255, 1.0), width: 2.5),
+                              side: const BorderSide(
+                                  color: Color.fromRGBO(25, 95, 255, 1.0),
+                                  width: 2.5),
                             ),
                           ),
                         ),
-                        child: const Text("Submit",
-                          style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+                        child: const Text(
+                          "Submit",
+                          style: TextStyle(
+                              color: Color.fromRGBO(25, 95, 255, 1.0)),
                         ),
                       )
                     ],
@@ -225,9 +259,8 @@ class _SignupState extends State<Signup> {
               ],
             ),
           ),
-			    );
-        }),
-      )
-		);
-	}
+        );
+      }),
+    ));
+  }
 }

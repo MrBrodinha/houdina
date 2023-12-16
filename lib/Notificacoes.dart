@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 void seNome(BuildContext context) {
-
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
@@ -22,8 +21,8 @@ void seNome(BuildContext context) {
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
 void seEmail(BuildContext context) {
-  
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
@@ -43,13 +42,14 @@ void seEmail(BuildContext context) {
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-} 
+}
+
 void sePNCorrespondente(BuildContext context) {
-  
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Palavras Passes Não Correspondentes', textAlign: TextAlign.center),
+    content: const Text('Palavras Passes Não Correspondentes',
+        textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
@@ -66,12 +66,13 @@ void sePNCorrespondente(BuildContext context) {
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-void seFEmail(BuildContext context){
 
+void seFEmail(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Formato de Email Incorreto', textAlign: TextAlign.center),
+    content:
+        const Text('Formato de Email Incorreto', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
@@ -88,12 +89,13 @@ void seFEmail(BuildContext context){
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-void sePLenght(BuildContext context){
 
+void sePLenght(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Password necessita de ter pelo menos 6 caracteres', textAlign: TextAlign.center),
+    content: const Text('Password necessita de ter pelo menos 6 caracteres',
+        textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
@@ -110,16 +112,17 @@ void sePLenght(BuildContext context){
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
 void loginErros(BuildContext context) {
-  
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Email ou Password Errados', textAlign: TextAlign.center),
+    content:
+        const Text('Email ou Password Errados', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder( 
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,
@@ -130,7 +133,7 @@ void loginErros(BuildContext context) {
       right: MediaQuery.of(context).size.width * 0.15,
     ),
   );
-  
+
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
@@ -140,54 +143,55 @@ void loginErros(BuildContext context) {
 //-------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-
-
 void adicionarCErro(BuildContext context) {
-
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Dados Inseridos Vazios ou Incorretos', textAlign: TextAlign.center),
+    content: const Text('Dados Inseridos Vazios ou Incorretos',
+        textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder( 
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.10),
+      bottom: MediaQuery.of(context).size.height -
+          (MediaQuery.of(context).size.height * 0.10),
       left: MediaQuery.of(context).size.width * 0.05,
       right: MediaQuery.of(context).size.width * 0.05,
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-void adicionarImagemFalta(BuildContext context) {
 
+void adicionarImagemFalta(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Imagem do Veículo em Falta', textAlign: TextAlign.center),
+    content:
+        const Text('Imagem do Veículo em Falta', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder( 
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.10),
+      bottom: MediaQuery.of(context).size.height -
+          (MediaQuery.of(context).size.height * 0.10),
       left: MediaQuery.of(context).size.width * 0.15,
       right: MediaQuery.of(context).size.width * 0.15,
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-void adicionarCarroSucesso(BuildContext context) {
 
+void adicionarCarroSucesso(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
@@ -195,21 +199,20 @@ void adicionarCarroSucesso(BuildContext context) {
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder( 
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.10),
+      bottom: MediaQuery.of(context).size.height -
+          (MediaQuery.of(context).size.height * 0.10),
       left: MediaQuery.of(context).size.width * 0.15,
       right: MediaQuery.of(context).size.width * 0.15,
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-
-
 
 /*
 //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -217,10 +220,7 @@ void adicionarCarroSucesso(BuildContext context) {
 //-------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-
-
-void msgVazia(BuildContext context){
-
+void msgVazia(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
@@ -228,7 +228,7 @@ void msgVazia(BuildContext context){
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder( 
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,
@@ -240,19 +240,17 @@ void msgVazia(BuildContext context){
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
 }
 
-void categoriaVazia(BuildContext context){
-
-ScaffoldMessenger.of(context).clearSnackBars();
+void categoriaVazia(BuildContext context) {
+  ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
     content: const Text('Categoria vazia', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder( 
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,
@@ -264,19 +262,18 @@ ScaffoldMessenger.of(context).clearSnackBars();
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
 }
 
-void msgEnviada(BuildContext context){
-
+void msgEnviada(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Mensagem enviada com sucesso', textAlign: TextAlign.center),
+    content:
+        const Text('Mensagem enviada com sucesso', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder( 
+    shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35),
     ),
     showCloseIcon: true,
@@ -288,5 +285,4 @@ void msgEnviada(BuildContext context){
     ),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
 }
