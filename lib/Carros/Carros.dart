@@ -9,6 +9,7 @@ import '../Aplicacao/Account.dart';
 import 'FuncCarros.dart';
 import '../Classes/Carro.dart';
 import '../Aplicacao/Agendar.dart';
+import '../Aplicacao/Maps.dart';
 
 class Carros extends StatefulWidget {
   const Carros({super.key});
