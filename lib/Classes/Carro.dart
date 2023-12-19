@@ -14,7 +14,7 @@ class Carro{
   });
 }
 
-//----------OBTER CARROS DE UM CERTO UTILIZADOR----------
+//----------OBTER LISTA DE CARROS DE UM CERTO UTILIZADOR----------
 Future<List<Carro>> obterCarrosUser(String userID) async {
   try {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
@@ -54,7 +54,7 @@ Future<List<Carro>> verCarro(String matricula, String userID) async{
       return Carro(
         ano: data['Ano'] as String,
         kilometragem: data['Kilometragem'] as String,
-        matricula: data['matricula'] as String,
+        matricula: data['Matricula'] as String,
         imagemID: data['idImagem'] as int,
       );
     }).toList();
