@@ -11,7 +11,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -28,7 +27,8 @@ class _LoginState extends State<Login> {
           alignment: Alignment.center,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
+              image:
+                  NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
               //Para preencher a tela toda
               fit: BoxFit.cover,
             ),
@@ -130,7 +130,8 @@ class _LoginState extends State<Login> {
                       },
                       child: const Text(
                         " here",
-                        style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+                        style:
+                            TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
                       ),
                     )
                   ],
@@ -157,14 +158,14 @@ class _LoginState extends State<Login> {
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.white),
                         shape:
-                          MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(35.0),
-                              side: const BorderSide(
-                                  color: Color.fromRGBO(25, 95, 255, 1.0),
-                                  width: 2.5),
-                            ),
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(35.0),
+                            side: const BorderSide(
+                                color: Color.fromRGBO(25, 95, 255, 1.0),
+                                width: 2.5),
                           ),
+                        ),
                       ),
                       child: const Text(
                         "Submit",

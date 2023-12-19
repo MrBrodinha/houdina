@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +14,12 @@ import 'Agendar.dart';
 String? userid = FirebaseAuth.instance.currentUser?.uid;
 String? email_user = FirebaseAuth.instance.currentUser?.email;
 String nome = '';
+int ola = 0;
+
+
+class NavigationService { 
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+}
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -21,9 +29,13 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+
+  late Future<Widget> imageFuture;
+  
   @override
   void initState() {
     super.initState();
+    imageFuture = obterImagempfp(context);
     nomeUser2();
   }
 
@@ -40,7 +52,8 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: ScaffoldMessenger(child: Builder(builder: (contextAccount) {
+      navigatorKey: NavigationService.navigatorKey,
+      home: ScaffoldMessenger(child: Builder(builder: (contextAccount) {
       return Scaffold(
         body: Stack(
           alignment: Alignment.center,
@@ -85,61 +98,28 @@ class _AccountState extends State<Account> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: const Color.fromRGBO(25, 95, 255, 1.0),
-                    width: 3.0,
+                    width: 4.0,
                   ),
-                  borderRadius: BorderRadius.circular(35),
+                  ///borderRadius: BorderRadius.circular(35),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Text(
-                      "imagem",
-                      style: TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
-                        decoration: TextDecoration.none,
-                      ),
-                    ),
-                  ),
-                ),
+                child: FutureBuilder(
+                  future: imageFuture,
+                  builder: (context, snapshot){
+                    if (snapshot.connectionState == ConnectionState.done) {
+                          return snapshot.data as Widget;
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                  },
+                )/*Image.asset(
+                        'resources/default.png',
+                        width: MediaQuery.of(context).size.height * 0.4,
+                        height: MediaQuery.of(context).size.height * 0.4,
+                      ),*/
               ),
             ),
 
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.50,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.55,
-                height: MediaQuery.of(context).size.height * 0.09,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
-                    width: 3.0,
-                  ),
-                  borderRadius: BorderRadius.circular(35),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(4),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: TextButton(
-                      child: const Text(
-                        "butao testes",
-                        style: TextStyle(
-                          color: Color.fromRGBO(25, 95, 255, 1.0),
-                          //decoration: TextDecoration.none,
-                        ),
-                      ),
-                      onPressed: () {
-                        print("ola");
-                        msgVazia(contextAccount);
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            /*Positioned(
+          /*Positioned(
           top: MediaQuery.of(context).size.height * 0.58,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
@@ -151,7 +131,7 @@ class _AccountState extends State<Account> {
               ),
               borderRadius: BorderRadius.circular(35),
             ),
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.all(10.0),
               child: FittedBox(
                 fit: BoxFit.contain,
@@ -170,7 +150,7 @@ class _AccountState extends State<Account> {
             Positioned(
               top: MediaQuery.of(context).size.height * 0.62,
               child: TextButton(
-                child: Text(
+                child: const Text(
                   "Opcoes conta",
                   style: TextStyle(fontSize: 30, color: Colors.white),
                 ),
@@ -199,11 +179,20 @@ class _AccountState extends State<Account> {
                   showDialog(
                     context: contextAccount,
                     builder: (contextAccount) {
-                        return FeedbackDialog();
+                      return FeedbackDialog();
                     },
-                  
-                  );
-                  msgVazia(contextAccount);
+                  ).then((value) =>{
+                    if(ola == 1){
+                      msgVazia(contextAccount),
+                      ola = 0
+                    }else if(ola == 2){
+                      categoriaVazia(contextAccount),
+                      ola = 0
+                    }else if (ola == 3){
+                      msgEnviada(contextAccount),
+                      ola = 0
+                    }
+                  });
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
@@ -394,10 +383,10 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
 
   @override
   Widget build(contextAccount) {
-    /*return MaterialApp(
-      home: ScaffoldMessenger(
-        child: Builder(builder: (context2){
-          return Scaffold(*/
+    //return MaterialApp(
+      //home: ScaffoldMessenger(
+        //child: Builder(builder: (context2){
+          //return Scaffold(*/
     return AlertDialog(
       backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
       scrollable: true,
@@ -481,16 +470,18 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                   String mensagem = mensagemController.text;
                   if (mensagemController.text == '') {
                     print("mensagem vaiza");
-
+                    ola = 1;
                     Navigator.pop(contextAccount);
-                    msgVazia(context);
+                    //msgVazia(contextAccount);
                   } else if (selectedValue == null) {
                     print("value vazio");
+                    ola = 2;
                     Navigator.pop(contextAccount);
-                    categoriaVazia(contextAccount);
+                    //categoriaVazia(contextAccount);
                   } else {
                     enviarFeedback(mensagem, selectedValue.toString());
                     mensagemController.text = '';
+                    ola = 3;
                     Navigator.pop(contextAccount);
                   }
                 },
@@ -500,7 +491,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
         )
       ],
     );
-    /*);
+        /*);
          }
          )
          )

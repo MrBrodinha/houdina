@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:houdina/firebase_options.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'Inicial/Login.dart';
 
@@ -10,6 +11,10 @@ void main() async {
   //Inicializar o Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
+  );
+  // Initialize Firebase App Check with the Play Integrity provider
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug,
   );
   runApp(const MaterialApp(home: Main()));
 }
@@ -21,7 +26,6 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  
   @override
   void initState() {
     super.initState();
@@ -72,13 +76,14 @@ class _MainState extends State<Main> {
                       padding: EdgeInsets.all(0.0),
                       child: FittedBox(
                         fit: BoxFit.contain,
-                        child: Text("Houdina",
-                        style: TextStyle(
-                          color: Color.fromRGBO(25, 95, 255, 1.0),
-                          decoration: TextDecoration.none,
+                        child: Text(
+                          "Houdina",
+                          style: TextStyle(
+                            color: Color.fromRGBO(25, 95, 255, 1.0),
+                            decoration: TextDecoration.none,
+                          ),
                         ),
-                        ),
-                      ), 
+                      ),
                     ),
                   ),
                 )

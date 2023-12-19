@@ -11,12 +11,18 @@ dependencies:
     sdk: flutter
   carousel_slider: ^4.2.1
   email_validator: ^2.1.17
+
   firebase_core: ^2.23.0
   firebase_auth: ^4.14.1
   cloud_firestore: ^4.13.2
-  
+  firebase_app_check: ^0.2.1+8
   file_picker: ^6.1.1
   firebase_storage: ^11.5.2
+
+  google_maps_flutter: ^2.5.0
+  flutter_polyline_points: ^1.0.0
+  flutter_google_places: ^0.3.0
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +34,4 @@ flutter:
   assets:
     - resources/Background.jpg
     - resources/Logo.png
+    - resources/default.png
