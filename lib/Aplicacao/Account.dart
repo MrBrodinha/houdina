@@ -16,8 +16,7 @@ String? email_user = FirebaseAuth.instance.currentUser?.email;
 String nome = '';
 int ola = 0;
 
-
-class NavigationService { 
+class NavigationService {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
 
@@ -29,9 +28,8 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
-
   late Future<Widget> imageFuture;
-  
+
   @override
   void initState() {
     super.initState();
@@ -52,74 +50,76 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: NavigationService.navigatorKey,
-      home: ScaffoldMessenger(child: Builder(builder: (contextAccount) {
-      return Scaffold(
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            //Wallpaper
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                      'https://wallpapercave.com/wp/wp10671634.jpg'),
-                  fit: BoxFit.cover,
+        navigatorKey: NavigationService.navigatorKey,
+        home: ScaffoldMessenger(child: Builder(builder: (contextAccount) {
+          return Scaffold(
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                //Wallpaper
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://wallpapercave.com/wp/wp10671634.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
-            ),
 
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.05,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.70,
-                height: MediaQuery.of(context).size.height * 0.10,
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Text(
-                      "Account",
-                      style: TextStyle(
-                        color: Color.fromRGBO(25, 95, 255, 1.0),
-                        decoration: TextDecoration.none,
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.05,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.70,
+                    height: MediaQuery.of(context).size.height * 0.10,
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          "Account",
+                          style: TextStyle(
+                            color: Color.fromRGBO(25, 95, 255, 1.0),
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
 
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.15,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.50,
-                height: MediaQuery.of(context).size.height * 0.25,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
-                    width: 4.0,
-                  ),
-                  ///borderRadius: BorderRadius.circular(35),
-                ),
-                child: FutureBuilder(
-                  future: imageFuture,
-                  builder: (context, snapshot){
-                    if (snapshot.connectionState == ConnectionState.done) {
-                          return snapshot.data as Widget;
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                  },
-                )/*Image.asset(
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.15,
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.50,
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromRGBO(25, 95, 255, 1.0),
+                          width: 4.0,
+                        ),
+
+                        ///borderRadius: BorderRadius.circular(35),
+                      ),
+                      child: FutureBuilder(
+                        future: imageFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return snapshot.data as Widget;
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      ) /*Image.asset(
                         'resources/default.png',
                         width: MediaQuery.of(context).size.height * 0.4,
                         height: MediaQuery.of(context).size.height * 0.4,
                       ),*/
-              ),
-            ),
+                      ),
+                ),
 
-          /*Positioned(
+                /*Positioned(
           top: MediaQuery.of(context).size.height * 0.58,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
@@ -147,181 +147,177 @@ class _AccountState extends State<Account> {
           ),
         ),*/
 
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.62,
-              child: TextButton(
-                child: const Text(
-                  "Opcoes conta",
-                  style: TextStyle(fontSize: 30, color: Colors.white),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => opcoes()),
-                  );
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(25, 95, 255, 1.0))),
-              ),
-            ),
-
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.73,
-              child: TextButton(
-                child: Text(
-                  "Apoio tecnico",
-                  style: TextStyle(fontSize: 30, color: Colors.white),
-                ),
-                onPressed: () {
-                  print(
-                      "nome user: $nome -- email user: $email_user -- iduser: $userid");
-                  showDialog(
-                    context: contextAccount,
-                    builder: (contextAccount) {
-                      return FeedbackDialog();
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.62,
+                  child: TextButton(
+                    child: const Text(
+                      "Opcoes conta",
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => opcoes()),
+                      );
                     },
-                  ).then((value) =>{
-                    if(ola == 1){
-                      msgVazia(contextAccount),
-                      ola = 0
-                    }else if(ola == 2){
-                      categoriaVazia(contextAccount),
-                      ola = 0
-                    }else if (ola == 3){
-                      msgEnviada(contextAccount),
-                      ola = 0
-                    }
-                  });
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(25, 95, 255, 1.0))),
-              ),
-            ),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Color.fromRGBO(25, 95, 255, 1.0))),
+                  ),
+                ),
 
-            Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.01,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromRGBO(25, 95, 255, 1.0),
-                          width: 3.0,
-                        ),
-                        borderRadius: BorderRadius.circular(35.0),
-                      ),
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.car_crash,
-                            size: MediaQuery.of(context).size.height * 0.05,
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Carros()));
-                          },
-                        ),
-                      ),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.73,
+                  child: TextButton(
+                    child: Text(
+                      "Apoio tecnico",
+                      style: TextStyle(fontSize: 30, color: Colors.white),
                     ),
+                    onPressed: () {
+                      print(
+                          "nome user: $nome -- email user: $email_user -- iduser: $userid");
+                      showDialog(
+                        context: contextAccount,
+                        builder: (contextAccount) {
+                          return FeedbackDialog();
+                        },
+                      ).then((value) => {
+                            if (ola == 1)
+                              {msgVazia(contextAccount), ola = 0}
+                            else if (ola == 2)
+                              {categoriaVazia(contextAccount), ola = 0}
+                            else if (ola == 3)
+                              {msgEnviada(contextAccount), ola = 0}
+                          });
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Color.fromRGBO(25, 95, 255, 1.0))),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromRGBO(25, 95, 255, 1.0),
-                          width: 3.0,
-                        ),
-                        borderRadius: BorderRadius.circular(35.0),
-                      ),
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.shopping_cart,
-                            size: MediaQuery.of(context).size.height * 0.05,
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
+                ),
+
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.01,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              width: 3.0,
+                            ),
+                            borderRadius: BorderRadius.circular(35.0),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Agendar()));
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  //Botão Central -> LOGO
-                  IconButton(
-                      icon: Image.asset(
-                        'resources/Logo.png',
-                        width: MediaQuery.of(context).size.height * 0.1,
-                        height: MediaQuery.of(context).size.height * 0.1,
-                      ),
-                      onPressed: null),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromRGBO(25, 95, 255, 1.0),
-                          width: 3.0,
-                        ),
-                        borderRadius: BorderRadius.circular(35.0),
-                      ),
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.gps_fixed,
-                            size: MediaQuery.of(context).size.height * 0.05,
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.car_crash,
+                                size: MediaQuery.of(context).size.height * 0.05,
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Carros()));
+                              },
+                            ),
                           ),
-                          onPressed: () {},
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromRGBO(25, 95, 255, 1.0),
-                          width: 3.0,
-                        ),
-                        borderRadius: BorderRadius.circular(35.0),
-                      ),
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.exit_to_app,
-                            size: MediaQuery.of(context).size.height * 0.05,
-                            color: const Color.fromRGBO(25, 95, 255, 1.0),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              width: 3.0,
+                            ),
+                            borderRadius: BorderRadius.circular(35.0),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Main()));
-                          },
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.shopping_cart,
+                                size: MediaQuery.of(context).size.height * 0.05,
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Agendar()));
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      //Botão Central -> LOGO
+                      IconButton(
+                          icon: Image.asset(
+                            'resources/Logo.png',
+                            width: MediaQuery.of(context).size.height * 0.1,
+                            height: MediaQuery.of(context).size.height * 0.1,
+                          ),
+                          onPressed: null),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              width: 3.0,
+                            ),
+                            borderRadius: BorderRadius.circular(35.0),
+                          ),
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.gps_fixed,
+                                size: MediaQuery.of(context).size.height * 0.05,
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              width: 3.0,
+                            ),
+                            borderRadius: BorderRadius.circular(35.0),
+                          ),
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.exit_to_app,
+                                size: MediaQuery.of(context).size.height * 0.05,
+                                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Main()));
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
-    })));
+          );
+        })));
   }
 }
 
@@ -384,9 +380,9 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
   @override
   Widget build(contextAccount) {
     //return MaterialApp(
-      //home: ScaffoldMessenger(
-        //child: Builder(builder: (context2){
-          //return Scaffold(*/
+    //home: ScaffoldMessenger(
+    //child: Builder(builder: (context2){
+    //return Scaffold(*/
     return AlertDialog(
       backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
       scrollable: true,
@@ -491,7 +487,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
         )
       ],
     );
-        /*);
+    /*);
          }
          )
          )
