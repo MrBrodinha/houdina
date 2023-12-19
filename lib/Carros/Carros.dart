@@ -4,12 +4,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:houdina/Classes/Carro.dart';
+
 
 import '../Aplicacao/Account.dart';
 import 'FuncCarros.dart';
-import '../Classes/Carro.dart';
 import '../Aplicacao/Agendar.dart';
-import '../Aplicacao/Maps.dart';
+import '../Maps/Maps.dart';
 
 class Carros extends StatefulWidget {
   const Carros({super.key});
@@ -64,6 +65,8 @@ class _CarrosState extends State<Carros> {
       return Scaffold(
           body: Container(
               alignment: Alignment.center,
+              width: MediaQuery.of(context).size.height * 1.0,
+              height: MediaQuery.of(context).size.height * 1.0,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
@@ -509,7 +512,13 @@ class _CarrosState extends State<Carros> {
                                         0.05,
                                     color:
                                         const Color.fromRGBO(25, 95, 255, 1.0)),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Maps()),
+                                  );
+                                },
                               ),
                             ),
                           ),
