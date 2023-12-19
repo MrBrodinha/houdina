@@ -5,12 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 //Dar import a files externos
 import '../Notificacoes.dart';
-import '../Carros/Carros.dart';
+import '../Cliente.dart';
 
 final db = FirebaseFirestore.instance;
 
 void criarConta(BuildContext context, String username, String email,
-    String password, String confirmPassword) async {
+  String password, String confirmPassword) async {
   // 0 -> Td bem / 1 -> User usado / 2 -> Email Usado
   int verificador = await verificarRegisto(username, email);
 
@@ -72,7 +72,7 @@ Future<void> logIn(BuildContext context, String email, String password) async {
     );
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Carros()),
+      MaterialPageRoute(builder: (context) => Cliente()),
     );
   } catch (e) {
     //Tirar o foco do teclado

@@ -26,7 +26,7 @@ class MapsState extends State<Maps> {
   var sourcelat = 40.1668615;
   var sourcelng = -7.7876066;
 
-  String? _currentAddress;
+  //String? _currentAddress;
   Position? _currentPosition;
 
   Set<Marker> _markers = Set<Marker>();
@@ -40,7 +40,7 @@ class MapsState extends State<Maps> {
   void initState() {
     super.initState();
 
-    final perms = _handleLocationPermission();
+    //final perms = _handleLocationPermission();
 
     _initialCameraPosition = CameraPosition(
       target: LatLng(sourcelat, sourcelng),

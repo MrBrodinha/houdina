@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
-
-import '../Main.dart';
-import '../Carros/Carros.dart';
-import 'Account.dart';
 
 class Agendar extends StatefulWidget {
   const Agendar({super.key});
@@ -209,118 +204,6 @@ class _AgendarState extends State<Agendar> {
                 ),
               ],
             )),
-
-        Positioned(
-          bottom: MediaQuery.of(context).size.height * 0.01,
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color.fromRGBO(25, 95, 255, 1.0),
-                      width: 3.0,
-                    ),
-                    borderRadius: BorderRadius.circular(35.0),
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.car_crash,
-                        size: MediaQuery.of(context).size.height * 0.05,
-                        color: const Color.fromRGBO(25, 95, 255, 1.0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Carros()));
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 65, 65, 65),
-                      width: 3.0,
-                    ),
-                    borderRadius: BorderRadius.circular(35.0),
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        size: MediaQuery.of(context).size.height * 0.05,
-                        color: const Color.fromARGB(255, 65, 65, 65),
-                      ),
-                      onPressed: null,
-                    ),
-                  ),
-                ),
-              ),
-              //Botão Central -> LOGO
-              IconButton(
-                  icon: Image.asset(
-                    'resources/Logo.png',
-                    width: MediaQuery.of(context).size.height * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                  ),
-                  onPressed: null),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color.fromRGBO(25, 95, 255, 1.0),
-                      width: 3.0,
-                    ),
-                    borderRadius: BorderRadius.circular(35.0),
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.gps_fixed,
-                        size: MediaQuery.of(context).size.height * 0.05,
-                        color: const Color.fromRGBO(25, 95, 255, 1.0),
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color.fromRGBO(25, 95, 255, 1.0),
-                      width: 3.0,
-                    ),
-                    borderRadius: BorderRadius.circular(35.0),
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.person,
-                        size: MediaQuery.of(context).size.height * 0.05,
-                        color: const Color.fromRGBO(25, 95, 255, 1.0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Account()),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }

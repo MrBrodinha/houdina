@@ -1,15 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:houdina/Inicial/Verificar.dart';
 
-import '../Main.dart';
-import '../Carros/Carros.dart';
 import '../Notificacoes.dart';
 import 'opcoes.dart';
-import 'Agendar.dart';
+
 
 String? userid = FirebaseAuth.instance.currentUser?.uid;
 String? email_user = FirebaseAuth.instance.currentUser?.email;
@@ -193,125 +189,6 @@ class _AccountState extends State<Account> {
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                             Color.fromRGBO(25, 95, 255, 1.0))),
-                  ),
-                ),
-
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.01,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              width: 3.0,
-                            ),
-                            borderRadius: BorderRadius.circular(35.0),
-                          ),
-                          child: Center(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.car_crash,
-                                size: MediaQuery.of(context).size.height * 0.05,
-                                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Carros()));
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              width: 3.0,
-                            ),
-                            borderRadius: BorderRadius.circular(35.0),
-                          ),
-                          child: Center(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.shopping_cart,
-                                size: MediaQuery.of(context).size.height * 0.05,
-                                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Agendar()));
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      //Botão Central -> LOGO
-                      IconButton(
-                          icon: Image.asset(
-                            'resources/Logo.png',
-                            width: MediaQuery.of(context).size.height * 0.1,
-                            height: MediaQuery.of(context).size.height * 0.1,
-                          ),
-                          onPressed: null),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              width: 3.0,
-                            ),
-                            borderRadius: BorderRadius.circular(35.0),
-                          ),
-                          child: Center(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.gps_fixed,
-                                size: MediaQuery.of(context).size.height * 0.05,
-                                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              width: 3.0,
-                            ),
-                            borderRadius: BorderRadius.circular(35.0),
-                          ),
-                          child: Center(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.exit_to_app,
-                                size: MediaQuery.of(context).size.height * 0.05,
-                                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Main()));
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],
