@@ -69,7 +69,7 @@ class _AgendarState extends State<Agendar> {
               children: [
                 //ICON ESQUERDO
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -113,7 +113,7 @@ class _AgendarState extends State<Agendar> {
                 ),
                 //ICON DA DIREITA
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(

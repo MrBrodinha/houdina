@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:houdina/Classes/Carro.dart';
-import 'FuncCarros.dart';
 
 class Carros extends StatefulWidget {
   const Carros({super.key});
@@ -14,10 +13,383 @@ class Carros extends StatefulWidget {
 }
 
 class _CarrosState extends State<Carros> {
+
+  //Variáveis Relativas às Imagens
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   String? urDownload;
 
+  //Variáveis Relativas à introdução de Carros na Database
+  final TextEditingController matriculaController = TextEditingController();
+  final TextEditingController anoController = TextEditingController();
+  final TextEditingController kilometragemController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
+  String? userID = FirebaseAuth.instance.currentUser?.uid;
+
+  //Variáveis Relativas à Procura de Carro por Matrícula
+  bool search = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ScaffoldMessenger(child: Builder(builder: (context3) {
+        return Scaffold(
+          body: Container(
+            //Estrutura Principal -> Wallpaper
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                    'https://wallpapercave.com/wp/wp10671634.jpg'),
+                //Para preencher a tela toda
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                //--------------------PARTE DE CIMA (ICON TITULO ICON)--------------------
+                Positioned(
+                  //Posicionado de maneira a evitar cortar as mensagens dos SnackBars
+                  top: MediaQuery.of(context).size.height * 0.10,
+                  child: Row(
+                    children: [
+                      //ICON ESQUERDO
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromRGBO(25, 95, 255, 1.0),
+                            width: 3.0,
+                          ),
+                          borderRadius: BorderRadius.circular(35.0),
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(Icons.search,
+                              size: MediaQuery.of(context).size.height * 0.05,
+                              color:const Color.fromRGBO(25, 95, 255, 1.0),
+                            ),
+                            onPressed: () {
+                              showDialog(context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                                    scrollable: true,
+                                    content: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Form(
+                                        child: Column(
+                                          children: [
+                                            TextFormField(
+                                              style: const TextStyle(color: Colors.white),
+                                                decoration: const InputDecoration(
+                                                labelStyle: TextStyle(color: Colors.white),
+                                                labelText: "Plate:",
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color:Colors.white
+                                                  ),
+                                                ),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller: searchController,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    actions: [
+                                      Center(child:
+                                          ElevatedButton(child: const Text(
+                                            "Submit",
+                                            style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))),
+
+                                            onPressed: () async {
+                                              String matricula = searchController.text;
+                                              //Função Que dá return ao carro com a matricula dada
+                                              Carro? carroprocurado = await verCarro(matricula, userID!);
+                                              
+                                              //Caso encontre um carro com essa matrícula sai do Dialog com search = true
+                                              if (carroprocurado != null){
+                                                setState(() {
+                                                  search = true;
+                                                });
+                                                searchController.text = "";
+                                                Navigator.pop(context);
+                                              }else{
+                                                setState(() {
+                                                  search = false;
+                                                });
+                                                searchController.text = "";
+                                                Navigator.pop(context);
+                                              }
+                                            },
+                                          ),
+                                      )
+                                    ],
+                                  );
+                                }
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+
+
+                      //LETREIRO
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.60,
+                        height: MediaQuery.of(context).size.height * 0.10,
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              "Vehicles",
+                              style: TextStyle(
+                                color: Color.fromRGBO(25, 95, 255, 1.0),
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+
+                      //ICON DA DIREITA
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromRGBO(25, 95, 255, 1.0),
+                            width: 3.0,
+                          ),
+                          borderRadius: BorderRadius.circular(35.0),
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(Icons.plus_one_outlined,
+                                size: MediaQuery.of(context).size.height * 0.05,
+                                color: const Color.fromRGBO(25, 95, 255, 1.0)),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                                    scrollable: true,
+                                    content: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Form(
+                                        child: Column(
+                                          children: [
+                                            TextFormField(
+                                              style: const TextStyle(color: Colors.white),
+                                              decoration: const InputDecoration(
+                                                labelStyle: TextStyle(color: Colors.white),
+                                                labelText:"Plate:",
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color:Colors.white
+                                                  ),
+                                                ),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color:Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller: matriculaController,
+                                            ),
+                                            TextFormField(
+                                              style: const TextStyle( color: Colors.white),
+                                              decoration: const InputDecoration(
+                                                labelStyle: TextStyle(color: Colors.white),
+                                                labelText:"Year of the Car:",
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color:Colors.white
+                                                  ),
+                                                ),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller: anoController,
+                                            ),
+                                            TextFormField(
+                                              style: const TextStyle(color: Colors.white),
+                                              decoration: const InputDecoration(
+                                                labelStyle: TextStyle(color: Colors.white),
+                                                labelText: "Mileage:",
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color:Colors.white
+                                                  ),
+                                                ),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              controller: kilometragemController,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    actions: [
+                                      Center(child: Column(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                            child: Text("Car Image: ",
+                                              style: TextStyle(
+                                                color: Colors.white
+                                              )
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            child: const Text("Attach Files",
+                                              style: TextStyle(
+                                                color: Color.fromRGBO(25, 95, 255, 1.0)
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              selectFile();
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: const Text("Submit",
+                                              style: TextStyle(
+                                                color: Color.fromRGBO(25, 95, 255, 1.0))
+                                              ),
+                                            onPressed: () async {
+                                              String matricula = matriculaController.text;
+                                              String ano = anoController.text;
+                                              String kilometragem = kilometragemController.text;
+
+                                              //Vai buscar o ID do geral
+                                              int identificador = await obterID_Imagem();
+                                              //Nome da Imagem será o ID
+                                              uploadFile(identificador);
+                                              //Caso ver seja -1 -> ERRO
+                                              int ver;
+                                              if (pickedFile != null) {
+                                                ver = identificador;
+                                                //FOTO FICA COM IDENTIFICADOR E SOMA MAIS UM PARA USAR NA PROX
+                                                identificador += 1;
+                                                atualizarID_Imagem(identificador);
+                                              } else {
+                                                //ERRO OU FILE VAZIO
+                                                ver = -1;
+                                              }
+
+                                              adicionarCarro(context3, matricula, ano, kilometragem, userID!, ver);
+
+                                              matriculaController.text = "";
+                                              anoController.text = "";
+                                              kilometragemController.text = "";
+                                              pickedFile = null;
+
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      ))
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+
+
+
+
+                //--------------------MEIO--------------------
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.21,
+                  height: MediaQuery.of(context).size.height * 0.71,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.80,
+                    child: FutureBuilder<List<Carro>>(
+                      future: obterCarrosUser(userID!),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          List<Carro> carrosUser = snapshot.data!;
+                          //APRESENTA TDS OS CARROS
+                          if(search == false){
+                            return ListView.builder(
+                              itemCount: carrosUser.length,
+                              itemBuilder: (context, index) {
+                                return ElementoCarro(carro: carrosUser[index]);
+                              },
+                            );
+                          } else {
+                            // Caso tenha Filtrado
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  child: const Text("Clear Filters",
+                                    style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      search = false;
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: 1,
+                                    itemBuilder: (context, index) {
+                                      return ElementoCarro(carro: carrosUser[index]);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        }
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.1,
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            child: const CircularProgressIndicator(),
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ),
+        );
+      }))
+    );
+  }
+
+
+
+
+
+  //FUNÇÃO DE SELEÇÃO DAS IMAGENS
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles();
     if (result == null) return;
@@ -25,7 +397,7 @@ class _CarrosState extends State<Carros> {
       pickedFile = result.files.first;
     });
   }
-
+  //FUNÇÃO DE UPLOAD DAS IMAGENS
   Future uploadFile(int identificador) async {
     final path = 'carros/$identificador';
     final file = File(pickedFile!.path!);
@@ -43,393 +415,4 @@ class _CarrosState extends State<Carros> {
     });
   }
 
-  //-----INSERIR DADOS CARRO-----
-  final TextEditingController matriculaController = TextEditingController();
-  final TextEditingController anoController = TextEditingController();
-  final TextEditingController kilometragemController = TextEditingController();
-  final TextEditingController searchController = TextEditingController();
-  String? userID = FirebaseAuth.instance.currentUser?.uid;
-
-  //-----FILTRAR CARRO-----
-  bool search = false;
-
-  //-----BOTTOM NAVIGATOR-----
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: ScaffoldMessenger(child: Builder(builder: (context3) {
-      return Scaffold(
-          body: Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.height * 1.0,
-              height: MediaQuery.of(context).size.height * 1.0,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                      'https://wallpapercave.com/wp/wp10671634.jpg'),
-                  //Para preencher a tela toda
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  //--------------------PARTE DE CIMA (ICON TITULO ICON)--------------------
-                  Positioned(
-                      top: MediaQuery.of(context).size.height * 0.10,
-                      child: Row(
-                        children: [
-                          //ICON ESQUERDO
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromRGBO(25, 95, 255, 1.0),
-                                  width: 3.0,
-                                ),
-                                borderRadius: BorderRadius.circular(35.0),
-                              ),
-                              child: Center(
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.search,
-                                    size: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    color:
-                                        const Color.fromRGBO(25, 95, 255, 1.0),
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor: const Color.fromRGBO(
-                                              25, 95, 255, 0.7),
-                                          scrollable: true,
-                                          content: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Form(
-                                              child: Column(
-                                                children: [
-                                                  TextFormField(
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      labelStyle: TextStyle(
-                                                          color: Colors.white),
-                                                      labelText: "Plate:",
-                                                      focusedBorder: UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:Colors.white),
-                                                      ),
-                                                      enabledBorder: UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    controller: searchController,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          actions: [
-                                            Center(child:
-                                                ElevatedButton(
-                                                  child: const Text(
-                                                    "Submit",
-                                                    style: TextStyle(
-                                                      color: Color.fromRGBO(25, 95, 255, 1.0))),
-                                                  onPressed: () async {
-
-                                                    String matricula = searchController.text;
-                                                    
-                                                    List<Carro> listacarrosprocurados = await verCarro(matricula, userID!);
-                                                    
-                                                    if (listacarrosprocurados.isNotEmpty) {
-                                                      search = true;
-                                                      Carro carroprocurado = listacarrosprocurados.first;
-                                                      searchController.text = "";
-                                                      print(carroprocurado);
-                                                      Navigator.pop(context);
-                                                    }else{
-                                                      search = false;
-                                                      searchController.text = "";
-                                                      Navigator.pop(context);
-                                                    }
-                                                  },
-                                                ),
-                                            )
-                                          ],
-                                        );
-                                      }
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                          //LETREIRO
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.60,
-                              height: MediaQuery.of(context).size.height * 0.10,
-                              child: const Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Text(
-                                    "Vehicles",
-                                    style: TextStyle(
-                                      color: Color.fromRGBO(25, 95, 255, 1.0),
-                                      decoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          //ICON DA DIREITA
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromRGBO(25, 95, 255, 1.0),
-                                  width: 3.0,
-                                ),
-                                borderRadius: BorderRadius.circular(35.0),
-                              ),
-                              child: Center(
-                                child: IconButton(
-                                  icon: Icon(Icons.plus_one_outlined,
-                                      size: MediaQuery.of(context).size.height *
-                                          0.05,
-                                      color: const Color.fromRGBO(
-                                          25, 95, 255, 1.0)),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor: const Color.fromRGBO(
-                                              25, 95, 255, 0.7),
-                                          scrollable: true,
-                                          content: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Form(
-                                              child: Column(
-                                                children: [
-                                                  TextFormField(
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      labelStyle: TextStyle(
-                                                          color: Colors.white),
-                                                      labelText:
-                                                          "Plate:",
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    controller:
-                                                        matriculaController,
-                                                  ),
-                                                  TextFormField(
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      labelStyle: TextStyle(
-                                                          color: Colors.white),
-                                                      labelText:
-                                                          "Year of the Car:",
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    controller: anoController,
-                                                  ),
-                                                  TextFormField(
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      labelStyle: TextStyle(
-                                                          color: Colors.white),
-                                                      labelText: "Mileage:",
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    controller:
-                                                        kilometragemController,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          actions: [
-                                            Center(
-                                                child: Column(
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      0, 0, 0, 10),
-                                                  child: Text("Car Image: ",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.white)),
-                                                ),
-                                                ElevatedButton(
-                                                  child: const Text(
-                                                    "Attach Files",
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            25, 95, 255, 1.0)),
-                                                  ),
-                                                  onPressed: () {
-                                                    selectFile();
-                                                  },
-                                                ),
-                                                ElevatedButton(
-                                                  child: const Text("Submit",
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              25,
-                                                              95,
-                                                              255,
-                                                              1.0))),
-                                                  onPressed: () async {
-                                                    String matricula =
-                                                        matriculaController
-                                                            .text;
-                                                    String ano =
-                                                        anoController.text;
-                                                    String kilometragem =
-                                                        kilometragemController
-                                                            .text;
-
-                                                    //Vai buscar o ID do geral
-                                                    int identificador = await obterID_Imagem();
-                                                    //Nome da Imagem será o ID
-                                                    uploadFile(identificador);
-                                                    //Caso ver seja -1 -> ERRO
-                                                    int ver;
-                                                    if (pickedFile != null) {
-                                                      ver = identificador;
-                                                      //FOTO FICA COM IDENTIFICADOR E SOMA MAIS UM PARA USAR NA PROX
-                                                      identificador += 1;
-                                                      atualizarID_Imagem(identificador);
-                                                    } else {
-                                                      //ERRO OU FILE VAZIO
-                                                      ver = -1;
-                                                    }
-
-                                                    adicionarCarro(context3, matricula, ano, kilometragem, userID!, ver);
-
-                                                    matriculaController.text =
-                                                        "";
-                                                    anoController.text = "";
-                                                    kilometragemController
-                                                        .text = "";
-                                                    pickedFile = null;
-
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            ))
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-
-                  //--------------------MEIO--------------------
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.21,
-                    height: MediaQuery.of(context).size.height * 0.64,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.80,
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: FutureBuilder<List<Carro>>(
-                        future: obterCarrosUser(userID!),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done) {
-                            List<Carro> carrosUser = snapshot.data!;
-                            //APRESENTA TDS OS CARROS
-                            if(search == false){
-                              return ListView.builder(
-                                itemCount: carrosUser.length,
-                                itemBuilder: (context, index) {
-                                  return ElementoCarro(carro: carrosUser[index]);
-                                },
-                              );
-                            }else{
-                              return ListView.builder(
-                                itemCount: 1,
-                                itemBuilder: (context, index) {
-                                  return ElementoCarro(carro: carrosUser[index]);
-                                },
-                              );
-                            }
-                          }
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.1,
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              child: const CircularProgressIndicator(),
-                            );
-                          }
-                          return Container();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ),
-        );
-    })));
-  }
 }

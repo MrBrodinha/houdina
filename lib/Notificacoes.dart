@@ -158,8 +158,7 @@ void adicionarCErro(BuildContext context) {
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height -
-          (MediaQuery.of(context).size.height * 0.10),
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.185),
       left: MediaQuery.of(context).size.width * 0.05,
       right: MediaQuery.of(context).size.width * 0.05,
     ),
@@ -182,8 +181,7 @@ void adicionarImagemFalta(BuildContext context) {
     showCloseIcon: true,
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
-      bottom: MediaQuery.of(context).size.height -
-          (MediaQuery.of(context).size.height * 0.10),
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.185),
       left: MediaQuery.of(context).size.width * 0.15,
       right: MediaQuery.of(context).size.width * 0.15,
     ),
@@ -214,11 +212,10 @@ void adicionarCarroSucesso(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-/*
+
 //-------------------------------------------------------------------------------------------------------------------------------------------
 //                                                           NOTIFICACOES DA CONTA
 //-------------------------------------------------------------------------------------------------------------------------------------------
-*/
 
 void msgVazia(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
