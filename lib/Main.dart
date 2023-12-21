@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:houdina/firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
-import 'Login/Login.dart';
+import 'login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ void main() async {
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.debug,
   );
-  runApp(const MaterialApp(home: Main()));
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Main()));
 }
 
 class Main extends StatefulWidget {

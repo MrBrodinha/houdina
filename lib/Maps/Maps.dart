@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,9 +7,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:houdina/maps/location_services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' as http;
 
-String google_api_key = "AIzaSyCTmJLBFlHfmGCCUMMjoqXKO8n5NNCv_wY";
+String googleApiKey = "AIzaSyCTmJLBFlHfmGCCUMMjoqXKO8n5NNCv_wY";
 
 class Maps extends StatefulWidget {
   const Maps({super.key});
@@ -20,77 +23,68 @@ class MapsState extends State<Maps> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  TextEditingController _originController = TextEditingController();
-  TextEditingController _destinationController = TextEditingController();
+  final TextEditingController _originController = TextEditingController();
+  final TextEditingController _destinationController = TextEditingController();
 
   var sourcelat = 40.1668615;
   var sourcelng = -7.7876066;
 
-  //String? _currentAddress;
-  Position? _currentPosition;
-
-  Set<Marker> _markers = Set<Marker>();
-  Set<Polyline> _polylines = Set<Polyline>();
+  final Set<Marker> _markers = <Marker>{};
+  final Set<Polyline> _polylines = <Polyline>{};
 
   int _polylineIdCounter = 1;
 
-  late CameraPosition _initialCameraPosition;
+  final CameraPosition _initialCameraPosition = const CameraPosition(
+    target: LatLng(40.1668615, -7.7876066),
+    zoom: 20,
+  );
+
+  String _mapStyle = '';
 
   @override
   void initState() {
     super.initState();
-
-    //final perms = _handleLocationPermission();
-
-    _initialCameraPosition = CameraPosition(
-      target: LatLng(sourcelat, sourcelng),
-      zoom: 20,
-    );
-
-    _getCurrentPosition();
+    _loadMapStyleFromFirebase().then((style) {
+      setState(() {
+        _mapStyle = style;
+      });
+    });
+    _handleLocationPermission();
     _setMarkers(LatLng(sourcelat, sourcelng));
   }
 
-  Future<void> _getCurrentPosition() async {
+  Future<void> _goToMyLocation() async {
     final hasPermission = await _handleLocationPermission();
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-      print(position);
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    if (!hasPermission) {
+      return;
+    }
 
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
+      final GoogleMapController controller = await _controller.future;
+
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(position.latitude, position.longitude),
+          zoom: 20.0,
+        ),
+      ));
+
       setState(() {
-        sourcelat = _currentPosition?.latitude ?? sourcelat;
-        sourcelng = _currentPosition?.longitude ?? sourcelng;
-        _initialCameraPosition = CameraPosition(
-          target: LatLng(sourcelat, sourcelng),
-          zoom: 20,
+        _markers.clear();
+        _markers.add(
+          Marker(
+            markerId: const MarkerId('current_location'),
+            position: LatLng(position.latitude, position.longitude),
+            infoWindow: const InfoWindow(title: 'My Location'),
+          ),
         );
-
-        _setMarkers(LatLng(sourcelat, sourcelng));
       });
-      _getAddressFromLatLng(position);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
-
-  Future<void> _getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(sourcelat, sourcelng)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _originController.text =
-            '${place.street}, ${place.subLocality},${place.subAdministrativeArea}, ${place.postalCode}';
-      });
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    } catch (e) {
+      debugPrint('Error getting location: $e');
+    }
   }
 
   void _setMarkers(LatLng point) {
@@ -116,6 +110,122 @@ class MapsState extends State<Maps> {
             .map((point) => LatLng(point.latitude, point.longitude))
             .toList(),
         width: 2));
+  }
+
+  Future<void> _showRoad(double lat, double lng, double lat2, double lng2,
+      Map<String, dynamic> boundsNE, Map<String, dynamic> boundsSW) async {
+    _markers.clear();
+    final GoogleMapController controller = await _controller.future;
+    final LatLng newPlace = LatLng(lat, lng);
+    final LatLng newPlace2 = LatLng(lat2, lng2);
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(target: newPlace, zoom: 20),
+    ));
+
+    controller.animateCamera(CameraUpdate.newLatLngBounds(
+      LatLngBounds(
+        northeast: LatLng(boundsNE['lat'], boundsNE['lng']),
+        southwest: LatLng(boundsSW['lat'], boundsSW['lng']),
+      ),
+      50,
+    ));
+    _setMarkers(newPlace);
+    _setMarkers(newPlace2);
+  }
+
+  Future<String> _loadMapStyleFromFirebase() async {
+    if (_mapStyle.isNotEmpty) {
+      return _mapStyle; // Return existing style if already loaded
+    }
+
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      String downloadURL =
+          await storage.ref('aplicacao/maps.json').getDownloadURL();
+      final response = await http.get(Uri.parse(downloadURL));
+      return response.body;
+    } catch (e) {
+      debugPrint('Error loading map style: $e');
+      return '';
+    }
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+    if (_mapStyle.isNotEmpty) {
+      controller.setMapStyle(_mapStyle);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Maps'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.my_location),
+            onPressed: _goToMyLocation,
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(children: [
+                  TextFormField(
+                    controller: _originController,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(hintText: 'Origin'),
+                  ),
+                  TextFormField(
+                    controller: _destinationController,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(hintText: 'Destination'),
+                  )
+                ]),
+              ),
+              IconButton(
+                  onPressed: () async {
+                    var directions = await LocationService().getDirections(
+                        _originController.text, _destinationController.text);
+                    _showRoad(
+                        directions['start_location']['lat'],
+                        directions['start_location']['lng'],
+                        directions['end_location']['lat'],
+                        directions['end_location']['lng'],
+                        directions['bounds_ne'],
+                        directions['bounds_sw']);
+
+                    _setPolyline(directions['polyline_decoded']);
+                  },
+                  icon: const Icon(Icons.search))
+            ],
+          ),
+          Expanded(
+            child: FutureBuilder(
+              future: _loadMapStyleFromFirebase(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return GoogleMap(
+                    mapType: MapType.normal,
+                    markers: _markers,
+                    polylines: _polylines,
+                    initialCameraPosition: _initialCameraPosition,
+                    onMapCreated: _onMapCreated,
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<bool> _handleLocationPermission() async {
@@ -145,82 +255,5 @@ class MapsState extends State<Maps> {
       return false;
     }
     return true;
-  }
-
-  Future<void> _showRoad(double lat, double lng, double lat2, double lng2,
-      Map<String, dynamic> boundsNE, Map<String, dynamic> boundsSW) async {
-    _markers.clear();
-    final GoogleMapController controller = await _controller.future;
-    final LatLng newPlace = LatLng(lat, lng);
-    final LatLng newPlace2 = LatLng(lat2, lng2);
-
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(target: newPlace, zoom: 20),
-    ));
-
-    controller.animateCamera(CameraUpdate.newLatLngBounds(
-      LatLngBounds(
-        northeast: LatLng(boundsNE['lat'], boundsNE['lng']),
-        southwest: LatLng(boundsSW['lat'], boundsSW['lng']),
-      ),
-      50,
-    ));
-    _setMarkers(newPlace);
-    _setMarkers(newPlace2);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(children: [
-                  TextFormField(
-                    controller: _originController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(hintText: 'Origin'),
-                  ),
-                  TextFormField(
-                    controller: _destinationController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(hintText: 'Destination'),
-                  )
-                ]),
-              ),
-              IconButton(
-                  onPressed: () async {
-                    var directions = await LocationService().getDirections(
-                        _originController.text, _destinationController.text);
-                    _showRoad(
-                        directions['start_location']['lat'],
-                        directions['start_location']['lng'],
-                        directions['end_location']['lat'],
-                        directions['end_location']['lng'],
-                        directions['bounds_ne'],
-                        directions['bounds_sw']);
-
-                    _setPolyline(directions['polyline_decoded']);
-                  },
-                  icon: Icon(Icons.search))
-            ],
-          ),
-          Expanded(
-            child: GoogleMap(
-              mapType: MapType.normal,
-              markers: _markers,
-              polylines: _polylines,
-              initialCameraPosition: _initialCameraPosition,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

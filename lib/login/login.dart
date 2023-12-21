@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 //Dar import a files externos
-import 'Signup.dart';
-import 'Verificar.dart';
+import 'signup.dart';
+import 'verificar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -22,6 +22,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           alignment: Alignment.center,

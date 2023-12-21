@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 //Dar import a files externos
-import 'Verificar.dart';
+import 'verificar.dart';
 
 //ACREDITO QUE TODAS AS NOSSAS ABAS CONVEM ESTAREM EM STATEFUL PQ MUDAM DE PARAMETROS CONSTANTEMENTE
 
@@ -27,7 +27,9 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: ScaffoldMessenger(
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: ScaffoldMessenger(
       child: Builder(builder: (context2) {
         return Scaffold(
           body: Container(

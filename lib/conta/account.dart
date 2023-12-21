@@ -46,6 +46,7 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: NavigationService.navigatorKey,
         home: ScaffoldMessenger(child: Builder(builder: (contextAccount) {
           return Scaffold(
