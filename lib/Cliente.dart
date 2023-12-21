@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Carros/Carros.dart';
-import 'Aplicacao/Agendar.dart';
+import 'Agendar/Agendar.dart';
 import 'Maps/Maps.dart';
-import 'Aplicacao/Account.dart';
-import 'Main.dart';
+import 'conta/Account.dart';
+import 'main.dart';
 
 class Cliente extends StatefulWidget {
   const Cliente({super.key});
