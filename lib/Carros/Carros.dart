@@ -27,6 +27,7 @@ class _CarrosState extends State<Carros> {
 
   //Variáveis Relativas à Procura de Carro por Matrícula
   bool search = false;
+  Carro? carroprocurado;
 
   @override
   Widget build(BuildContext context) {
@@ -132,13 +133,12 @@ class _CarrosState extends State<Carros> {
                                                     String matricula =
                                                         searchController.text;
                                                     //Função Que dá return ao carro com a matricula dada
-                                                    Carro? carroprocurado =
+                                                    carroprocurado =
                                                         await verCarro(
                                                             matricula, userID!);
 
                                                     //Caso encontre um carro com essa matrícula sai do Dialog com search = true
-                                                    if (carroprocurado !=
-                                                        null) {
+                                                    if (carroprocurado != null) {
                                                       setState(() {
                                                         search = true;
                                                       });
@@ -420,8 +420,7 @@ class _CarrosState extends State<Carros> {
                                       child: ListView.builder(
                                         itemCount: 1,
                                         itemBuilder: (context, index) {
-                                          return ElementoCarro(
-                                              carro: carrosUser[index]);
+                                          return ElementoCarro(carro: carroprocurado!);
                                         },
                                       ),
                                     ),

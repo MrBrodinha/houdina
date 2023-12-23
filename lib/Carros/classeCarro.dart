@@ -135,8 +135,8 @@ Future<Carro?> verCarro(String matricula, String userID) async {
   try {
     QuerySnapshot<Map<String, dynamic>> carro = await FirebaseFirestore.instance
       .collection('Carros')
-
       .where('Matricula', isEqualTo: matricula)
+      .where('UserID', isEqualTo: userID)
       .get();
 
     if (carro.docs.isNotEmpty) {
