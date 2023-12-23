@@ -9,7 +9,6 @@ import 'opcoes.dart';
 
 String? userid = FirebaseAuth.instance.currentUser?.uid;
 String? email_user = FirebaseAuth.instance.currentUser?.email;
-String nome = '';
 int ola = 0;
 
 class NavigationService {
@@ -29,8 +28,6 @@ class _AccountState extends State<Account> {
   @override
   void initState() {
     super.initState();
-    imageFuture = obterImagempfp(context);
-    nomeUser2();
   }
 
   //para dar sign out
@@ -69,58 +66,83 @@ class _AccountState extends State<Account> {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.70,
                     height: MediaQuery.of(context).size.height * 0.10,
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(10.0),
                       child: FittedBox(
                         fit: BoxFit.contain,
-                        child: Text(
-                          "Account",
-                          style: TextStyle(
-                            color: Color.fromRGBO(25, 95, 255, 1.0),
-                            decoration: TextDecoration.none,
-                          ),
+                        child: FutureBuilder(
+                          future: nomeUser(), 
+                          builder: (context, snapshot){
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return Container(
+                                  //padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                  child: snapshot.data,
+                                );
+                            }
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.1,
+                                  height: MediaQuery.of(context).size.height * 0.1,
+                                  child: const CircularProgressIndicator(),
+                                );
+                            }
+                            return Container();
+                            /*if (snapshot.connectionState == ConnectionState.done) {
+                                  return snapshot.data as Widget;
+                                } else {
+                                  return CircularProgressIndicator();
+                                }*/
+                          },
                         ),
                       ),
                     ),
                   ),
                 ),
 
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.15,
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.50,
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromRGBO(25, 95, 255, 1.0),
-                          width: 4.0,
-                        ),
-
-                        ///borderRadius: BorderRadius.circular(35),
-                      ),
-                      child: FutureBuilder(
-                        future: imageFuture,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return snapshot.data as Widget;
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      ) /*Image.asset(
-                        'resources/default.png',
-                        width: MediaQuery.of(context).size.height * 0.4,
-                        height: MediaQuery.of(context).size.height * 0.4,
-                      ),*/
-                      ),
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.15,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.50,
+                height: MediaQuery.of(context).size.height * 0.25,
+                /*decoration: BoxDecoration( //BORDA NAO APAGAR PODE DAR JEITO
+                  border: Border.all(
+                    color: const Color.fromRGBO(25, 95, 255, 1.0),
+                    width: 4.0,
+                  ),
+                  borderRadius: BorderRadius.circular(35),
+                ),*/
+                child: FutureBuilder(
+                  future: obterImagemperfil(context, "fotosPFP/${userid!}"),
+                  builder: (context, snapshot){
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Container(
+                          //padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                          child: snapshot.data,
+                        );
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.1,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: const CircularProgressIndicator(),
+                        );
+                    }
+                    return Container();
+                    /*if (snapshot.connectionState == ConnectionState.done) {
+                          return snapshot.data as Widget;
+                        } else {
+                          return CircularProgressIndicator();
+                        }*/
+                  },
                 ),
+              ),
+            ),
 
-                /*Positioned(
-          top: MediaQuery.of(context).size.height * 0.58,
+          Positioned(
+          top: MediaQuery.of(context).size.height * 0.50,
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.70,
-            height: MediaQuery.of(context).size.height * 0.10,
+            width: MediaQuery.of(context).size.width * 0.55,
+            height: MediaQuery.of(context).size.height * 0.085,
             decoration: BoxDecoration(
               border: Border.all(
                 color: const Color.fromRGBO(25, 95, 255, 1.0),
@@ -133,7 +155,7 @@ class _AccountState extends State<Account> {
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
-                  "account options",//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
+                  "Opcoes conta",//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
                 style: TextStyle(
                   color: Color.fromRGBO(25, 95, 255, 1.0),
                   decoration: TextDecoration.none,
@@ -142,7 +164,7 @@ class _AccountState extends State<Account> {
               ), 
             ),
           ),
-        ),*/
+        ),
 
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.62,
@@ -155,7 +177,7 @@ class _AccountState extends State<Account> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => opcoes()),
-                      );
+                      ).then((value) => {setState((){})});
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
@@ -172,7 +194,7 @@ class _AccountState extends State<Account> {
                     ),
                     onPressed: () {
                       print(
-                          "nome user: $nome -- email user: $email_user -- iduser: $userid");
+                          "nome user: caga -- email user: $email_user -- iduser: $userid");
                       showDialog(
                         context: contextAccount,
                         builder: (contextAccount) {
@@ -237,13 +259,25 @@ Future<void> enviarFeedback(String mensagem, String categoria) async {
   }
 }
 
-void nomeUser2() async {
-  DocumentSnapshot verNome2 =
-      await FirebaseFirestore.instance.collection('users').doc(userid).get();
-
-  print(verNome2['Username'].toString());
-  print("OLAAA");
-  nome = verNome2['Username'];
+Future<Widget> nomeUser() async{
+  Text texto = Text("Account", 
+                  style: const TextStyle(
+                    color: Color.fromRGBO(25, 95, 255, 1.0),
+                    decoration: TextDecoration.none,
+                  ),);
+  try{
+    await FirebaseFirestore.instance.collection('users').doc(userid).get().then((value) =>  
+      texto = Text(value['Username'], 
+                  style: const TextStyle(
+                    color: Color.fromRGBO(25, 95, 255, 1.0),
+                    decoration: TextDecoration.none,
+                  ),)
+    );
+  }catch(e){
+    print("erro a dar load ao nome");
+    return texto;
+  }
+    return texto;
 }
 
 class FeedbackDialog extends StatefulWidget {

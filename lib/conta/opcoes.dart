@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:houdina/Notificacoes.dart';
 
 import 'account.dart';
 
@@ -32,17 +33,26 @@ class _opcoesState extends State<opcoes> {
   }
 
   Future uploadFile() async {
+
     final path = 'fotosPFP/$userid';
     final file = File(pickedFile!.path!);
     final ref = FirebaseStorage.instance.ref().child(path);
 
+    try{
+      Reference storageReference = FirebaseStorage.instance.refFromURL("gs://houdina-2194.appspot.com/fotosPFP/${userid!}");
+      await storageReference.delete().then((value) => 
+      print("acabei await"));
+    }catch(e){
+      print('erro a apagar: $e');
+    }
+    print("tou uauqi");
     setState(() {
       uploadTask = ref.putFile(file);
     });
 
     final snapshot = await uploadTask!.whenComplete(() {});
     urDownload = await snapshot.ref.getDownloadURL();
-
+    
     setState(() {
       uploadTask == null;
     });
@@ -112,7 +122,30 @@ class _opcoesState extends State<opcoes> {
                         child: Form(
                           child: Column(
                             children: [
-                              Text("nome atual: $nome"),
+                              FutureBuilder(
+                                future: nomeUser(), 
+                                builder: (context, snapshot){
+                                  if (snapshot.connectionState == ConnectionState.done) {
+                                    return Container(
+                                        //padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                        child: snapshot.data,
+                                      );
+                                  }
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.1,
+                                        height: MediaQuery.of(context).size.height * 0.1,
+                                        child: const CircularProgressIndicator(),
+                                      );
+                                  }
+                                  return Container();
+                                  /*if (snapshot.connectionState == ConnectionState.done) {
+                                        return snapshot.data as Widget;
+                                      } else {
+                                        return CircularProgressIndicator();
+                                      }*/
+                                },
+                              ),
                               TextFormField(
                                 maxLines: null,
                                 style: const TextStyle(color: Colors.white),
@@ -144,7 +177,6 @@ class _opcoesState extends State<opcoes> {
                               ),
                               onPressed: () {
                                 mudar(novonomeController.text, 1);
-                                nomeUser2();
                                 setState(() {
                                   novonomeController.text = '';
                                 });
@@ -157,77 +189,6 @@ class _opcoesState extends State<opcoes> {
                   );
                   },
                 );  
-              },
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
-            ),
-        ),
-
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.50,
-            child: TextButton(
-              child: Text("mudar email",
-              style: TextStyle(fontSize: 30, color: Colors.white),),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
-                      scrollable: true,
-                      content: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Form(
-                          child: Column(
-                            children: [
-                              Text("email atual: $email_user"),
-                              TextFormField(
-                                style: const TextStyle(color: Colors.white),
-                                decoration: const InputDecoration(
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  labelText: "novo email",
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                controller: novoemailController,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: [
-                        Center(child: 
-                          Column(children: [
-                            ElevatedButton(
-                              child: const Text(
-                                "Submit",
-                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
-                              ),
-                              onPressed: () async{
-                                try{
-                                  await obterImagempfp(context);
-                                }catch(e){
-                                  print("erro na cena $e");
-                                }
-                                /*mudar(novoemailController.text, 2);
-                                setState(() {
-                                  novoemailController.text = '';
-                                });
-                                tipo2 = 1;*/
-                                //Navigator.pop(context);
-                              },
-                            ),
-                          ],)
-                        )
-                      ],
-                  );
-                  },
-                );
               },
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
             ),
@@ -314,6 +275,9 @@ class _opcoesState extends State<opcoes> {
                               ),
                               onPressed: () async {
                                 uploadFile();
+                                setState(() {
+                                });
+                                
                                 Navigator.pop(context);
                               },
                             ),
@@ -407,31 +371,6 @@ Future<void> mudar(String mudanca,int tipo) async{
     } catch (e) {
       print("Error updating name: $e");
     }
-  }else if(tipo ==2){
-    
-    if(tipo2 == 1){
-    try {
-    User? user1 = FirebaseAuth.instance.currentUser;
-
-    if (user1 != null) {
-      await user1.updateEmail(mudanca);
-
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user1.uid)
-          .update({'email': mudanca});
-
-      print("Email updated successfully");
-    }
-  } catch (e) {
-    print("Error updating email: $e");
-  }
-  }else{
-    User? user = FirebaseAuth.instance.currentUser;
-
-    user!.sendEmailVerification();
-  }
-
   }else if(tipo == 3){
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email_user.toString());
@@ -444,37 +383,18 @@ Future<void> mudar(String mudanca,int tipo) async{
   }
 }
 
-Future<Widget> obterImagempfp(BuildContext context) async {
-  /*Image image = Image.asset('resources/default.png',
-                        width: MediaQuery.of(context).size.height * 0.4,
-                        height: MediaQuery.of(context).size.height * 0.4,);
-  await FireStorageService.loadImage(context,userid!).then((value){
-    image = Image.network(value.toString());
-  });
-  return image;*/
-    String defaultImagePath = 'resources/default.png';
 
-  // Default image widget
-  Image image = Image.asset(
-    defaultImagePath,
-  );
-
-  try {
-    String imageUrl = await FireStorageService.loadImage(context, userid!);
-
-    // If the image is successfully retrieved from Firebase Storage
-    if (imageUrl.isNotEmpty) {
-      image = Image.network(
-        imageUrl,
-      );
-    }
-  } catch (e) {
-    print('Error loading image: $e');
+Future<Widget> obterImagemperfil(BuildContext context, String imageName) async {
+  Image image = Image.asset('');
+  try{
+    await FireStorageService.loadImage(context, imageName).then((value){
+      image = Image.network(value.toString());
+    });
+  }catch(e){
+    return Image.asset('resources/default.png');
   }
-
   return image;
 }
-
 class FireStorageService extends ChangeNotifier{
   FireStorageService();
   static Future<dynamic> loadImage(BuildContext context, String image) async{
