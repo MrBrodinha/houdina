@@ -53,40 +53,6 @@ class MapsState extends State<Maps> {
     _setMarkers(LatLng(sourcelat, sourcelng));
   }
 
-  Future<void> _goToMyLocation() async {
-    final hasPermission = await _handleLocationPermission();
-    if (!hasPermission) {
-      return;
-    }
-
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-
-      final GoogleMapController controller = await _controller.future;
-
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 20.0,
-        ),
-      ));
-
-      setState(() {
-        _markers.clear();
-        _markers.add(
-          Marker(
-            markerId: const MarkerId('current_location'),
-            position: LatLng(position.latitude, position.longitude),
-            infoWindow: const InfoWindow(title: 'My Location'),
-          ),
-        );
-      });
-    } catch (e) {
-      debugPrint('Error getting location: $e');
-    }
-  }
-
   void _setMarkers(LatLng point) {
     setState(() {
       final String markerIdVal = 'marker_${point.latitude}_${point.longitude}';
@@ -162,47 +128,71 @@ class MapsState extends State<Maps> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Maps'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.my_location),
-            onPressed: _goToMyLocation,
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.10),
+          child: Text(
+            'Maps',
+            style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
           ),
-        ],
+        ),
+        centerTitle: true,
       ),
       body: Column(
         children: [
           Row(
             children: [
               Expanded(
-                child: Column(children: [
-                  TextFormField(
-                    controller: _originController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(hintText: 'Origin'),
-                  ),
-                  TextFormField(
-                    controller: _destinationController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(hintText: 'Destination'),
-                  )
-                ]),
+                child: TextFormField(
+                  controller: _originController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: const InputDecoration(hintText: 'Origin'),
+                ),
               ),
               IconButton(
-                  onPressed: () async {
-                    var directions = await LocationService().getDirections(
-                        _originController.text, _destinationController.text);
-                    _showRoad(
-                        directions['start_location']['lat'],
-                        directions['start_location']['lng'],
-                        directions['end_location']['lat'],
-                        directions['end_location']['lng'],
-                        directions['bounds_ne'],
-                        directions['bounds_sw']);
+                icon: const Icon(Icons.my_location),
+                onPressed: () async {
+                  final GoogleMapController controller =
+                      await _controller.future;
+                  final Position position = await Geolocator.getCurrentPosition(
+                      desiredAccuracy: LocationAccuracy.high);
+                  controller.animateCamera(CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                        target: LatLng(position.latitude, position.longitude),
+                        zoom: 20),
+                  ));
+                  _originController.text =
+                      '${position.latitude.toStringAsFixed(5)}, ${position.longitude.toStringAsFixed(5)}';
+                },
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _destinationController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: const InputDecoration(hintText: 'Destination'),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () async {
+                  var directions = await LocationService().getDirections(
+                      _originController.text, _destinationController.text);
+                  _showRoad(
+                      directions['start_location']['lat'],
+                      directions['start_location']['lng'],
+                      directions['end_location']['lat'],
+                      directions['end_location']['lng'],
+                      directions['bounds_ne'],
+                      directions['bounds_sw']);
 
-                    _setPolyline(directions['polyline_decoded']);
-                  },
-                  icon: const Icon(Icons.search))
+                  _setPolyline(directions['polyline_decoded']);
+                },
+              ),
             ],
           ),
           Expanded(
