@@ -46,23 +46,47 @@ class ElementoCarro extends StatelessWidget {
               ),
               SizedBox(
                 child: ElevatedButton(
-                  onPressed: () async {
-                    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-                        .collection('Carros')
-                        .where('Matricula', isEqualTo: carro.matricula)
-                        .get();
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                          scrollable: true,
+                          content: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  const Text("Do you pretend to delete this car permanently from your registration?", style: TextStyle(color: Colors.white),),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+                                        .collection('Carros')
+                                        .where('Matricula', isEqualTo: carro.matricula)
+                                        .get();
 
-                    if (querySnapshot.docs.isNotEmpty) {
-                      String idCarro = querySnapshot.docs.first.id;
-                      //DELETE À IMAGEM
-                      await FirebaseStorage.instance.ref().child('carros/${carro.imagemID}').delete();
-                      //DELETE AO CARRO
-                      await FirebaseFirestore.instance
-                          .collection('Carros')
-                          .doc(idCarro)
-                          .delete();
-                    }
-                    
+                                      if (querySnapshot.docs.isNotEmpty) {
+                                        String idCarro = querySnapshot.docs.first.id;
+                                        //DELETE À IMAGEM
+                                        await FirebaseStorage.instance.ref().child('carros/${carro.imagemID}').delete();
+                                        //DELETE AO CARRO
+                                        await FirebaseFirestore.instance
+                                            .collection('Carros')
+                                            .doc(idCarro)
+                                            .delete();
+                                      }
+                                      Navigator.pop(context);
+                                    }, 
+                                    child: const Text("Confirm"))
+                                    
+                                ],
+                              )
+                            ),
+                          )
+                        );
+                      },
+                    );
                   },
                   child: const Icon(Icons.delete),
                 ),
