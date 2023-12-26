@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer' as developer;
+import 'package:houdina/agendar/classCarro.dart';
 
 class Agendar extends StatefulWidget {
   const Agendar({super.key});
@@ -10,6 +11,10 @@ class Agendar extends StatefulWidget {
 }
 
 class _AgendarState extends State<Agendar> {
+  
+  bool search = false;
+  Carro? carroprocurado;
+
   @override
   void initState() {
     super.initState();
@@ -204,7 +209,67 @@ class _AgendarState extends State<Agendar> {
                 ),
               ],
             )),
-      ],
+        //--------------------MEIO--------------------
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.21,
+          height: MediaQuery.of(context).size.height * 0.71,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.80,
+            child: FutureBuilder<List<Carro>>(
+              future: obterCarros(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  List<Carro> carros = snapshot.data!;
+                  //APRESENTA TDS OS CARROS
+                  if (search == false) {
+                    return ListView.builder(
+                      itemCount: carros.length,
+                      itemBuilder: (context, index) {
+                        return ElementoCarro(carro: carros[index]);
+                      },
+                    );
+                  } else {
+                    // Caso tenha Filtrado
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          child: const Text(
+                            "Clear Filters",
+                            style: TextStyle(
+                                color: Color.fromRGBO(25, 95, 255, 1.0)),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              search = false;
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: 1,
+                            itemBuilder: (context, index) {
+                              return ElementoCarro(carro: carroprocurado!);
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: const CircularProgressIndicator(),
+                  );
+                }
+                return Container();
+              },
+            ),
+          ),
+        ),
+      ] 
     );
   }
 }
