@@ -36,11 +36,39 @@ class ElementoCarro extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
-          Container(
-            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: Text(carro.matricula,
-              style: const TextStyle(color: Colors.white),
-            )
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                child: Text(carro.matricula,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              SizedBox(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+                        .collection('Carros')
+                        .where('Matricula', isEqualTo: carro.matricula)
+                        .get();
+
+                    if (querySnapshot.docs.isNotEmpty) {
+                      String idCarro = querySnapshot.docs.first.id;
+                      //DELETE À IMAGEM
+                      await FirebaseStorage.instance.ref().child('carros/${carro.imagemID}').delete();
+                      //DELETE AO CARRO
+                      await FirebaseFirestore.instance
+                          .collection('Carros')
+                          .doc(idCarro)
+                          .delete();
+                    }
+                    
+                  },
+                  child: const Icon(Icons.delete),
+                ),
+              )
+            ],
+            
           ),
           FutureBuilder(
             future: obterImagemCarro(context, "carros/${carro.imagemID}"),
