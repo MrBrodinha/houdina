@@ -34,7 +34,7 @@ class MapsState extends State<Maps> {
 
   int _polylineIdCounter = 1;
 
-  final CameraPosition _initialCameraPosition = const CameraPosition(
+  CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(40.1668615, -7.7876066),
     zoom: 20,
   );
@@ -96,6 +96,9 @@ class MapsState extends State<Maps> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
+    if (!_controller.isCompleted) {
+      _controller.complete(controller);
+    }
     controller.setMapStyle(_mapStyle);
   }
 
@@ -109,8 +112,7 @@ class MapsState extends State<Maps> {
         children: [
           Padding(
             padding: EdgeInsets.only(
-              top:
-                  MediaQuery.of(context).size.height *
+              top: MediaQuery.of(context).size.height *
                   0.10, // Add the padding of the bar here
               left: 8.0,
               right: 8.0,
@@ -163,6 +165,7 @@ class MapsState extends State<Maps> {
                           initialCameraPosition: _initialCameraPosition,
                           onMapCreated: _onMapCreated,
                           myLocationEnabled: true,
+                          myLocationButtonEnabled: true,
                         );
                       } else {
                         return const Center(child: CircularProgressIndicator());
@@ -253,6 +256,12 @@ class MapsState extends State<Maps> {
                   child: IconButton(
                     icon: Icon(Icons.search, color: customColor),
                     onPressed: () async {
+                      // Check if either text field is empty
+                      if (_originController.text.isEmpty ||
+                          _destinationController.text.isEmpty) {
+                        // Do nothing if any text field is empty
+                        return;
+                      }
                       var directions = await LocationService().getDirections(
                           _originController.text, _destinationController.text);
                       _showRoad(
@@ -262,7 +271,6 @@ class MapsState extends State<Maps> {
                           directions['end_location']['lng'],
                           directions['bounds_ne'],
                           directions['bounds_sw']);
-
                       _setPolyline(directions['polyline_decoded']);
                     },
                     color: customColor,
@@ -311,21 +319,15 @@ class MapsState extends State<Maps> {
   Future<void> _showRoad(double lat, double lng, double lat2, double lng2,
       Map<String, dynamic> boundsNE, Map<String, dynamic> boundsSW) async {
     _markers.clear();
-    final GoogleMapController controller = await _controller.future;
+    _polylines.clear();
     final LatLng newPlace = LatLng(lat, lng);
     final LatLng newPlace2 = LatLng(lat2, lng2);
 
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(target: newPlace, zoom: 20),
-    ));
+    _initialCameraPosition = CameraPosition(
+      target: LatLng(lat, lng),
+      zoom: _initialCameraPosition.zoom,
+    );
 
-    controller.animateCamera(CameraUpdate.newLatLngBounds(
-      LatLngBounds(
-        northeast: LatLng(boundsNE['lat'], boundsNE['lng']),
-        southwest: LatLng(boundsSW['lat'], boundsSW['lng']),
-      ),
-      50,
-    ));
     _setMarkers(newPlace);
     _setMarkers(newPlace2);
   }
