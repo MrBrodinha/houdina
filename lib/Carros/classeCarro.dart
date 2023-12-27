@@ -36,64 +36,61 @@ class ElementoCarro extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                child: Text(carro.matricula,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
-                          scrollable: true,
-                          content: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  const Text("Do you pretend to delete this car permanently from your registration?", style: TextStyle(color: Colors.white),),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-                                        .collection('Carros')
-                                        .where('Matricula', isEqualTo: carro.matricula)
-                                        .get();
+          Container(
+            padding: const EdgeInsets.fromLTRB(0, 15, 0, 5),
+            child: Text(carro.matricula,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+            child: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                      scrollable: true,
+                      content: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Do you pretend to delete this car permanently from your registration?", style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                            ElevatedButton(
+                              onPressed: () async {
+                                QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+                                  .collection('Carros')
+                                  .where('Matricula', isEqualTo: carro.matricula)
+                                  .get();
 
-                                      if (querySnapshot.docs.isNotEmpty) {
-                                        String idCarro = querySnapshot.docs.first.id;
-                                        //DELETE À IMAGEM
-                                        await FirebaseStorage.instance.ref().child('carros/${carro.imagemID}').delete();
-                                        //DELETE AO CARRO
-                                        await FirebaseFirestore.instance
-                                            .collection('Carros')
-                                            .doc(idCarro)
-                                            .delete();
-                                      }
-                                      Navigator.pop(context);
-                                    }, 
-                                    child: const Text("Confirm"))
-                                    
-                                ],
-                              )
-                            ),
-                          )
-                        );
-                      },
+                                if (querySnapshot.docs.isNotEmpty) {
+                                  String idCarro = querySnapshot.docs.first.id;
+                                  //DELETE À IMAGEM
+                                  await FirebaseStorage.instance.ref().child('carros/${carro.imagemID}').delete();
+                                  //DELETE AO CARRO
+                                  await FirebaseFirestore.instance
+                                      .collection('Carros')
+                                      .doc(idCarro)
+                                      .delete();
+                                }
+                                Navigator.pop(context);
+                              }, 
+                              child: const Text("Confirm", style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)))
+                            )
+                          ],
+                        )
+                      ),
                     );
                   },
-                  child: const Icon(Icons.delete),
-                ),
-              )
-            ],
-            
+                );
+              },
+              child: const Icon(Icons.delete, color: Color.fromRGBO(25, 95, 255, 1.0),),
+            ),
           ),
+
           FutureBuilder(
             future: obterImagemCarro(context, "carros/${carro.imagemID}"),
             builder: (context, snapshot){
