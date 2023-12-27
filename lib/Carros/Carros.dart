@@ -346,19 +346,11 @@ class _CarrosState extends State<Carros> {
                                                       ver = -1;
                                                     }
 
-                                                    adicionarCarro(
-                                                        context3,
-                                                        matricula,
-                                                        ano,
-                                                        kilometragem,
-                                                        userID!,
-                                                        ver);
+                                                    adicionarCarro(context3, matricula, ano, kilometragem, userID!, ver);
 
-                                                    matriculaController.text =
-                                                        "";
+                                                    matriculaController.text = "";
                                                     anoController.text = "";
-                                                    kilometragemController
-                                                        .text = "";
+                                                    kilometragemController.text = "";
                                                     pickedFile = null;
 
                                                     Navigator.pop(context);
