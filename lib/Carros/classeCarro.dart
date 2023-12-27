@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../notificacoes.dart';
+import '../Notificacoes.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -76,6 +76,8 @@ class ElementoCarro extends StatelessWidget {
                                       .doc(idCarro)
                                       .delete();
                                 }
+
+                                deleteCarroSucesso(context);
                                 Navigator.pop(context);
                               }, 
                               child: const Text("Confirm", style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)))

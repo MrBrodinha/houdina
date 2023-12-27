@@ -6,6 +6,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:houdina/Carros/ClasseCarro.dart';
 
+import '../Notificacoes.dart';
+
 class Carros extends StatefulWidget {
   const Carros({super.key});
   @override
@@ -133,24 +135,21 @@ class _CarrosState extends State<Carros> {
                                                     String matricula =
                                                         searchController.text;
                                                     //Função Que dá return ao carro com a matricula dada
-                                                    carroprocurado =
-                                                        await verCarro(
-                                                            matricula, userID!);
+                                                    carroprocurado = await verCarro(matricula, userID!);
 
                                                     //Caso encontre um carro com essa matrícula sai do Dialog com search = true
                                                     if (carroprocurado != null) {
                                                       setState(() {
                                                         search = true;
                                                       });
-                                                      searchController.text =
-                                                          "";
+                                                      searchController.text = "";
                                                       Navigator.pop(context);
                                                     } else {
                                                       setState(() {
                                                         search = false;
                                                       });
-                                                      searchController.text =
-                                                          "";
+                                                      searchController.text = "";
+                                                      procuraErro(context);
                                                       Navigator.pop(context);
                                                     }
                                                   },
