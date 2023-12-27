@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, file_names
 
 import 'dart:async';
 
@@ -78,28 +78,6 @@ class MapsState extends State<Maps> {
         width: 2));
   }
 
-  Future<void> _showRoad(double lat, double lng, double lat2, double lng2,
-      Map<String, dynamic> boundsNE, Map<String, dynamic> boundsSW) async {
-    _markers.clear();
-    final GoogleMapController controller = await _controller.future;
-    final LatLng newPlace = LatLng(lat, lng);
-    final LatLng newPlace2 = LatLng(lat2, lng2);
-
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(target: newPlace, zoom: 20),
-    ));
-
-    controller.animateCamera(CameraUpdate.newLatLngBounds(
-      LatLngBounds(
-        northeast: LatLng(boundsNE['lat'], boundsNE['lng']),
-        southwest: LatLng(boundsSW['lat'], boundsSW['lng']),
-      ),
-      50,
-    ));
-    _setMarkers(newPlace);
-    _setMarkers(newPlace2);
-  }
-
   Future<String> _loadMapStyleFromFirebase() async {
     if (_mapStyle.isNotEmpty) {
       return _mapStyle; // Return existing style if already loaded
@@ -118,101 +96,184 @@ class MapsState extends State<Maps> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
-    if (_mapStyle.isNotEmpty) {
-      controller.setMapStyle(_mapStyle);
-    }
+    controller.setMapStyle(_mapStyle);
   }
+
+  Color customColor = const Color.fromRGBO(25, 95, 255, 1.0);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Padding(
-          padding:
-              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.10),
-          child: Text(
-            'Maps',
-            style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
-          ),
-        ),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.black,
       body: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: _originController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(hintText: 'Origin'),
+          Padding(
+            padding: EdgeInsets.only(
+              top:
+                  MediaQuery.of(context).size.height *
+                  0.10, // Add the padding of the bar here
+              left: 8.0,
+              right: 8.0,
+              bottom: 8.0,
+            ),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.60,
+              height: MediaQuery.of(context).size.height * 0.10,
+              child: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text(
+                    "Maps",
+                    style: TextStyle(
+                      color: Color.fromRGBO(25, 95, 255, 1.0),
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.my_location),
-                onPressed: () async {
-                  final GoogleMapController controller =
-                      await _controller.future;
-                  final Position position = await Geolocator.getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.high);
-                  controller.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: LatLng(position.latitude, position.longitude),
-                        zoom: 20),
-                  ));
-                  _originController.text =
-                      '${position.latitude.toStringAsFixed(5)}, ${position.longitude.toStringAsFixed(5)}';
-                },
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: _destinationController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(hintText: 'Destination'),
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () async {
-                  var directions = await LocationService().getDirections(
-                      _originController.text, _destinationController.text);
-                  _showRoad(
-                      directions['start_location']['lat'],
-                      directions['start_location']['lng'],
-                      directions['end_location']['lat'],
-                      directions['end_location']['lng'],
-                      directions['bounds_ne'],
-                      directions['bounds_sw']);
-
-                  _setPolyline(directions['polyline_decoded']);
-                },
-              ),
-            ],
-          ),
-          Expanded(
-            child: FutureBuilder(
-              future: _loadMapStyleFromFirebase(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return GoogleMap(
-                    mapType: MapType.normal,
-                    markers: _markers,
-                    polylines: _polylines,
-                    initialCameraPosition: _initialCameraPosition,
-                    onMapCreated: _onMapCreated,
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              },
             ),
           ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0, // Top padding
+                left: 8.0, // Left side padding
+                right: 8.0, // Right side padding
+                bottom: 8.0,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: customColor,
+                      width: 2), // Blue border around the map
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                      12), // Clip the map to the rounded corners
+                  child: FutureBuilder(
+                    future: _loadMapStyleFromFirebase(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return GoogleMap(
+                          mapType: MapType.normal,
+                          markers: _markers,
+                          polylines: _polylines,
+                          initialCameraPosition: _initialCameraPosition,
+                          onMapCreated: _onMapCreated,
+                          myLocationEnabled: true,
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 8.0, // Add padding to the top of the first Row
+                  left: 8.0,
+                  right: 8.0,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _originController,
+                        textCapitalization: TextCapitalization.words,
+                        style: TextStyle(color: customColor), // Set text color
+                        decoration: InputDecoration(
+                          hintText: 'Origin',
+                          hintStyle: TextStyle(
+                              color: customColor
+                                  .withOpacity(0.5)), // Set hint text color
+                          contentPadding: const EdgeInsets.all(10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: customColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: customColor, width: 2),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: customColor, width: 2),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8), // Spacing between text fields
+                    Expanded(
+                      child: TextFormField(
+                        controller: _destinationController,
+                        textCapitalization: TextCapitalization.words,
+                        style: TextStyle(color: customColor), // Set text color
+                        decoration: InputDecoration(
+                          hintText: 'Destination',
+                          hintStyle: TextStyle(
+                              color: customColor
+                                  .withOpacity(0.5)), // Set hint text color
+                          contentPadding: const EdgeInsets.all(10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: customColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: customColor, width: 2),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: customColor, width: 2),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8.0, // Padding around the IconButton
+                ),
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(Icons.search, color: customColor),
+                    onPressed: () async {
+                      var directions = await LocationService().getDirections(
+                          _originController.text, _destinationController.text);
+                      _showRoad(
+                          directions['start_location']['lat'],
+                          directions['start_location']['lng'],
+                          directions['end_location']['lat'],
+                          directions['end_location']['lng'],
+                          directions['bounds_ne'],
+                          directions['bounds_sw']);
+
+                      _setPolyline(directions['polyline_decoded']);
+                    },
+                    color: customColor,
+                    iconSize: 24,
+                    splashRadius: 24,
+                    splashColor: Colors.transparent,
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -245,5 +306,27 @@ class MapsState extends State<Maps> {
       return false;
     }
     return true;
+  }
+
+  Future<void> _showRoad(double lat, double lng, double lat2, double lng2,
+      Map<String, dynamic> boundsNE, Map<String, dynamic> boundsSW) async {
+    _markers.clear();
+    final GoogleMapController controller = await _controller.future;
+    final LatLng newPlace = LatLng(lat, lng);
+    final LatLng newPlace2 = LatLng(lat2, lng2);
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(target: newPlace, zoom: 20),
+    ));
+
+    controller.animateCamera(CameraUpdate.newLatLngBounds(
+      LatLngBounds(
+        northeast: LatLng(boundsNE['lat'], boundsNE['lng']),
+        southwest: LatLng(boundsSW['lat'], boundsSW['lng']),
+      ),
+      50,
+    ));
+    _setMarkers(newPlace);
+    _setMarkers(newPlace2);
   }
 }
