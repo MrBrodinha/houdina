@@ -52,7 +52,7 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                      hintText: 'Username',
+                      hintText: 'Nome',
                       hintStyle: const TextStyle(
                         color: Color.fromRGBO(25, 95, 255, 0.7),
                       ),
@@ -125,7 +125,7 @@ class _SignupState extends State<Signup> {
                     //De modo a não se ver enquato se escreve
                     obscureText: true,
                     decoration: InputDecoration(
-                      hintText: 'Password',
+                      hintText: 'Palavra Passe',
                       hintStyle: const TextStyle(
                         color: Color.fromRGBO(25, 95, 255, 0.70),
                       ),
@@ -162,7 +162,7 @@ class _SignupState extends State<Signup> {
                     //De modo a não se ver enquato se escreve
                     obscureText: true,
                     decoration: InputDecoration(
-                      hintText: 'Confirm Password',
+                      hintText: 'Confirmar Palavra Passe',
                       hintStyle: const TextStyle(
                         color: Color.fromRGBO(25, 95, 255, 0.70),
                       ),
@@ -198,7 +198,7 @@ class _SignupState extends State<Signup> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "If you already have an account click",
+                        "Se já tem conta registada clique",
                         style: TextStyle(color: Colors.white),
                       ),
                       //TextButton tinha espaço dentro - InkWell não tem
@@ -207,7 +207,7 @@ class _SignupState extends State<Signup> {
                           Navigator.pop(context);
                         },
                         child: const Text(
-                          " here",
+                          " aqui",
                           style: TextStyle(
                               color: Color.fromRGBO(25, 95, 255, 1.0)),
                         ),
@@ -250,7 +250,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         child: const Text(
-                          "Submit",
+                          "Criar Conta",
                           style: TextStyle(
                               color: Color.fromRGBO(25, 95, 255, 1.0)),
                         ),

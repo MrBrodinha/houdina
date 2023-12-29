@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
                   //De modo a não se ver enquato se escreve
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: 'Palavra Passe',
                     hintStyle: const TextStyle(
                       color: Color.fromRGBO(25, 95, 255, 0.7),
                     ),
@@ -118,7 +118,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "If you don't have an account yet click",
+                      "Se ainda não tem conta clique",
                       style: TextStyle(color: Colors.white),
                     ),
                     //TextButton tinha espaço dentro - InkWell não tem
@@ -130,7 +130,7 @@ class _LoginState extends State<Login> {
                         );
                       },
                       child: const Text(
-                        " here",
+                        " aqui",
                         style:
                             TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
                       ),
@@ -169,7 +169,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       child: const Text(
-                        "Submit",
+                        "Entrar",
                         style:
                             TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
                       ),
