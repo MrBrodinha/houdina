@@ -4,8 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:houdina/Carros/ClasseCarro.dart';
 
+import 'classeCarro.dart';
 import '../Notificacoes.dart';
 
 class Carros extends StatefulWidget {
@@ -98,7 +98,7 @@ class _CarrosState extends State<Carros> {
                                                         labelStyle: TextStyle(
                                                             color:
                                                                 Colors.white),
-                                                        labelText: "Plate:",
+                                                        labelText: "Matrícula:",
                                                         focusedBorder:
                                                             UnderlineInputBorder(
                                                           borderSide:
@@ -124,7 +124,7 @@ class _CarrosState extends State<Carros> {
                                             actions: [
                                               Center(
                                                 child: ElevatedButton(
-                                                  child: const Text("Submit",
+                                                  child: const Text("Submeter",
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               25,
@@ -172,7 +172,7 @@ class _CarrosState extends State<Carros> {
                                 child: FittedBox(
                                   fit: BoxFit.contain,
                                   child: Text(
-                                    "Vehicles",
+                                    "Carros",
                                     style: TextStyle(
                                       color: Color.fromRGBO(25, 95, 255, 1.0),
                                       decoration: TextDecoration.none,
@@ -218,7 +218,7 @@ class _CarrosState extends State<Carros> {
                                                         const InputDecoration(
                                                       labelStyle: TextStyle(
                                                           color: Colors.white),
-                                                      labelText: "Plate:",
+                                                      labelText: "Matrícula:",
                                                       focusedBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
@@ -243,7 +243,7 @@ class _CarrosState extends State<Carros> {
                                                       labelStyle: TextStyle(
                                                           color: Colors.white),
                                                       labelText:
-                                                          "Year of the Car:",
+                                                          "Ano:",
                                                       focusedBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
@@ -266,7 +266,7 @@ class _CarrosState extends State<Carros> {
                                                         const InputDecoration(
                                                       labelStyle: TextStyle(
                                                           color: Colors.white),
-                                                      labelText: "Mileage:",
+                                                      labelText: "Kilometragem:",
                                                       focusedBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
@@ -294,13 +294,13 @@ class _CarrosState extends State<Carros> {
                                                 const Padding(
                                                   padding: EdgeInsets.fromLTRB(
                                                       0, 0, 0, 10),
-                                                  child: Text("Car Image: ",
+                                                  child: Text("Imagem do Carro: ",
                                                       style: TextStyle(
                                                           color: Colors.white)),
                                                 ),
                                                 ElevatedButton(
                                                   child: const Text(
-                                                    "Attach Files",
+                                                    "Procurar Imagem",
                                                     style: TextStyle(
                                                         color: Color.fromRGBO(
                                                             25, 95, 255, 1.0)),
@@ -310,7 +310,7 @@ class _CarrosState extends State<Carros> {
                                                   },
                                                 ),
                                                 ElevatedButton(
-                                                  child: const Text("Submit",
+                                                  child: const Text("Submeter",
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               25,
@@ -377,8 +377,7 @@ class _CarrosState extends State<Carros> {
                         child: FutureBuilder<List<Carro>>(
                           future: obterCarrosUser(userID!),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
+                            if (snapshot.connectionState == ConnectionState.done){
                               List<Carro> carrosUser = snapshot.data!;
                               //APRESENTA TDS OS CARROS
                               if (search == false) {
@@ -386,7 +385,12 @@ class _CarrosState extends State<Carros> {
                                   itemCount: carrosUser.length,
                                   itemBuilder: (context, index) {
                                     return ElementoCarro(
-                                        carro: carrosUser[index]);
+                                      carro: carrosUser[index], 
+                                      eliminar: (bool isDeleted){
+                                        if (isDeleted) {
+                                          setState((){});
+                                        }
+                                    },);
                                   },
                                 );
                               } else {
@@ -396,7 +400,7 @@ class _CarrosState extends State<Carros> {
                                   children: [
                                     ElevatedButton(
                                       child: const Text(
-                                        "Clear Filters",
+                                        "Limpar Filtro",
                                         style: TextStyle(
                                             color: Color.fromRGBO(
                                                 25, 95, 255, 1.0)),
@@ -411,7 +415,14 @@ class _CarrosState extends State<Carros> {
                                       child: ListView.builder(
                                         itemCount: 1,
                                         itemBuilder: (context, index) {
-                                          return ElementoCarro(carro: carroprocurado!);
+                                          return ElementoCarro(
+                                            carro: carroprocurado!, 
+                                            eliminar: (bool isDeleted){
+                                              if (isDeleted) {
+                                                setState((){});
+                                              }
+                                            },
+                                          );
                                         },
                                       ),
                                     ),
@@ -419,13 +430,9 @@ class _CarrosState extends State<Carros> {
                                 );
                               }
                             }
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.1,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
-                                child: const CircularProgressIndicator(),
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const SizedBox(
+                                child: CircularProgressIndicator(),
                               );
                             }
                             return Container();

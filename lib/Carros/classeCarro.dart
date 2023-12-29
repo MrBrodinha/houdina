@@ -26,8 +26,9 @@ class Carro{
 class ElementoCarro extends StatelessWidget {
 
   final Carro carro;
+  final Function(bool) eliminar;
 
-  ElementoCarro({required this.carro});
+  ElementoCarro({required this.carro, required this.eliminar});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class ElementoCarro extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text("Do you pretend to delete this car permanently from your registration?", style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+                            const Text("Pretende eliminar permanentemente o carro do seu registo?", style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
                             SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
                             ElevatedButton(
                               onPressed: () async {
@@ -77,10 +78,11 @@ class ElementoCarro extends StatelessWidget {
                                       .delete();
                                 }
 
+                                eliminar(true);
                                 deleteCarroSucesso(context);
                                 Navigator.pop(context);
                               }, 
-                              child: const Text("Confirm", style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)))
+                              child: const Text("Confirmar", style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)))
                             )
                           ],
                         )
@@ -103,10 +105,8 @@ class ElementoCarro extends StatelessWidget {
                   );
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    child: const CircularProgressIndicator(),
+                return const SizedBox(
+                    child: CircularProgressIndicator(),
                   );
               }
               return Container();
@@ -115,7 +115,7 @@ class ElementoCarro extends StatelessWidget {
           Container(
             padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
             child: Text(
-              "Year: ${carro.ano} | Kilometragem: ${carro.kilometragem}",
+              "Ano: ${carro.ano} | Kilometragem: ${carro.kilometragem}",
               style: const TextStyle(color: Colors.white),
             )
           ),
