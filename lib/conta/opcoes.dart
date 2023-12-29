@@ -33,12 +33,12 @@ class _opcoesState extends State<opcoes> {
 
   Future uploadFile() async {
 
-    final path = 'fotosPFP/$userid';
+    final path = 'fotosPFP/${FirebaseAuth.instance.currentUser?.uid}';
     final file = File(pickedFile!.path!);
     final ref = FirebaseStorage.instance.ref().child(path);
 
     try{
-      Reference storageReference = FirebaseStorage.instance.refFromURL("gs://houdina-2194.appspot.com/fotosPFP/${userid!}");
+      Reference storageReference = FirebaseStorage.instance.refFromURL("gs://houdina-2194.appspot.com/fotosPFP/${FirebaseAuth.instance.currentUser?.uid!}");
       await storageReference.delete().then((value) => 
       print("acabei await"));
     }catch(e){
@@ -82,7 +82,7 @@ class _opcoesState extends State<opcoes> {
           top: MediaQuery.of(context).size.height * 0.05,
           right: 100,
           child: const Text(
-            "Opcoes",
+            "Opções",
             style: TextStyle(
               color: Color.fromRGBO(25, 95, 255, 1.0),
               decoration: TextDecoration.none,
@@ -100,15 +100,36 @@ class _opcoesState extends State<opcoes> {
             ),
             onPressed: () {
               Navigator.pop(context);
+              /*Navigator.pushReplacement(
+                context, 
+                MaterialPageRoute(builder: (context) => Account()),
+              );//.then((value) => {setState((){})});*/
             },
           ),
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.40,
+          top: MediaQuery.of(context).size.height * 0.30,
+           child: Container(
+            width: MediaQuery.of(context).size.width * 0.55,
+            height: MediaQuery.of(context).size.height * 0.085,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: FittedBox(
+                fit: BoxFit.contain,
             child: TextButton(
-              child: Text("mudar nome",
-              style: TextStyle(fontSize: 30, color: Colors.white),),
+              child: const Text("Mudar o nome",
+                  style: TextStyle(
+                    color: Color.fromRGBO(25, 95, 255, 1.0),
+                    decoration: TextDecoration.none,
+                    fontSize: 30
+                  ),
+              ),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -122,7 +143,7 @@ class _opcoesState extends State<opcoes> {
                           child: Column(
                             children: [
                               FutureBuilder(
-                                future: nomeUser(), 
+                                future: nomeUser(2), 
                                 builder: (context, snapshot){
                                   if (snapshot.connectionState == ConnectionState.done) {
                                     return Container(
@@ -150,7 +171,7 @@ class _opcoesState extends State<opcoes> {
                                 style: const TextStyle(color: Colors.white),
                                 decoration: const InputDecoration(
                                   labelStyle: TextStyle(color: Colors.white),
-                                  labelText: "novo nome",
+                                  labelText: "Novo nome",
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                   ),
@@ -171,7 +192,7 @@ class _opcoesState extends State<opcoes> {
                           Column(children: [
                             ElevatedButton(
                               child: const Text(
-                                "Submit",
+                                "Submeter",
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
                               onPressed: () {
@@ -189,15 +210,32 @@ class _opcoesState extends State<opcoes> {
                   },
                 );  
               },
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
+            ),
+            ),
             ),
         ),
 
         Positioned(
           top: MediaQuery.of(context).size.height * 0.60,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            height: MediaQuery.of(context).size.height * 0.085,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: FittedBox(
+                fit: BoxFit.contain,
             child: TextButton(
-              child: Text("mudar passe",
-              style: TextStyle(fontSize: 30, color: Colors.white),),
+              child: const Text("Mudar palavra-passe",
+              style: TextStyle(
+                    color: Color.fromRGBO(25, 95, 255, 1.0),
+                    decoration: TextDecoration.none,
+                    fontSize: 30
+                  ),),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -208,7 +246,10 @@ class _opcoesState extends State<opcoes> {
                       content: const Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Form(
-                          child: Text("clica pra mandar mail pra mudar passe"),
+                          child: Text('Clique para enviar um e-mail para mudança de palavra-passe',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                       actions: [
@@ -216,7 +257,7 @@ class _opcoesState extends State<opcoes> {
                           Column(children: [
                             ElevatedButton(
                               child: const Text(
-                                "Send",
+                                "Enviar",
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
                               onPressed: () {
@@ -231,15 +272,32 @@ class _opcoesState extends State<opcoes> {
                   },
                 );
               },
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
             ),
+            ),
+          ),
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.70,
+          top: MediaQuery.of(context).size.height * 0.75,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.70,
+            height: MediaQuery.of(context).size.height * 0.085,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: FittedBox(
+                fit: BoxFit.contain,
             child: TextButton(
-              child: Text("mudar imagem",
-              style: TextStyle(fontSize: 30, color: Colors.white),),
+              child: const Text("Mudar foto de perfil",
+              style: TextStyle(
+                    color: Color.fromRGBO(25, 95, 255, 1.0),
+                    decoration: TextDecoration.none,
+                    fontSize: 30
+                  ),),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -250,7 +308,10 @@ class _opcoesState extends State<opcoes> {
                       content: const Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Form(
-                          child: Text("Escolhe a imagem pra trocar"),
+                          child: Text("Escolhe a imagem pra trocar",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                       actions: [
@@ -258,7 +319,7 @@ class _opcoesState extends State<opcoes> {
                           Column(children: [
                             ElevatedButton(
                               child: const Text(
-                                "Attach Files",
+                                "Procurar foto",
                                 style: TextStyle(
                                     color: Color.fromRGBO(
                                         25, 95, 255, 1.0)),
@@ -269,7 +330,7 @@ class _opcoesState extends State<opcoes> {
                             ),
                             ElevatedButton(
                               child: const Text(
-                                "Procurar",
+                                "Submeter",
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
                               onPressed: () async {
@@ -288,11 +349,10 @@ class _opcoesState extends State<opcoes> {
                   },
                 );
               },
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(25, 95, 255, 1.0) )),
             ),
+            ),
+          ),
         ),
-
-
       ],
     );
   }
@@ -382,7 +442,6 @@ Future<void> mudar(String mudanca,int tipo) async{
   }
 }
 
-
 Future<Widget> obterImagemperfil(BuildContext context, String imageName) async {
   Image image = Image.asset('');
   try{
@@ -390,7 +449,15 @@ Future<Widget> obterImagemperfil(BuildContext context, String imageName) async {
       image = Image.network(value.toString());
     });
   }catch(e){
-    return Image.asset('resources/default.png');
+    try{
+      // ignore: use_build_context_synchronously
+      await FireStorageService.loadImage(context, "aplicacao/default.png").then((value){
+        image = Image.network(value.toString());
+      });
+    }catch(e){
+      print("EROOOOOOOOOOOOOOOOOOOOOO $e");
+      return Image.asset('resources/default.png');
+    }
   }
   return image;
 }

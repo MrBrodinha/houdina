@@ -39,7 +39,7 @@ class _ClientePageState extends State<Cliente> {
           onTap: (newIndex) {
             setState(() {
               if (newIndex == index && index == 3) {
-                Navigator.push(
+                Navigator.pushReplacement( //tem de ser pushReplacemente para dar refresh à globalKey se nao isto crasha tudo
                   context,
                   MaterialPageRoute(builder: (context) => const Main()),
                 );

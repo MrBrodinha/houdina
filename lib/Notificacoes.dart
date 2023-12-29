@@ -286,7 +286,7 @@ void categoriaVazia(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: const Text('Categoria vazia', textAlign: TextAlign.center),
+    content: const Text('Categoria não foi escolhida', textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,

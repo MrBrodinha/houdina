@@ -71,7 +71,7 @@ class _AccountState extends State<Account> {
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: FutureBuilder(
-                          future: nomeUser(), 
+                          future: nomeUser(1), 
                           builder: (context, snapshot){
                             if (snapshot.connectionState == ConnectionState.done) {
                               return Container(
@@ -100,7 +100,7 @@ class _AccountState extends State<Account> {
                 ),
 
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.15,
+              top: MediaQuery.of(context).size.height * 0.13,
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.50,
                 height: MediaQuery.of(context).size.height * 0.25,
@@ -112,7 +112,7 @@ class _AccountState extends State<Account> {
                   borderRadius: BorderRadius.circular(35),
                 ),*/
                 child: FutureBuilder(
-                  future: obterImagemperfil(context, "fotosPFP/${userid!}"),
+                  future: obterImagemperfil(context, "fotosPFP/${FirebaseAuth.instance.currentUser?.uid}"),
                   builder: (context, snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Container(
@@ -139,7 +139,7 @@ class _AccountState extends State<Account> {
             ),
 
           Positioned(
-          top: MediaQuery.of(context).size.height * 0.50,
+          top: MediaQuery.of(context).size.height * 0.62,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.55,
             height: MediaQuery.of(context).size.height * 0.085,
@@ -150,29 +150,75 @@ class _AccountState extends State<Account> {
               ),
               borderRadius: BorderRadius.circular(35),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: FittedBox(
+            child: FittedBox(
                 fit: BoxFit.contain,
-                child: Text(
-                  "Opcoes conta",//dsfffffffffffffffffffffffffffffffffffffffffffffffffffff
-                style: TextStyle(
-                  color: Color.fromRGBO(25, 95, 255, 1.0),
-                  decoration: TextDecoration.none,
-                ),
-                ),
+                child: TextButton(
+                  onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => opcoes()),
+                      ).then((value) => {setState((){})});
+                    },
+                  child: const Text(
+                    "Opções da conta",
+                  style: TextStyle(
+                    color: Color.fromRGBO(25, 95, 255, 1.0),
+                    decoration: TextDecoration.none,
+                    fontSize: 30
+                  ),
+                  ),
+              ),
               ), 
-            ),
           ),
         ),
 
-                Positioned(
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.73,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.55,
+            height: MediaQuery.of(context).size.height * 0.085,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
+                width: 3.0,
+              ),
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: FittedBox(
+                fit: BoxFit.contain,
+                child: TextButton(
+                  onPressed: () {
+                    print("nome user: esquece -- email user: $email_user -- iduser: $userid ${FirebaseAuth.instance.currentUser?.uid}");
+                    showDialog(
+                      context: contextAccount,
+                      builder: (contextAccount) {
+                        return FeedbackDialog();
+                      },
+                    ).then((value) => {
+                        if (ola == 1)
+                          {msgVazia(contextAccount), ola = 0}
+                        else if (ola == 2)
+                          {categoriaVazia(contextAccount), ola = 0}
+                        else if (ola == 3)
+                          {msgEnviada(contextAccount), ola = 0}
+                      });
+                  },
+                  child: const Text(
+                    "Apoio técnico",
+                  style: TextStyle(
+                    color: Color.fromRGBO(25, 95, 255, 1.0),
+                    decoration: TextDecoration.none,
+                    fontSize: 30
+                  ),
+                  ),
+              ),
+              ), 
+          ),
+        ),
+
+                /*Positioned(
                   top: MediaQuery.of(context).size.height * 0.62,
                   child: TextButton(
-                    child: const Text(
-                      "Opcoes conta",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -181,20 +227,20 @@ class _AccountState extends State<Account> {
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                            Color.fromRGBO(25, 95, 255, 1.0))),
-                  ),
-                ),
-
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.73,
-                  child: TextButton(
-                    child: Text(
-                      "Apoio tecnico",
+                            const Color.fromRGBO(25, 95, 255, 1.0))),
+                    child: const Text(
+                      "Opcoes conta",
                       style: TextStyle(fontSize: 30, color: Colors.white),
                     ),
+                  ),
+                ),*/
+
+                /*Positioned(
+                  top: MediaQuery.of(context).size.height * 0.73,
+                  child: TextButton(
                     onPressed: () {
                       print(
-                          "nome user: caga -- email user: $email_user -- iduser: $userid");
+                          "nome user: esquece -- email user: $email_user -- iduser: $userid ${FirebaseAuth.instance.currentUser?.uid}");
                       showDialog(
                         context: contextAccount,
                         builder: (contextAccount) {
@@ -211,9 +257,13 @@ class _AccountState extends State<Account> {
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                            Color.fromRGBO(25, 95, 255, 1.0))),
+                            const Color.fromRGBO(25, 95, 255, 1.0))),
+                    child: const Text(
+                      "Apoio tecnico",
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
                   ),
-                ),
+                ),*/
               ],
             ),
           );
@@ -259,25 +309,31 @@ Future<void> enviarFeedback(String mensagem, String categoria) async {
   }
 }
 
-Future<Widget> nomeUser() async{
-  Text texto = Text("Account", 
-                  style: const TextStyle(
-                    color: Color.fromRGBO(25, 95, 255, 1.0),
-                    decoration: TextDecoration.none,
-                  ),);
+Future<Widget> nomeUser(int valor) async{
+  Text texto = Text("Erro a dar load ao nome");
   try{
-    await FirebaseFirestore.instance.collection('users').doc(userid).get().then((value) =>  
+    await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).get().then((value) =>{
+      if(valor == 1){
       texto = Text(value['Username'], 
                   style: const TextStyle(
                     color: Color.fromRGBO(25, 95, 255, 1.0),
                     decoration: TextDecoration.none,
                   ),)
-    );
+      }else{
+              texto = Text("Nome atual: ${value['Username']}", 
+                  style: const TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    decoration: TextDecoration.none,
+                    fontSize: 16
+                  ),)
+      }
+      
+    });
   }catch(e){
     print("erro a dar load ao nome");
     return texto;
   }
-    return texto;
+  return texto;
 }
 
 class FeedbackDialog extends StatefulWidget {
@@ -313,7 +369,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     color: Colors.white,
                   ),
                   style: const TextStyle(color: Colors.green),
-                  hint: Text("categoria",
+                  hint: Text("Categoria",
                       style: TextStyle(color: Colors.white, fontSize: 17)),
                   value: selectedValue,
                   items: const [
@@ -328,7 +384,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                       value: '1',
                     ),
                     DropdownMenuItem(
-                      child: Text("opcao 3",
+                      child: Text("Outra",
                           style: TextStyle(color: Colors.white, fontSize: 17)),
                       value: '2',
                     ),
@@ -349,7 +405,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelStyle: TextStyle(color: Colors.white),
-                  labelText: "Message",
+                  labelText: "Mensagem",
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
@@ -371,18 +427,18 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
             children: [
               ElevatedButton(
                 child: const Text(
-                  "Submit",
+                  "Enviar",
                   style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0)),
                 ),
                 onPressed: () {
                   String mensagem = mensagemController.text;
                   if (mensagemController.text == '') {
-                    print("mensagem vaiza");
+                    print("Mensagem vaiza");
                     ola = 1;
                     Navigator.pop(contextAccount);
                     //msgVazia(contextAccount);
                   } else if (selectedValue == null) {
-                    print("value vazio");
+                    print("Categoria nao escolhida");
                     ola = 2;
                     Navigator.pop(contextAccount);
                     //categoriaVazia(contextAccount);
