@@ -361,32 +361,37 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
             children: [
               Theme(
                 data: Theme.of(contextAccount).copyWith(
-                  canvasColor: Color.fromRGBO(25, 95, 255, 1),
+                  canvasColor: const Color.fromRGBO(25, 95, 255, 1),
                 ),
                 child: DropdownButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_drop_down,
                     color: Colors.white,
                   ),
                   style: const TextStyle(color: Colors.green),
-                  hint: Text("Categoria",
+                  hint: const Text("Categoria",
                       style: TextStyle(color: Colors.white, fontSize: 17)),
                   value: selectedValue,
                   items: const [
                     DropdownMenuItem(
-                      child: Text("opcao 1",
-                          style: TextStyle(color: Colors.white, fontSize: 17)),
                       value: '0',
-                    ),
-                    DropdownMenuItem(
-                      child: Text("opcao 2",
+                      child: Text("Comunicar Erro",
                           style: TextStyle(color: Colors.white, fontSize: 17)),
-                      value: '1',
                     ),
                     DropdownMenuItem(
+                      value: '1',
+                      child: Text("Ajuda",
+                          style: TextStyle(color: Colors.white, fontSize: 17)),
+                    ),
+                    DropdownMenuItem(
+                      value: '2',
+                      child: Text("Reportar anomalia",
+                          style: TextStyle(color: Colors.white, fontSize: 17)),
+                    ),
+                    DropdownMenuItem(
+                      value: '3',
                       child: Text("Outra",
                           style: TextStyle(color: Colors.white, fontSize: 17)),
-                      value: '2',
                     ),
                   ],
                   onChanged: (value) {
@@ -433,11 +438,13 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                 onPressed: () {
                   String mensagem = mensagemController.text;
                   if (mensagemController.text == '') {
+                    // ignore: avoid_print
                     print("Mensagem vaiza");
                     ola = 1;
                     Navigator.pop(contextAccount);
                     //msgVazia(contextAccount);
                   } else if (selectedValue == null) {
+                    // ignore: avoid_print
                     print("Categoria nao escolhida");
                     ola = 2;
                     Navigator.pop(contextAccount);
