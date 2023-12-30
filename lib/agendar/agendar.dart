@@ -108,7 +108,7 @@ class _AgendarState extends State<Agendar> {
                                           actions: [
                                             Center(
                                               child: ElevatedButton(
-                                                child: const Text("Submit",
+                                                child: const Text("Submeter",
                                                     style: TextStyle(
                                                         color: Color.fromRGBO(
                                                             25, 95, 255, 1.0))),
@@ -274,7 +274,7 @@ class _AgendarState extends State<Agendar> {
                       });
                     },
                     child: Text(
-                      "Clear Filters",
+                      "Limpar Filtros",
                       style: TextStyle(
                         color: Colors.white,
                       ),
