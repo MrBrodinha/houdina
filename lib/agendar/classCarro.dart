@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import '../notificacoes.dart';
 
 final db = FirebaseFirestore.instance;
@@ -16,17 +15,18 @@ class Carro {
   final int imagemID;
   final double precoVenda;
   final double precoAluguer;
-  final String modeloMarca;
+  final String modelo;
+  final String id;
 
   Carro({
     required this.ano,
     required this.kilometragem,
     required this.matricula,
     required this.imagemID,
-    required this.modeloMarca,
+    required this.modelo,
     required this.precoVenda,
     required this.precoAluguer,
-
+    required this.id,
   });
 }
 
@@ -44,7 +44,7 @@ class ElementoCarro extends StatelessWidget {
           Container(
               padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
               child: Text(
-                carro.matricula,
+                carro.modelo,
                 style: const TextStyle(color: Colors.white),
               )),
           FutureBuilder(
@@ -101,7 +101,7 @@ void adicionarCarro(
         'idImagem': identificador,
         'precoVenda': precoVenda,
         'precoAluguer': precoAluguer,
-        'ModeloMarca': modeloMarca,
+        'Modelo': modeloMarca,
       });
       adicionarCarroSucesso(context);
     } else if (precoAluguer > 0) {
@@ -111,7 +111,7 @@ void adicionarCarro(
         'Matricula': matricula,
         'idImagem': identificador,
         'precoAluguer': precoAluguer,
-        'ModeloMarca': modeloMarca,
+        'Modelo': modeloMarca,
       });
       adicionarCarroSucesso(context);
     } else {
@@ -121,7 +121,7 @@ void adicionarCarro(
         'Matricula': matricula,
         'idImagem': identificador,
         'precoVenda': precoVenda,
-        'ModeloMarca': modeloMarca,
+        'Modelo': modeloMarca,
       });
       adicionarCarroSucesso(context);
     }
@@ -139,58 +139,76 @@ void adicionarCarro(
 //----------------------------------------
 //----------OBTER OS CARRO DA DB----------
 
-
 Future<List<Carro>> obterCarros() async {
   try {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('CarrosVenda').get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('CarrosVenda')
+        .where('Disponivel', isEqualTo: true)
+        .get();
 
     List<Carro> carros = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data();
+
       return Carro(
-        ano: data['Ano'] as String,
-        kilometragem: data['Kilometragem'] as String,
-        matricula: data['Matricula'] as String,
-        imagemID: data['idImagem'] as int,
-        precoAluguer: data['PrecoAluguer'] as double,
-        precoVenda: data['PrecoVenda'] as double,
-        modeloMarca: data['Modelo/Marca'] as String,
+        id: doc.id,
+        ano: data['Ano'] as String? ?? '',
+        kilometragem: data['Kilometragem'] as String? ?? '',
+        matricula: data['Matricula'] as String? ?? '',
+        imagemID: data['idImagem'] as int? ?? 0,
+        precoAluguer: (data['PrecoAluguer'] as num?)?.toDouble() ?? 0.0,
+        precoVenda: (data['PrecoVenda'] as num?)?.toDouble() ?? 0.0,
+        modelo: data['Modelo'] as String? ?? '',
       );
     }).toList();
 
     return carros;
   } catch (e) {
     print("Error fetching car data: $e");
+    print('obterCarros');
     //LISTA CARROS VAZIO DEVIDO A ERRO
     return [];
   }
 }
 
-//----------OBTER CARRO PELA MATRÍCULA----------
-Future<Carro?> verCarro(String matricula) async {
+//----------OBTER CARRO PELO MODELO----------
+Future<List<Carro>> obterCarrosbyModelo(String modelo) async {
+  print("A obter Carro por modelo");
   try {
-    QuerySnapshot<Map<String, dynamic>> carro = await FirebaseFirestore.instance
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
         .collection('CarrosVenda')
-        .where('Matricula', isEqualTo: matricula)
+        .where('Disponivel', isEqualTo: true)
         .get();
 
-    if (carro.docs.isNotEmpty) {
-      Map<String, dynamic> data = carro.docs.first.data();
+    List<Carro> carros = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data();
+
       return Carro(
-        ano: data['Ano'] as String,
-        kilometragem: data['Kilometragem'] as String,
-        matricula: data['Matricula'] as String,
-        imagemID: data['idImagem'] as int,
-        modeloMarca: data['Modelo/Marca'] as String,
-        precoAluguer: data['PrecoAluguer'] as double,
-        precoVenda: data['PrecoVenda'] as double,
+        id: doc.id,
+        ano: data['Ano'] as String? ?? '',
+        kilometragem: data['Kilometragem'] as String? ?? '',
+        matricula: data['Matricula'] as String? ?? '',
+        imagemID: data['idImagem'] as int? ?? 0,
+        precoAluguer: (data['PrecoAluguer'] as num?)?.toDouble() ?? 0.0,
+        precoVenda: (data['PrecoVenda'] as num?)?.toDouble() ?? 0.0,
+        modelo: data['Modelo'] as String? ?? '',
       );
-    } else {
-      return null;
+    }).toList();
+    List<Carro> carrosModelo = [];
+    for (int i = 0; i < carros.length; i++) {
+      if (carros[i].modelo.toLowerCase().contains(modelo.toLowerCase())) {
+        carrosModelo.add(carros[i]);
+      }
     }
+    print("Óbvio q deu, sou ganda rei");
+    print(carrosModelo);
+    return carrosModelo;
   } catch (e) {
     print("Error fetching car data: $e");
-    return null;
+    print('Ganda Azar n deu');
+    //LISTA CARROS VAZIO DEVIDO A ERRO
+    return [];
   }
 }
 
@@ -212,6 +230,12 @@ Future<int> obterID_Imagem() async {
 void atualizarID_Imagem(int novoID) async {
   db.collection("Geral").doc("Carros").update({
     'idImagem': novoID,
+  });
+}
+
+void atualizarDisponivel(String id, bool disponivel) async {
+  db.collection("CarrosVenda").doc(id).update({
+    'Disponivel': disponivel,
   });
 }
 

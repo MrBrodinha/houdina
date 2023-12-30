@@ -370,8 +370,8 @@ class _CarrosState extends State<Carros> {
 
                     //--------------------MEIO--------------------
                     Positioned(
-                      top: MediaQuery.of(context).size.height * 0.21,
-                      height: MediaQuery.of(context).size.height * 0.71,
+                      top: MediaQuery.of(context).size.height * 0.24,
+                      height: MediaQuery.of(context).size.height * 0.68,
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.80,
                         child: FutureBuilder<List<Carro>>(
