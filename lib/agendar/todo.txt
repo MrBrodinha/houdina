@@ -1,17 +1,19 @@
-TO DO:
-    
-
-Maybe:
-    Agendamento de Serviços -- OU -- Carros alugados pelo user
-
+Doing:
+    FREE
 
 Done:
     Padding
     Search
     Conecção com Base de dados e remover Carros
+    Carros alugados pelo user
 
 
                                                     ╔═══════════╗
                                                     ║ RICADINHO ║
                                                     ║  was here ║
                                                     ╚═══════════╝
+
+                                                    ╔══════════════╗
+                                                    ║ RICADINHO is ║
+                                                    ║   the king   ║
+                                                    ╚══════════════╝

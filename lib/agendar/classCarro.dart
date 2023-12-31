@@ -17,6 +17,7 @@ class Carro {
   final double precoAluguer;
   final String modelo;
   final String id;
+  final String user;
 
   Carro({
     required this.ano,
@@ -27,6 +28,7 @@ class Carro {
     required this.precoVenda,
     required this.precoAluguer,
     required this.id,
+    required this.user,
   });
 }
 
@@ -159,13 +161,12 @@ Future<List<Carro>> obterCarros() async {
         precoAluguer: (data['PrecoAluguer'] as num?)?.toDouble() ?? 0.0,
         precoVenda: (data['PrecoVenda'] as num?)?.toDouble() ?? 0.0,
         modelo: data['Modelo'] as String? ?? '',
+        user: data['user'] as String? ?? "",
       );
     }).toList();
 
     return carros;
   } catch (e) {
-    print("Error fetching car data: $e");
-    print('obterCarros');
     //LISTA CARROS VAZIO DEVIDO A ERRO
     return [];
   }
@@ -173,7 +174,6 @@ Future<List<Carro>> obterCarros() async {
 
 //----------OBTER CARRO PELO MODELO----------
 Future<List<Carro>> obterCarrosbyModelo(String modelo) async {
-  print("A obter Carro por modelo");
   try {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
         .instance
@@ -193,6 +193,7 @@ Future<List<Carro>> obterCarrosbyModelo(String modelo) async {
         precoAluguer: (data['PrecoAluguer'] as num?)?.toDouble() ?? 0.0,
         precoVenda: (data['PrecoVenda'] as num?)?.toDouble() ?? 0.0,
         modelo: data['Modelo'] as String? ?? '',
+        user: data['user'] as String? ?? "",
       );
     }).toList();
     List<Carro> carrosModelo = [];
@@ -201,12 +202,40 @@ Future<List<Carro>> obterCarrosbyModelo(String modelo) async {
         carrosModelo.add(carros[i]);
       }
     }
-    print("Óbvio q deu, sou ganda rei");
-    print(carrosModelo);
     return carrosModelo;
   } catch (e) {
-    print("Error fetching car data: $e");
-    print('Ganda Azar n deu');
+    //LISTA CARROS VAZIO DEVIDO A ERRO
+    return [];
+  }
+}
+
+Future<List<Carro>> obterCarrosbyUser(String userID) async {
+
+  try {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('CarrosVenda')
+        .where('user', isEqualTo: userID)
+        .get();
+
+    List<Carro> carros = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data();
+
+      return Carro(
+        id: doc.id,
+        ano: data['Ano'] as String? ?? '',
+        kilometragem: data['Kilometragem'] as String? ?? '',
+        matricula: data['Matricula'] as String? ?? '',
+        imagemID: data['idImagem'] as int? ?? 0,
+        precoAluguer: (data['PrecoAluguer'] as num?)?.toDouble() ?? 0.0,
+        precoVenda: (data['PrecoVenda'] as num?)?.toDouble() ?? 0.0,
+        modelo: data['Modelo'] as String? ?? '',
+        user: data['user'] as String? ?? "",
+      );
+    }).toList();
+
+    return carros;
+  } catch (e) {
     //LISTA CARROS VAZIO DEVIDO A ERRO
     return [];
   }
@@ -233,9 +262,10 @@ void atualizarID_Imagem(int novoID) async {
   });
 }
 
-void atualizarDisponivel(String id, bool disponivel) async {
+void atualizarDisponivel(String id, bool disponivel, String idUser) async {
   db.collection("CarrosVenda").doc(id).update({
     'Disponivel': disponivel,
+    'user': idUser,
   });
 }
 

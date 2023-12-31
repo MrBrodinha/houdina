@@ -1,7 +1,8 @@
-import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:houdina/agendar/classCarro.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import "Alugados.dart";
 import '../Notificacoes.dart';
 
 class Agendar extends StatefulWidget {
@@ -12,9 +13,11 @@ class Agendar extends StatefulWidget {
 }
 
 class _AgendarState extends State<Agendar> {
+  bool needRefresh = false;
   bool search = false;
   String modelo = "";
   final TextEditingController searchController = TextEditingController();
+  String? userID = FirebaseAuth.instance.currentUser?.uid;
 
   @override
   void initState() {
@@ -113,7 +116,6 @@ class _AgendarState extends State<Agendar> {
                                                         color: Color.fromRGBO(
                                                             25, 95, 255, 1.0))),
                                                 onPressed: () {
-                                                  print("Premido");
 
                                                   setState(() {
                                                     search = true;
@@ -142,7 +144,7 @@ class _AgendarState extends State<Agendar> {
                               child: FittedBox(
                                 fit: BoxFit.contain,
                                 child: Text(
-                                  "Agendamentos & Compras",
+                                  "Alugueres & Compras",
                                   style: TextStyle(
                                     color: Color.fromRGBO(25, 95, 255, 1.0),
                                     decoration: TextDecoration.none,
@@ -165,93 +167,19 @@ class _AgendarState extends State<Agendar> {
                             ),
                             child: Center(
                               child: IconButton(
-                                icon: Icon(Icons.home_repair_service,
+                                icon: Icon(Icons.shopping_cart,
                                     size: MediaQuery.of(context).size.height *
                                         0.05,
                                     color:
                                         const Color.fromRGBO(25, 95, 255, 1.0)),
                                 onPressed: () {
-                                  developer.log('Mecânico');
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        backgroundColor: const Color.fromRGBO(
-                                            25, 95, 255, 0.7),
-                                        scrollable: true,
-                                        content: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Form(
-                                            child: Column(
-                                              children: [
-                                                TextFormField(
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.white),
-                                                    labelText: "Date:",
-                                                    focusedBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white),
-                                                    ),
-                                                    enabledBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                TextFormField(
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.white),
-                                                    labelText:
-                                                        "Registration Number:",
-                                                    focusedBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white),
-                                                    ),
-                                                    enabledBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        actions: [
-                                          Center(
-                                              child: Column(
-                                            children: [
-                                              ElevatedButton(
-                                                child: const Text("Submit",
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            25, 95, 255, 1.0))),
-                                                onPressed: () {
-                                                  developer.log(
-                                                      'Submitting, but not rll');
-                                                },
-                                              ),
-                                            ],
-                                          ))
-                                        ],
-                                      );
-                                    },
-                                  );
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Alugado())).then((_) => setState(() {}));
+                                  
                                 },
+                                
                               ),
                             ),
                           ),
@@ -291,9 +219,8 @@ class _AgendarState extends State<Agendar> {
                       future:
                           search ? obterCarrosbyModelo(modelo) : obterCarros(),
                       builder: (context, snapshot) {
-                        print('init State');
+                        
                         if (snapshot.connectionState == ConnectionState.done) {
-                          print('Connection established');
                           List<Carro> carros = snapshot.data!;
 
                           //APRESENTA TDS OS CARROS
@@ -303,7 +230,6 @@ class _AgendarState extends State<Agendar> {
                               return GestureDetector(
                                 onTap: () {
                                   // Handle item click here
-                                  print('Item clicked: ${index}');
                                   // You can perform any other action here
                                   showDialog(
                                     context: context,
@@ -365,10 +291,10 @@ class _AgendarState extends State<Agendar> {
                                                                     255,
                                                                     1.0))),
                                                     onPressed: () {
-                                                      developer.log('Alugar');
                                                       atualizarDisponivel(
                                                           carros[index].id,
-                                                          false);
+                                                          false,
+                                                          userID ?? "");
                                                       setState(() {});
                                                       Navigator.pop(context);
                                                     },
@@ -400,10 +326,10 @@ class _AgendarState extends State<Agendar> {
                                                                     255,
                                                                     1.0))),
                                                     onPressed: () {
-                                                      developer.log('Compra');
                                                       atualizarDisponivel(
                                                           carros[index].id,
-                                                          false);
+                                                          false,
+                                                          userID ?? "");
                                                       setState(() {});
                                                       Navigator.pop(context);
                                                     },
