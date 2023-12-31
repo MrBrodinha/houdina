@@ -39,12 +39,11 @@ class _opcoesState extends State<opcoes> {
 
     try{
       Reference storageReference = FirebaseStorage.instance.refFromURL("gs://houdina-2194.appspot.com/fotosPFP/${FirebaseAuth.instance.currentUser?.uid!}");
-      await storageReference.delete().then((value) => 
-      print("acabei await"));
+      await storageReference.delete();//.then((value) => 
+      //print("acabei await"));
     }catch(e){
-      print('erro a apagar: $e');
+      print('erro a apagar o ficheiro: $e');
     }
-    print("tou uauqi");
     setState(() {
       uploadTask = ref.putFile(file);
     });
@@ -100,16 +99,12 @@ class _opcoesState extends State<opcoes> {
             ),
             onPressed: () {
               Navigator.pop(context);
-              /*Navigator.pushReplacement(
-                context, 
-                MaterialPageRoute(builder: (context) => Account()),
-              );//.then((value) => {setState((){})});*/
             },
           ),
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.30,
+          top: MediaQuery.of(context).size.height * 0.32,
            child: Container(
             width: MediaQuery.of(context).size.width * 0.55,
             height: MediaQuery.of(context).size.height * 0.085,
@@ -147,7 +142,6 @@ class _opcoesState extends State<opcoes> {
                                 builder: (context, snapshot){
                                   if (snapshot.connectionState == ConnectionState.done) {
                                     return Container(
-                                        //padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                                         child: snapshot.data,
                                       );
                                   }
@@ -159,11 +153,6 @@ class _opcoesState extends State<opcoes> {
                                       );
                                   }
                                   return Container();
-                                  /*if (snapshot.connectionState == ConnectionState.done) {
-                                        return snapshot.data as Widget;
-                                      } else {
-                                        return CircularProgressIndicator();
-                                      }*/
                                 },
                               ),
                               TextFormField(
@@ -196,11 +185,13 @@ class _opcoesState extends State<opcoes> {
                                 style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
                               ),
                               onPressed: () {
-                                mudar(novonomeController.text, 1);
-                                setState(() {
-                                  novonomeController.text = '';
-                                });
-                                Navigator.pop(context);
+                                if(novonomeController.text.length >= 2 && novonomeController.text.length <= 50){
+                                  mudar(novonomeController.text, 1);
+                                  setState(() {
+                                    novonomeController.text = '';
+                                  });
+                                }
+                                  Navigator.pop(context);
                               },
                             ),
                           ],)
@@ -216,7 +207,7 @@ class _opcoesState extends State<opcoes> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.60,
+          top: MediaQuery.of(context).size.height * 0.58,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
             height: MediaQuery.of(context).size.height * 0.085,
@@ -278,7 +269,7 @@ class _opcoesState extends State<opcoes> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.75,
+          top: MediaQuery.of(context).size.height * 0.69,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
             height: MediaQuery.of(context).size.height * 0.085,

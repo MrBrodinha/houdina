@@ -7,7 +7,6 @@ import '../notificacoes.dart';
 import 'opcoes.dart';
 
 
-String? userid = FirebaseAuth.instance.currentUser?.uid;
 String? email_user = FirebaseAuth.instance.currentUser?.email;
 int ola = 0;
 
@@ -34,7 +33,6 @@ class _AccountState extends State<Account> {
   Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      //print("User signed out successfully");
     } catch (e) {
       print("Error signing out: $e");
     }
@@ -50,7 +48,6 @@ class _AccountState extends State<Account> {
             body: Stack(
               alignment: Alignment.center,
               children: [
-                //Wallpaper
                 Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -75,7 +72,6 @@ class _AccountState extends State<Account> {
                           builder: (context, snapshot){
                             if (snapshot.connectionState == ConnectionState.done) {
                               return Container(
-                                  //padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                                   child: snapshot.data,
                                 );
                             }
@@ -87,11 +83,6 @@ class _AccountState extends State<Account> {
                                 );
                             }
                             return Container();
-                            /*if (snapshot.connectionState == ConnectionState.done) {
-                                  return snapshot.data as Widget;
-                                } else {
-                                  return CircularProgressIndicator();
-                                }*/
                           },
                         ),
                       ),
@@ -104,19 +95,11 @@ class _AccountState extends State<Account> {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.50,
                 height: MediaQuery.of(context).size.height * 0.25,
-                /*decoration: BoxDecoration( //BORDA NAO APAGAR PODE DAR JEITO
-                  border: Border.all(
-                    color: const Color.fromRGBO(25, 95, 255, 1.0),
-                    width: 4.0,
-                  ),
-                  borderRadius: BorderRadius.circular(35),
-                ),*/
                 child: FutureBuilder(
                   future: obterImagemperfil(context, "fotosPFP/${FirebaseAuth.instance.currentUser?.uid}"),
                   builder: (context, snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Container(
-                          //padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                           child: snapshot.data,
                         );
                     }
@@ -128,11 +111,6 @@ class _AccountState extends State<Account> {
                         );
                     }
                     return Container();
-                    /*if (snapshot.connectionState == ConnectionState.done) {
-                          return snapshot.data as Widget;
-                        } else {
-                          return CircularProgressIndicator();
-                        }*/
                   },
                 ),
               ),
@@ -188,7 +166,6 @@ class _AccountState extends State<Account> {
                 fit: BoxFit.contain,
                 child: TextButton(
                   onPressed: () {
-                    print("nome user: esquece -- email user: $email_user -- iduser: $userid ${FirebaseAuth.instance.currentUser?.uid}");
                     showDialog(
                       context: contextAccount,
                       builder: (contextAccount) {
@@ -215,84 +192,10 @@ class _AccountState extends State<Account> {
               ), 
           ),
         ),
-
-                /*Positioned(
-                  top: MediaQuery.of(context).size.height * 0.62,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => opcoes()),
-                      ).then((value) => {setState((){})});
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(25, 95, 255, 1.0))),
-                    child: const Text(
-                      "Opcoes conta",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                  ),
-                ),*/
-
-                /*Positioned(
-                  top: MediaQuery.of(context).size.height * 0.73,
-                  child: TextButton(
-                    onPressed: () {
-                      print(
-                          "nome user: esquece -- email user: $email_user -- iduser: $userid ${FirebaseAuth.instance.currentUser?.uid}");
-                      showDialog(
-                        context: contextAccount,
-                        builder: (contextAccount) {
-                          return FeedbackDialog();
-                        },
-                      ).then((value) => {
-                            if (ola == 1)
-                              {msgVazia(contextAccount), ola = 0}
-                            else if (ola == 2)
-                              {categoriaVazia(contextAccount), ola = 0}
-                            else if (ola == 3)
-                              {msgEnviada(contextAccount), ola = 0}
-                          });
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(25, 95, 255, 1.0))),
-                    child: const Text(
-                      "Apoio tecnico",
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                  ),
-                ),*/
               ],
             ),
           );
         })));
-  }
-}
-
-//Envia sempre os três dados, caso n mude algum envia os já existentes
-Future<void> updateProfile(
-    String newEmail, String newPassword, String newUsername) async {
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      // Update email and password in Firebase Authentication
-      await user.updateEmail(newEmail);
-      await user.updatePassword(newPassword);
-
-      // Update username in Firestore (adjust the collection and field names accordingly)
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .update({'username': newUsername});
-
-      //print("Profile updated successfully");
-    }
-  } catch (e) {
-    print("Error updating profile: $e");
-    // Handle the error accordingly
   }
 }
 
@@ -302,7 +205,6 @@ Future<void> enviarFeedback(String mensagem, String categoria) async {
       'id_user': FirebaseAuth.instance.currentUser?.uid.toString(),
       'mensagem': mensagem,
       'categoria': categoria
-      // Add other user data as needed
     });
   } catch (e) {
     print("erro a enviar feedback");
@@ -347,10 +249,6 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
 
   @override
   Widget build(contextAccount) {
-    //return MaterialApp(
-    //home: ScaffoldMessenger(
-    //child: Builder(builder: (context2){
-    //return Scaffold(*/
     return AlertDialog(
       backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
       scrollable: true,
@@ -442,13 +340,11 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     print("Mensagem vaiza");
                     ola = 1;
                     Navigator.pop(contextAccount);
-                    //msgVazia(contextAccount);
                   } else if (selectedValue == null) {
                     // ignore: avoid_print
                     print("Categoria nao escolhida");
                     ola = 2;
                     Navigator.pop(contextAccount);
-                    //categoriaVazia(contextAccount);
                   } else {
                     enviarFeedback(mensagem, selectedValue.toString());
                     mensagemController.text = '';
@@ -462,10 +358,5 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
         )
       ],
     );
-    /*);
-         }
-         )
-         )
-           );*/
   }
 }
