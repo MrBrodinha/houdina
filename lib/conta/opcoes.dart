@@ -38,7 +38,7 @@ class _opcoesState extends State<opcoes> {
     final ref = FirebaseStorage.instance.ref().child(path);
 
     try{
-      Reference storageReference = FirebaseStorage.instance.refFromURL("gs://houdina-2194.appspot.com/fotosPFP/${FirebaseAuth.instance.currentUser?.uid!}");
+      Reference storageReference = FirebaseStorage.instance.refFromURL("gs://houdina-2194.appspot.com/fotosPFP/${FirebaseAuth.instance.currentUser?.uid}");
       await storageReference.delete();//.then((value) => 
       //print("acabei await"));
     }catch(e){
