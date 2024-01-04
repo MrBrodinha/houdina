@@ -104,7 +104,7 @@ class _opcoesState extends State<opcoes> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.32,
+          top: MediaQuery.of(context).size.height * 0.58,
            child: Container(
             width: MediaQuery.of(context).size.width * 0.55,
             height: MediaQuery.of(context).size.height * 0.085,
@@ -207,7 +207,7 @@ class _opcoesState extends State<opcoes> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.58,
+          top: MediaQuery.of(context).size.height * 0.68,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
             height: MediaQuery.of(context).size.height * 0.085,
@@ -269,7 +269,7 @@ class _opcoesState extends State<opcoes> {
         ),
 
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.69,
+          top: MediaQuery.of(context).size.height * 0.79,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.70,
             height: MediaQuery.of(context).size.height * 0.085,
