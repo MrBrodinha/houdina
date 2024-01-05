@@ -24,6 +24,7 @@ class _LoginState extends State<Login> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Colors.black,
         body: Container(
           alignment: Alignment.center,
           decoration: const BoxDecoration(

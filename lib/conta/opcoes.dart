@@ -63,288 +63,301 @@ class _opcoesState extends State<opcoes> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        //Wallpaper
-        Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image:
-                  NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.05,
-          right: 100,
-          child: const Text(
-            "Opções",
-            style: TextStyle(
-              color: Color.fromRGBO(25, 95, 255, 1.0),
-              decoration: TextDecoration.none,
-            ),
-          ),
-        ),
-
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.05,
-          right: 320,
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new,
-              size: MediaQuery.of(context).size.height * 0.05,
-              color: const Color.fromRGBO(25, 95, 255, 1.0),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          //Wallpaper
+          FutureBuilder(
+            future: obterFundo(context),
+            builder: (context, snapshot){
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Container(
+                    child: snapshot.data,
+                  );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: const CircularProgressIndicator(),
+                  );
+              }
+              return Container();
             },
           ),
-        ),
-
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.58,
-           child: Container(
-            width: MediaQuery.of(context).size.width * 0.55,
-            height: MediaQuery.of(context).size.height * 0.085,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                width: 3.0,
+      
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.04,
+            right: 100,
+            child: const Text(
+              "Opções",
+              style: TextStyle(
+                color: Color.fromRGBO(25, 95, 255, 1.0),
+                decoration: TextDecoration.none,
+                fontSize: 50
               ),
-              borderRadius: BorderRadius.circular(35),
             ),
-            child: FittedBox(
-                fit: BoxFit.contain,
-            child: TextButton(
-              child: const Text("Mudar o nome",
-                  style: TextStyle(
-                    color: Color.fromRGBO(25, 95, 255, 1.0),
-                    decoration: TextDecoration.none,
-                    fontSize: 30
-                  ),
+          ),
+      
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.05,
+            right: 320,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new,
+                size: MediaQuery.of(context).size.height * 0.05,
+                color: const Color.fromRGBO(25, 95, 255, 1.0),
               ),
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
-                      scrollable: true,
-                      content: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Form(
-                          child: Column(
-                            children: [
-                              FutureBuilder(
-                                future: nomeUser(2), 
-                                builder: (context, snapshot){
-                                  if (snapshot.connectionState == ConnectionState.done) {
-                                    return Container(
-                                        child: snapshot.data,
-                                      );
-                                  }
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.1,
-                                        height: MediaQuery.of(context).size.height * 0.1,
-                                        child: const CircularProgressIndicator(),
-                                      );
-                                  }
-                                  return Container();
-                                },
-                              ),
-                              TextFormField(
-                                maxLines: null,
-                                style: const TextStyle(color: Colors.white),
-                                decoration: const InputDecoration(
-                                  labelStyle: TextStyle(color: Colors.white),
-                                  labelText: "Novo nome",
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
+                Navigator.pop(context);
+              },
+            ),
+          ),
+      
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.58,
+             child: Container(
+              width: MediaQuery.of(context).size.width * 0.55,
+              height: MediaQuery.of(context).size.height * 0.085,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color.fromRGBO(25, 95, 255, 1.0),
+                  width: 3.0,
+                ),
+                borderRadius: BorderRadius.circular(35),
+              ),
+              child: FittedBox(
+                  fit: BoxFit.contain,
+              child: TextButton(
+                child: const Text("Mudar o nome",
+                    style: TextStyle(
+                      color: Color.fromRGBO(25, 95, 255, 1.0),
+                      decoration: TextDecoration.none,
+                      fontSize: 30
+                    ),
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                        scrollable: true,
+                        content: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Form(
+                            child: Column(
+                              children: [
+                                FutureBuilder(
+                                  future: nomeUser(2), 
+                                  builder: (context, snapshot){
+                                    if (snapshot.connectionState == ConnectionState.done) {
+                                      return Container(
+                                          child: snapshot.data,
+                                        );
+                                    }
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.1,
+                                          height: MediaQuery.of(context).size.height * 0.1,
+                                          child: const CircularProgressIndicator(),
+                                        );
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                                TextFormField(
+                                  maxLines: null,
+                                  style: const TextStyle(color: Colors.white),
+                                  decoration: const InputDecoration(
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    labelText: "Novo nome",
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
+                                  controller: novonomeController,
                                 ),
-                                controller: novonomeController,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      actions: [
-                        Center(child: 
-                          Column(children: [
-                            ElevatedButton(
-                              child: const Text(
-                                "Submeter",
-                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                        actions: [
+                          Center(child: 
+                            Column(children: [
+                              ElevatedButton(
+                                child: const Text(
+                                  "Submeter",
+                                  style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                                ),
+                                onPressed: () {
+                                  if(novonomeController.text.length >= 2 && novonomeController.text.length <= 50){
+                                    mudar(novonomeController.text, 1);
+                                    setState(() {
+                                      novonomeController.text = '';
+                                    });
+                                  }
+                                    Navigator.pop(context);
+                                },
                               ),
-                              onPressed: () {
-                                if(novonomeController.text.length >= 2 && novonomeController.text.length <= 50){
-                                  mudar(novonomeController.text, 1);
-                                  setState(() {
-                                    novonomeController.text = '';
-                                  });
-                                }
-                                  Navigator.pop(context);
-                              },
-                            ),
-                          ],)
-                        )
-                      ],
-                  );
-                  },
-                );  
-              },
-            ),
-            ),
-            ),
-        ),
-
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.68,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.70,
-            height: MediaQuery.of(context).size.height * 0.085,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                width: 3.0,
+                            ],)
+                          )
+                        ],
+                    );
+                    },
+                  );  
+                },
               ),
-              borderRadius: BorderRadius.circular(35),
-            ),
-            child: FittedBox(
-                fit: BoxFit.contain,
-            child: TextButton(
-              child: const Text("Mudar palavra-passe",
-              style: TextStyle(
-                    color: Color.fromRGBO(25, 95, 255, 1.0),
-                    decoration: TextDecoration.none,
-                    fontSize: 30
-                  ),),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
-                      scrollable: true,
-                      content: const Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child: Form(
-                          child: Text('Clique para enviar um e-mail para mudança de palavra-passe',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                          textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      actions: [
-                        Center(child: 
-                          Column(children: [
-                            ElevatedButton(
-                              child: const Text(
-                                "Enviar",
-                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
-                              ),
-                              onPressed: () {
-                                mudar("ok", 3);
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],)
-                        )
-                      ],
-                  );
-                  },
-                );
-              },
-            ),
-            ),
+              ),
+              ),
           ),
-        ),
-
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.79,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.70,
-            height: MediaQuery.of(context).size.height * 0.085,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromRGBO(25, 95, 255, 1.0),
-                width: 3.0,
+      
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.68,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.70,
+              height: MediaQuery.of(context).size.height * 0.085,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color.fromRGBO(25, 95, 255, 1.0),
+                  width: 3.0,
+                ),
+                borderRadius: BorderRadius.circular(35),
               ),
-              borderRadius: BorderRadius.circular(35),
-            ),
-            child: FittedBox(
-                fit: BoxFit.contain,
-            child: TextButton(
-              child: const Text("Mudar foto de perfil",
-              style: TextStyle(
-                    color: Color.fromRGBO(25, 95, 255, 1.0),
-                    decoration: TextDecoration.none,
-                    fontSize: 30
-                  ),),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
-                      scrollable: true,
-                      content: const Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child: Form(
-                          child: Text("Escolhe a imagem pra trocar",
+              child: FittedBox(
+                  fit: BoxFit.contain,
+              child: TextButton(
+                child: const Text("Mudar palavra-passe",
+                style: TextStyle(
+                      color: Color.fromRGBO(25, 95, 255, 1.0),
+                      decoration: TextDecoration.none,
+                      fontSize: 30
+                    ),),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                        scrollable: true,
+                        content: const Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: Form(
+                            child: Text('Clique para enviar um e-mail para mudança de palavra-passe',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                             textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      actions: [
-                        Center(child: 
-                          Column(children: [
-                            ElevatedButton(
-                              child: const Text(
-                                "Procurar foto",
-                                style: TextStyle(
-                                    color: Color.fromRGBO(
-                                        25, 95, 255, 1.0)),
+                        actions: [
+                          Center(child: 
+                            Column(children: [
+                              ElevatedButton(
+                                child: const Text(
+                                  "Enviar",
+                                  style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                                ),
+                                onPressed: () {
+                                  mudar("ok", 3);
+                                  Navigator.pop(context);
+                                },
                               ),
-                              onPressed: () {
-                                selectFile();
-                              },
-                            ),
-                            ElevatedButton(
-                              child: const Text(
-                                "Submeter",
-                                style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
-                              ),
-                              onPressed: () async {
-                                uploadFile();
-                                setState(() {
-                                });
-                                
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
+                            ],)
                           )
-                        )
-                      ],
+                        ],
+                    );
+                    },
                   );
-                  },
-                );
-              },
-            ),
+                },
+              ),
+              ),
             ),
           ),
-        ),
-      ],
+      
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.79,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.70,
+              height: MediaQuery.of(context).size.height * 0.085,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color.fromRGBO(25, 95, 255, 1.0),
+                  width: 3.0,
+                ),
+                borderRadius: BorderRadius.circular(35),
+              ),
+              child: FittedBox(
+                  fit: BoxFit.contain,
+              child: TextButton(
+                child: const Text("Mudar foto de perfil",
+                style: TextStyle(
+                      color: Color.fromRGBO(25, 95, 255, 1.0),
+                      decoration: TextDecoration.none,
+                      fontSize: 30
+                    ),),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: const Color.fromRGBO(25, 95, 255, 0.7),
+                        scrollable: true,
+                        content: const Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: Form(
+                            child: Text("Escolhe a imagem pra trocar",
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          Center(child: 
+                            Column(children: [
+                              ElevatedButton(
+                                child: const Text(
+                                  "Procurar foto",
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(
+                                          25, 95, 255, 1.0)),
+                                ),
+                                onPressed: () {
+                                  selectFile();
+                                },
+                              ),
+                              ElevatedButton(
+                                child: const Text(
+                                  "Submeter",
+                                  style: TextStyle(color: Color.fromRGBO(25, 95, 255, 1.0))
+                                ),
+                                onPressed: () async {
+                                  uploadFile();
+                                  setState(() {
+                                  });
+                                  
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                            )
+                          )
+                        ],
+                    );
+                    },
+                  );
+                },
+              ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -431,6 +444,42 @@ Future<void> mudar(String mudanca,int tipo) async{
   }else if(tipo == 4){
      print("imagem mudar");
   }
+}
+
+Future<Widget> obterFundo(BuildContext context) async {
+Container ima = Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          ''),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+  try{
+    await FireStorageService.loadImage(context, "aplicacao/Background.jpg").then((value){
+      ima = Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(value.toString()),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+    });
+  }catch(e){
+    print("erro a dar load a foto de fundo");
+    return      Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://wallpapercave.com/wp/wp10671634.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+  }
+  return ima;
 }
 
 Future<Widget> obterImagemperfil(BuildContext context, String imageName) async {

@@ -27,6 +27,7 @@ class _AlugadosState extends State<Alugado> {
         debugShowCheckedModeBanner: false,
         home: ScaffoldMessenger(child: Builder(builder: (context3) {
           return Scaffold(
+            backgroundColor: Colors.black,
             body: Container(
               //Estrutura Principal -> Wallpaper
               alignment: Alignment.center,

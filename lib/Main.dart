@@ -34,6 +34,7 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Center(
         child: CarouselSlider(
           options: CarouselOptions(

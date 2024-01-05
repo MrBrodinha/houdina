@@ -45,17 +45,27 @@ class _AccountState extends State<Account> {
         navigatorKey: NavigationService.navigatorKey,
         home: ScaffoldMessenger(child: Builder(builder: (contextAccount) {
           return Scaffold(
+            backgroundColor: Colors.black,
             body: Stack(
               alignment: Alignment.center,
               children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://wallpapercave.com/wp/wp10671634.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                FutureBuilder(
+                  future: obterFundo(context),
+                  builder: (context, snapshot){
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Container(
+                          child: snapshot.data,
+                        );
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.1,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: const CircularProgressIndicator(),
+                        );
+                    }
+                    return Container();
+                  },
                 ),
 
                 Positioned(

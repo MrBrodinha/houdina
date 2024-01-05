@@ -37,7 +37,9 @@ class _CarrosState extends State<Carros> {
         debugShowCheckedModeBanner: false,
         home: ScaffoldMessenger(child: Builder(builder: (context3) {
           return Scaffold(
-            body: Container(
+            backgroundColor: Colors.black,
+            body: 
+               Container(
                 //Estrutura Principal -> Wallpaper
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(

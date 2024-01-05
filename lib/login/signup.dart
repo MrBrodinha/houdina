@@ -32,6 +32,7 @@ class _SignupState extends State<Signup> {
         home: ScaffoldMessenger(
       child: Builder(builder: (context2) {
         return Scaffold(
+          backgroundColor: Colors.black,
           body: Container(
             alignment: Alignment.center,
             decoration: const BoxDecoration(
