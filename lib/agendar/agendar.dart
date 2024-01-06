@@ -352,11 +352,7 @@ class _AgendarState extends State<Agendar> {
 
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.1,
-                            height: MediaQuery.of(context).size.height * 0.1,
-                            child: const CircularProgressIndicator(),
-                          );
+                          return const Center(child: CircularProgressIndicator());
                         }
                         return Container();
                       },

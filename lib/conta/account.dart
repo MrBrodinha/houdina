@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../notificacoes.dart';
 import 'opcoes.dart';
+import '../Main.dart';
 
 
 String? email_user = FirebaseAuth.instance.currentUser?.email;
@@ -58,11 +59,14 @@ class _AccountState extends State<Account> {
                         );
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          child: const CircularProgressIndicator(),
-                        );
+                      return Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('resources/Background.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
                     }
                     return Container();
                   },
@@ -86,11 +90,7 @@ class _AccountState extends State<Account> {
                                 );
                             }
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.1,
-                                  height: MediaQuery.of(context).size.height * 0.1,
-                                  child: const CircularProgressIndicator(),
-                                );
+                              return const Center(child: CircularProgressIndicator());
                             }
                             return Container();
                           },
@@ -114,11 +114,7 @@ class _AccountState extends State<Account> {
                         );
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          child: const CircularProgressIndicator(),
-                        );
+                      return const Center(child: CircularProgressIndicator());
                     }
                     return Container();
                   },

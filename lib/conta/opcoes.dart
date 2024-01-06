@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'account.dart';
+import '../Main.dart';
 
 int tipo2 = 2;
 
@@ -78,11 +79,14 @@ class _opcoesState extends State<opcoes> {
                   );
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    child: const CircularProgressIndicator(),
-                  );
+                return Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('resources/Background.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
               }
               return Container();
             },
@@ -158,11 +162,7 @@ class _opcoesState extends State<opcoes> {
                                         );
                                     }
                                     if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return SizedBox(
-                                          width: MediaQuery.of(context).size.width * 0.1,
-                                          height: MediaQuery.of(context).size.height * 0.1,
-                                          child: const CircularProgressIndicator(),
-                                        );
+                                      return const Center(child: CircularProgressIndicator());
                                     }
                                     return Container();
                                   },
@@ -444,42 +444,6 @@ Future<void> mudar(String mudanca,int tipo) async{
   }else if(tipo == 4){
      print("imagem mudar");
   }
-}
-
-Future<Widget> obterFundo(BuildContext context) async {
-Container ima = Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          ''),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-  try{
-    await FireStorageService.loadImage(context, "aplicacao/Background.jpg").then((value){
-      ima = Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(value.toString()),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-    });
-  }catch(e){
-    print("erro a dar load a foto de fundo");
-    return      Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://wallpapercave.com/wp/wp10671634.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-  }
-  return ima;
 }
 
 Future<Widget> obterImagemperfil(BuildContext context, String imageName) async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //Dar import a files externos
 import 'signup.dart';
 import 'verificar.dart';
+import '../Main.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -21,21 +22,34 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body: Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image:
-                  NetworkImage('https://wallpapercave.com/wp/wp10671634.jpg'),
-              //Para preencher a tela toda
-              fit: BoxFit.cover,
-            ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          FutureBuilder(
+            future: obterFundo(context),
+            builder: (context, snapshot){
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Container(
+                    child: snapshot.data,
+                  );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('resources/Background.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            },
           ),
-          child: Column(
+
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //----------Email----------
@@ -180,7 +194,7 @@ class _LoginState extends State<Login> {
               ),
             ],
           ),
-        ),
+        ]
       ),
     );
   }

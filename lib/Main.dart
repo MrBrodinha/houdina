@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:houdina/firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'login/login.dart';
 
@@ -50,15 +51,26 @@ class _MainState extends State<Main> {
             Stack(
               alignment: Alignment.center,
               children: [
-                //Wallpaper
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://wallpapercave.com/wp/wp10671634.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                FutureBuilder(
+                  future: obterFundo(context),
+                  builder: (context, snapshot){
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Container(
+                          child: snapshot.data,
+                        );
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('resources/Background.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
                 //Nome da Aplicação
                 Positioned(
@@ -97,4 +109,50 @@ class _MainState extends State<Main> {
       ),
     );
   }
+}
+
+
+
+
+//---------------------------------------
+//------------OBTER BACKGROUND-----------
+//---------------------------------------
+class FireStorageService extends ChangeNotifier{
+  FireStorageService();
+  static Future<dynamic> loadImage(BuildContext context, String image) async{
+    //Obtém as Imagens apartir do link de Download
+    return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
+  }
+}
+Future<Widget> obterFundo(BuildContext context) async {
+  Container ima = Container(
+    decoration: const BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('resources/Background.jpg'),
+        fit: BoxFit.cover,
+      ),
+    ),
+  );
+  try{
+    await FireStorageService.loadImage(context, "aplicacao/Background.jpg").then((value){
+      ima = Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(value.toString()),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    });
+  }catch(e){
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('resources/Background.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+  return ima;
 }

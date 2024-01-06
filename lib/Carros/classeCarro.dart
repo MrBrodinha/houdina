@@ -77,7 +77,6 @@ class ElementoCarro extends StatelessWidget {
                                       .doc(idCarro)
                                       .delete();
                                 }
-
                                 eliminar(true);
                                 deleteCarroSucesso(context);
                                 Navigator.pop(context);
@@ -105,9 +104,7 @@ class ElementoCarro extends StatelessWidget {
                   );
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SizedBox(
-                    child: CircularProgressIndicator(),
-                  );
+                return const Center(child: CircularProgressIndicator());
               }
               return Container();
             }
