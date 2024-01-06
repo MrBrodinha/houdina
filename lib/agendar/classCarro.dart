@@ -74,67 +74,6 @@ class ElementoCarro extends StatelessWidget {
 }
 
 //----------------------------------------
-//----------ADICIONAR CARRO A DB----------
-//----------------------------------------
-void adicionarCarro(
-    BuildContext context,
-    String matricula,
-    String ano,
-    String kilometros,
-    int identificador,
-    double precoVenda,
-    double precoAluguer,
-    String modeloMarca) {
-  if (matricula != "" &&
-      ano != "" &&
-      kilometros != "" &&
-      identificador != -1 &&
-      (precoAluguer >= 0 || precoVenda >= 0) &&
-      modeloMarca != "") {
-    if (precoAluguer > 0 && precoVenda > 0) {
-      db.collection("CarrosVenda").add({
-        'Ano': ano,
-        'Kilometragem': kilometros,
-        'Matricula': matricula,
-        'idImagem': identificador,
-        'precoVenda': precoVenda,
-        'precoAluguer': precoAluguer,
-        'Modelo': modeloMarca,
-      });
-      adicionarCarroSucesso(context);
-    } else if (precoAluguer > 0) {
-      db.collection("CarrosVenda").add({
-        'Ano': ano,
-        'Kilometragem': kilometros,
-        'Matricula': matricula,
-        'idImagem': identificador,
-        'precoAluguer': precoAluguer,
-        'Modelo': modeloMarca,
-      });
-      adicionarCarroSucesso(context);
-    } else {
-      db.collection("CarrosVenda").add({
-        'Ano': ano,
-        'Kilometragem': kilometros,
-        'Matricula': matricula,
-        'idImagem': identificador,
-        'precoVenda': precoVenda,
-        'Modelo': modeloMarca,
-      });
-      adicionarCarroSucesso(context);
-    }
-  } else {
-    if (matricula == "" || ano == "" || kilometros == "" || modeloMarca == "") {
-      adicionarCErro(context);
-    } else if (precoVenda <= 0 && precoAluguer <= 0) {
-      adicionarCErro(context);
-    } else {
-      adicionarImagemFalta(context);
-    }
-  }
-}
-
-//----------------------------------------
 //----------OBTER OS CARRO DA DB----------
 
 Future<List<Carro>> obterCarros() async {
@@ -192,11 +131,16 @@ Future<List<Carro>> obterCarrosbyModelo(String modelo) async {
         user: data['user'] as String? ?? "",
       );
     }).toList();
+    bool flag = true;
     List<Carro> carrosModelo = [];
     for (int i = 0; i < carros.length; i++) {
       if (carros[i].modelo.toLowerCase().contains(modelo.toLowerCase())) {
         carrosModelo.add(carros[i]);
+        flag = false;
       }
+    }
+    if (flag) {
+      return [];
     }
     return carrosModelo;
   } catch (e) {
@@ -239,10 +183,10 @@ Future<List<Carro>> obterCarrosbyUser(String userID) async {
 //----------------------------------------
 //--------OBTER IMAGENS DOS CARROS--------
 //----------------------------------------
+
 //----------OBTER O ID DA IMAGEM----------
 Future<int> obterID_Imagem() async {
   DocumentSnapshot carro = await db.collection('Geral').doc('Carros').get();
-
   if (carro.exists) {
     return carro['idImagem'];
   } else {
@@ -251,13 +195,22 @@ Future<int> obterID_Imagem() async {
 }
 
 //----------ATUALIZAR O ID NO GERAL----------
-void atualizarID_Imagem(int novoID) async {
-  db.collection("Geral").doc("Carros").update({
-    'idImagem': novoID,
-  });
+Future<bool> atualizarDisponivel(
+    String id, bool disponivel, String idUser) async {
+  DocumentSnapshot carro = await db.collection('CarrosVenda').doc(id).get();
+
+  if (carro['Disponivel'] == true) {
+    await db.collection("CarrosVenda").doc(id).update({
+      'Disponivel': disponivel,
+      'user': idUser,
+    });
+    return true;
+  } else {
+    return false;
+  }
 }
 
-void atualizarDisponivel(String id, bool disponivel, String idUser) async {
+void remove(String id, bool disponivel, String idUser) {
   db.collection("CarrosVenda").doc(id).update({
     'Disponivel': disponivel,
     'user': idUser,

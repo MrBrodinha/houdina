@@ -337,7 +337,7 @@ void processoEfetuado(BuildContext context,String processo) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: Text(processo == "Aluguer" ? '$processo efetuado' : '$processo efetuada',
+    content: Text(processo == "Compra" ?  '$processo efetuada' : '$processo efetuado',
         textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
@@ -371,6 +371,27 @@ void remocaoEfetuada(BuildContext context) {
     dismissDirection: DismissDirection.down,
     margin: EdgeInsets.only(
       bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.1),
+      left: MediaQuery.of(context).size.width * 0.05,
+      right: MediaQuery.of(context).size.width * 0.05,
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+void procuraInvalida(BuildContext context) {
+  ScaffoldMessenger.of(context).clearSnackBars();
+
+  final snackBar = SnackBar(
+    content: Text("Carro Inexistente",textAlign: TextAlign.center),
+    duration: const Duration(seconds: 4),
+    backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(35),
+    ),
+    showCloseIcon: true,
+    dismissDirection: DismissDirection.down,
+    margin: EdgeInsets.only(
+      bottom: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height * 0.185),
       left: MediaQuery.of(context).size.width * 0.05,
       right: MediaQuery.of(context).size.width * 0.05,
     ),

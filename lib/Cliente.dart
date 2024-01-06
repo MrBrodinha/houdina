@@ -57,7 +57,7 @@ class _ClientePageState extends State<Cliente> {
             ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
-              label: 'C/A',
+              label: 'A/C',
               backgroundColor: Colors.black,
             ),
             const BottomNavigationBarItem(

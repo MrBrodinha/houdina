@@ -162,9 +162,9 @@ class _AlugadosState extends State<Alugado> {
                                                   style: TextStyle(
                                                       color: Color.fromRGBO(
                                                           25, 95, 255, 1.0))),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 
-                                                atualizarDisponivel(
+                                                remove(
                                                     carros[index].id,
                                                     true,
                                                     "None");
