@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:houdina/agendar/classCarro.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import "agendar.dart";
 import '../Notificacoes.dart';
+import "../Main.dart";
 
 class Alugado extends StatefulWidget {
   const Alugado({super.key});
@@ -25,21 +25,33 @@ class _AlugadosState extends State<Alugado> {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ScaffoldMessenger(child: Builder(builder: (context3) {
+        home: ScaffoldMessenger(child: Builder(builder: (contextAlugado) {
           return Scaffold(
             backgroundColor: Colors.black,
-            body: Container(
-              //Estrutura Principal -> Wallpaper
+            body: Stack(
               alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                      'https://wallpapercave.com/wp/wp10671634.jpg'),
-                  //Para preencher a tela toda
-                  fit: BoxFit.cover,
+              children: [
+                FutureBuilder(
+                  future: obterFundo(context),
+                  builder: (context, snapshot){
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Container(
+                          child: snapshot.data,
+                        );
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('resources/Background.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
-              ),
-              child: Stack(alignment: Alignment.center, children: [
                 //--------------------PARTE DE CIMA (ICON TITULO ICON)--------------------
                 Positioned(
                     top: MediaQuery.of(context).size.height * 0.10,
@@ -151,11 +163,15 @@ class _AlugadosState extends State<Alugado> {
                                                       color: Color.fromRGBO(
                                                           25, 95, 255, 1.0))),
                                               onPressed: () {
+                                                
                                                 atualizarDisponivel(
                                                     carros[index].id,
                                                     true,
                                                     "None");
                                                 setState(() {});
+                                                
+                                                remocaoEfetuada(contextAlugado);
+                                                
                                                 Navigator.pop(context);
                                               },
                                             ),
@@ -181,8 +197,8 @@ class _AlugadosState extends State<Alugado> {
                   ),
                 ),
               ]),
-            ),
-          );
-        })));
+            );
+          })));
+        }
   }
-}
+

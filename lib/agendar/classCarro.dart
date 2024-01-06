@@ -206,7 +206,6 @@ Future<List<Carro>> obterCarrosbyModelo(String modelo) async {
 }
 
 Future<List<Carro>> obterCarrosbyUser(String userID) async {
-
   try {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
         .instance
