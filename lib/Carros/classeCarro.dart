@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously, avoid_print, non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -28,7 +30,7 @@ class ElementoCarro extends StatelessWidget {
   final Carro carro;
   final Function(bool) eliminar;
 
-  ElementoCarro({required this.carro, required this.eliminar});
+  const ElementoCarro({super.key, required this.carro, required this.eliminar});
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +175,7 @@ Future<List<Carro>> obterCarrosUser(String userID) async {
 
     return carrosUtilizador;
   } catch (e) {
-    print("Error fetching car data: $e");
+      print("Error fetching car data: $e");
     //LISTA CARROS VAZIO DEVIDO A ERRO
     return [];
   }

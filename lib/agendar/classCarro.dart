@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -35,7 +37,7 @@ class Carro {
 class ElementoCarro extends StatelessWidget {
   final Carro carro;
 
-  ElementoCarro({required this.carro});
+  const ElementoCarro({super.key, required this.carro});
 
   @override
   Widget build(BuildContext context) {

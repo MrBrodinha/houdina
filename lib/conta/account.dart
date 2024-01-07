@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_print, library_private_types_in_public_api
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,11 +76,11 @@ class _AccountState extends State<Account> {
 
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.05,
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.70,
                     height: MediaQuery.of(context).size.height * 0.10,
                     child: Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: FutureBuilder(
@@ -102,7 +104,7 @@ class _AccountState extends State<Account> {
 
             Positioned(
               top: MediaQuery.of(context).size.height * 0.16,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.50,
                 height: MediaQuery.of(context).size.height * 0.25,
                 child: FutureBuilder(
@@ -140,7 +142,7 @@ class _AccountState extends State<Account> {
                   onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => opcoes()),
+                        MaterialPageRoute(builder: (context) => const opcoes()),
                       ).then((value) => {setState((){})});
                     },
                   child: const Text(
@@ -175,7 +177,7 @@ class _AccountState extends State<Account> {
                     showDialog(
                       context: contextAccount,
                       builder: (contextAccount) {
-                        return FeedbackDialog();
+                        return const FeedbackDialog();
                       },
                     ).then((value) => {
                         if (ola == 1)
@@ -218,7 +220,7 @@ Future<void> enviarFeedback(String mensagem, String categoria) async {
 }
 
 Future<Widget> nomeUser(int valor) async{
-  Text texto = Text("Erro a dar load ao nome");
+  Text texto = const Text("Erro a dar load ao nome");
   try{
     await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).get().then((value) =>{
       if(valor == 1){
@@ -245,6 +247,8 @@ Future<Widget> nomeUser(int valor) async{
 }
 
 class FeedbackDialog extends StatefulWidget {
+  const FeedbackDialog({super.key});
+
   @override
   _FeedbackDialogState createState() => _FeedbackDialogState();
 }
@@ -342,12 +346,10 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                 onPressed: () {
                   String mensagem = mensagemController.text;
                   if (mensagemController.text == '') {
-                    // ignore: avoid_print
                     print("Mensagem vaiza");
                     ola = 1;
                     Navigator.pop(contextAccount);
                   } else if (selectedValue == null) {
-                    // ignore: avoid_print
                     print("Categoria nao escolhida");
                     ola = 2;
                     Navigator.pop(contextAccount);

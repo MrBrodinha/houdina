@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 
@@ -359,7 +361,7 @@ void remocaoEfetuada(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: Text('Remoção efetuada',
+    content: const Text('Remoção efetuada',
         textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
@@ -381,7 +383,7 @@ void procuraInvalida(BuildContext context) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
   final snackBar = SnackBar(
-    content: Text("Carro Inexistente",textAlign: TextAlign.center),
+    content: const Text("Carro Inexistente",textAlign: TextAlign.center),
     duration: const Duration(seconds: 4),
     backgroundColor: const Color.fromRGBO(25, 95, 255, 1.0),
     behavior: SnackBarBehavior.floating,

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:houdina/agendar/classCarro.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -198,7 +200,7 @@ class _AgendarState extends State<Agendar> {
                                   Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Alugado()))
+                                              builder: (context) => const Alugado()))
                                       .then((_) => setState(() {}));
                                 },
                               ),
@@ -213,7 +215,7 @@ class _AgendarState extends State<Agendar> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(25, 95, 255, 0.7),
+                        const Color.fromRGBO(25, 95, 255, 0.7),
                       ),
                     ),
                     onPressed: () {
@@ -222,7 +224,7 @@ class _AgendarState extends State<Agendar> {
                         modelo = "";
                       });
                     },
-                    child: Text(
+                    child: const Text(
                       "Atualizar",
                       style: TextStyle(
                         color: Colors.white,
@@ -286,11 +288,11 @@ class _AgendarState extends State<Agendar> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsets.all(10),
+                                                padding: const EdgeInsets.all(10),
                                                 child: Column(children: [
-                                                  Text(
+                                                  const Text(
                                                     "Preço Aluguer",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: Colors.white),
                                                   ),
                                                   Center(
@@ -333,11 +335,11 @@ class _AgendarState extends State<Agendar> {
                                                 ]),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.all(10),
+                                                padding: const EdgeInsets.all(10),
                                                 child: Column(children: [
-                                                  Text(
+                                                  const Text(
                                                     "Preço Compra",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: Colors.white),
                                                   ),
                                                   Center(

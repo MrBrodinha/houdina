@@ -34,7 +34,7 @@ class MapsState extends State<Maps> {
 
   int _polylineIdCounter = 1;
 
-  CameraPosition _initialCameraPosition = CameraPosition(
+  CameraPosition _initialCameraPosition = const CameraPosition(
     target: LatLng(40.1668615, -7.7876066),
     zoom: 20,
   );
@@ -215,7 +215,7 @@ class MapsState extends State<Maps> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 8), // Spacing between text fields
+                    const SizedBox(width: 8), // Spacing between text fields
                     Expanded(
                       child: TextFormField(
                         controller: _destinationController,
