@@ -1,4 +1,9 @@
 <div>
+  <p align="center">Car management app</p><br>
+  <a>A car management app with Google Maps integration and options to purchase or rent cars made in Flutter.</a>
+</div>
+
+<div>
   <p align="center">Home, Login and Signup Page</p><br>
   <img width="30%" src="https://github.com/MrBrodinha/houdina/assets/95077144/f24b11b5-e5e2-4ace-8596-e257ae77c40a">
   <img width="30%" src="https://github.com/MrBrodinha/houdina/assets/95077144/1a6b018e-2f4c-45c4-830d-cf70fa76fbc5">
