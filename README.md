@@ -1,6 +1,6 @@
 <div>
-  <p align="center">Car management app</p><br>
-  <p align="center">A car management app with Google Maps integration and options to purchase or rent cars made in Flutter.</p>
+  <p align="center">Car management app</p>
+  <p align="center">A car management app with Google Maps integration and options to purchase or rent cars made in Flutter.</p><br>
 </div>
 
 <div>
